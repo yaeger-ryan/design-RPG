@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design RPG - Studio & Skill Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        osrs: {
+                            bg: '#08090d',
+                            card: '#0f1219',
+                            cardBorder: '#1e2433',
+                            gold: '#f3c648',
+                            goldHover: '#d9ad32',
+                            xpGreen: '#22c55e',
+                            textMuted: '#94a3b8',
+                        },
+                        rarity: {
+                            common: '#9ca3af',
+                            uncommon: '#22c55e',
+                            rare: '#3b82f6',
+                            epic: '#a855f7',
+                            legendary: '#f97316',
+                            mythic: '#ef4444'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+        
+        body {
+            background-color: #06070a;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .gold-glow { box-shadow: 0 0 15px rgba(243, 198, 72, 0.2); }
+        .xp-bar-glow { box-shadow: 0 0 12px rgba(34, 197, 94, 0.35); }
+
+        .rarity-common-glow { box-shadow: 0 0 8px rgba(156, 163, 175, 0.2); border-color: #9ca3af !important; }
+        .rarity-uncommon-glow { box-shadow: 0 0 10px rgba(34, 197, 94, 0.3); border-color: #22c55e !important; }
+        .rarity-rare-glow { box-shadow: 0 0 12px rgba(59, 130, 246, 0.4); border-color: #3b82f6 !important; }
+        .rarity-epic-glow { box-shadow: 0 0 14px rgba(168, 85, 247, 0.5); border-color: #a855f7 !important; }
+        .rarity-legendary-glow { box-shadow: 0 0 18px rgba(249, 115, 22, 0.6); border-color: #f97316 !important; }
+        .rarity-mythic-glow { box-shadow: 0 0 22px rgba(239, 68, 68, 0.7); border-color: #ef4444 !important; animation: studioPulse 2.5s infinite; }
+
+        @keyframes studioPulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(239, 68, 68, 0.5); }
+            50% { box-shadow: 0 0 22px rgba(239, 68, 68, 0.9); }
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #08090d; }
+        ::-webkit-scrollbar-thumb { background: #1e2433; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+    </style>
+</head>
+<body class="p-3 md:p-6 text-slate-200 antialiased selection:bg-amber-500 selection:text-black">
+
+    <div class="max-w-7xl mx-auto space-y-6">
+
+        <!-- HEADER / STUDIO CREDENTIAL BANNER -->
+        <header class="bg-osrs-card border border-osrs-cardBorder rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
+            <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#f3c648_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10 items-center">
+                
+                <!-- Studio Alter Ego Identity -->
+                <div class="lg:col-span-5 flex items-center space-x-4">
+                    <div class="relative group shrink-0">
+                        <div id="avatarContainer" class="w-20 h-20 md:w-22 md:h-22 rounded-2xl bg-gradient-to-br from-amber-500/10 via-slate-900 to-slate-950 border-2 border-osrs-gold/80 flex items-center justify-center text-3xl md:text-4xl text-osrs-gold shadow-lg gold-glow">
+                            <i id="avatarIcon" class="fa-solid fa-pen-nib"></i>
+                        </div>
+                        <button onclick="openAvatarModal()" class="absolute inset-0 bg-black/80 rounded-2xl opacity-0 group-hover:opacity-100 flex items-center justify-center text-[11px] font-semibold text-white transition-opacity">
+                            Change Mark
+                        </button>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-2">
+                            <h1 id="characterName" class="text-xl md:text-2xl font-extrabold text-white tracking-tight">Studio Archon</h1>
+                            <button onclick="editCharacterName()" class="text-xs text-osrs-textMuted hover:text-osrs-gold p-1" title="Edit Alter Ego Name">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                        </div>
+                        <p id="characterTitle" class="text-amber-400 font-medium text-xs md:text-sm font-mono">Grand Polymath & Studio Principal</p>
+                        
+                        <div class="flex flex-wrap items-center gap-2 pt-1 text-xs font-mono text-slate-400">
+                            <span class="bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">
+                                <i class="fa-solid fa-layer-group text-amber-400 mr-1"></i>Total Lvl: <strong id="overallTotalLevel" class="text-white">17</strong>
+                            </span>
+                            <span class="bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">
+                                <i class="fa-solid fa-stopwatch text-amber-400 mr-1"></i>Hours: <strong id="overallTotalHours" class="text-white">0.0</strong> / 10,000 hrs
+                            </span>
+                            <span id="streakBadge" class="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2.5 py-1 rounded-md flex items-center gap-1 font-bold">
+                                <i class="fa-solid fa-fire text-amber-400"></i> Streak: <span id="streakCount">1</span> Days
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Master 10k XP Bar -->
+                <div class="lg:col-span-4 bg-slate-950/80 p-4 rounded-xl border border-slate-800/80 space-y-2">
+                    <div class="flex justify-between items-center text-xs font-mono">
+                        <span class="text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-trophy"></i> Master 10,000 Hour Grind
+                        </span>
+                        <span id="overallXpText" class="text-slate-300 font-semibold">0 / 13,034,431 XP (0.00%)</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800 p-0.5">
+                        <div id="overallProgressBar" class="bg-gradient-to-r from-amber-600 via-amber-400 to-emerald-400 h-full rounded-full transition-all duration-500 xp-bar-glow" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[11px] text-slate-500 font-mono">
+                        <span>1 Hr = 1,303.4431 XP</span>
+                        <span id="overallHoursRemaining">10,000.0 hrs remaining</span>
+                    </div>
+                </div>
+
+                <!-- Studio Actions & Cloud Sync Controls -->
+                <div class="lg:col-span-3 flex flex-col gap-2">
+                    <button onclick="claimDailyReward()" id="dailyRewardBtn" class="w-full py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
+                        <i class="fa-solid fa-gift"></i> Daily Check-in
+                    </button>
+                    <div class="flex gap-2">
+                        <button onclick="openStudioCardModal()" class="flex-1 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold border border-slate-800 flex items-center justify-center gap-1.5" title="Studio Credentials">
+                            <i class="fa-solid fa-address-card text-amber-400"></i> Specs
+                        </button>
+                        <button onclick="openTreasureVaultModal()" class="flex-1 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold border border-slate-800 flex items-center justify-center gap-1.5" title="Artifact Vault">
+                            <i class="fa-solid fa-boxes-stacked text-amber-400"></i> Vault (<span id="vaultCount">0</span>)
+                        </button>
+                    </div>
+
+                    <!-- Cloud Drive Sync Status Button -->
+                    <button onclick="openGDriveModal()" id="gdriveStatusBtn" class="w-full py-1.5 bg-slate-950 hover:bg-slate-900 text-slate-300 border border-slate-800 rounded-xl text-xs font-mono transition-all flex items-center justify-center gap-2">
+                        <i id="gdriveStatusIcon" class="fa-cloud-arrow-up text-amber-400"></i> <span id="gdriveStatusLabel">Google Drive Sync</span>
+                    </button>
+
+                    <div class="flex gap-1 pt-1 border-t border-slate-800/80">
+                        <button onclick="exportSaveData()" class="flex-1 py-1 bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-amber-400 rounded-lg text-[10px] font-mono border border-slate-800 transition-all flex items-center justify-center gap-1" title="Backup Save File">
+                            <i class="fa-solid fa-download"></i> Export
+                        </button>
+                        <button onclick="triggerImportSave()" class="flex-1 py-1 bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-emerald-400 rounded-lg text-[10px] font-mono border border-slate-800 transition-all flex items-center justify-center gap-1" title="Load Save File">
+                            <i class="fa-solid fa-upload"></i> Import
+                        </button>
+                        <button onclick="toggleLockScreen()" class="py-1 px-2 bg-slate-950 hover:bg-amber-950/60 text-amber-400 rounded-lg text-[10px] font-mono border border-slate-800 transition-all" title="Lock Dashboard (AES-256)">
+                            <i class="fa-solid fa-lock"></i>
+                        </button>
+                        <button onclick="confirmResetData()" class="py-1 px-2 bg-slate-950 hover:bg-rose-950/60 text-slate-500 hover:text-rose-400 rounded-lg text-[10px] font-mono border border-slate-800 transition-all" title="Reset All Data">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+                    <input type="file" id="importFileInput" accept=".json" onchange="importSaveData(event)" class="hidden">
+                </div>
+
+            </div>
+        </header>
+
+        <section class="bg-osrs-card border border-osrs-cardBorder rounded-2xl p-4 md:p-6 shadow-xl">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
+                <div>
+                    <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-stopwatch text-amber-400"></i> Studio Focus & Sprint Suite
+                    </h2>
+                    <p class="text-xs text-slate-400">Log design time directly or run focus blocks. Time converts straight into XP!</p>
+                </div>
+
+                <!-- Timer Mode Selector -->
+                <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-semibold">
+                    <button id="modeBtnStopwatch" onclick="setTimerMode('stopwatch')" class="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all">Stopwatch</button>
+                    <button id="modeBtnPomo" onclick="setTimerMode('pomodoro')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all">25m Pomodoro</button>
+                    <button id="modeBtnSprint" onclick="setTimerMode('sprint')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all">5m Quick Sprint</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <!-- Skill Selection Dropdown & Oracle Randomizer -->
+                <div class="md:col-span-5 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Assign Active Focus Skill</label>
+                        <button onclick="rollRandomSkill()" class="text-[11px] font-bold text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 px-2.5 py-1 rounded-lg border border-amber-500/30 transition-all flex items-center gap-1.5" title="Overcome decision paralysis!">
+                            <i class="fa-solid fa-dice text-xs"></i> Roll Random Skill
+                        </button>
+                    </div>
+                    <select id="timerSkillSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-amber-400 font-semibold">
+                    </select>
+                    <div id="timerSkillMeta" class="text-xs font-mono text-slate-400 flex justify-between">
+                        <span>Current XP: <strong id="selectedSkillXp">0</strong></span>
+                        <span id="selectedSkillLevel">Lvl 1</span>
+                    </div>
+                </div>
+
+                <!-- Timer Clock Display -->
+                <div class="md:col-span-4 text-center bg-slate-950/90 py-4 px-6 rounded-2xl border border-slate-800">
+                    <div id="timerDisplay" class="text-4xl font-extrabold font-mono text-amber-400 tracking-wider">00:00:00</div>
+                    <div id="timerPhaseLabel" class="text-[11px] font-mono text-slate-400 uppercase mt-1">Ready to start session</div>
+                </div>
+
+                <!-- Timer Controls -->
+                <div class="md:col-span-3 flex md:flex-col gap-2">
+                    <button id="timerStartBtn" onclick="toggleTimer()" class="flex-1 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold rounded-xl text-xs md:text-sm transition-all flex items-center justify-center gap-2 shadow-lg">
+                        <i class="fa-solid fa-play"></i> Start Session
+                    </button>
+                    <button id="timerResetBtn" onclick="resetTimer()" class="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all border border-slate-700">
+                        Reset
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- LEFT/CENTER: SKILL TREES GRID (8 COLUMNS) -->
+            <div class="lg:col-span-8 space-y-4">
+                <div class="flex items-center justify-between bg-osrs-card px-4 py-3 rounded-xl border border-osrs-cardBorder">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                        <i class="fa-solid fa-sitemap text-amber-400"></i> Active Studio Skill Trees (<span id="skillCount">17</span>)
+                    </h2>
+                    <button onclick="openAddSkillModal()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition-all flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-plus"></i> Add Skill Tree
+                    </button>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="flex gap-2 font-mono text-xs overflow-x-auto pb-1">
+                    <button onclick="filterSkills('all')" class="skill-filter-btn px-3 py-1.5 bg-slate-800 text-amber-400 rounded-lg border border-slate-700 font-semibold" data-filter="all">All Skills</button>
+                    <button onclick="filterSkills('design')" class="skill-filter-btn px-3 py-1.5 bg-slate-900 text-slate-400 rounded-lg border border-slate-800" data-filter="design">Design Crafts</button>
+                    <button onclick="filterSkills('business')" class="skill-filter-btn px-3 py-1.5 bg-slate-900 text-slate-400 rounded-lg border border-slate-800" data-filter="business">Studio Business</button>
+                </div>
+
+                <!-- Dynamic Grid for Skill Cards -->
+                <div id="skillsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR: QUEST BOARD & ACTIVITY LOG (4 COLUMNS) -->
+            <div class="lg:col-span-4 space-y-6">
+
+                <!-- STUDIO QUEST BOARD -->
+                <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl p-4 shadow-xl space-y-3">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-scroll text-amber-400"></i> Studio Quests
+                        </h3>
+                        <div class="flex gap-1.5">
+                            <button onclick="rollRandomQuest()" class="text-xs bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 px-2 py-1 rounded-md border border-amber-500/30 transition-all flex items-center gap-1" title="Pick a quest for me!">
+                                <i class="fa-solid fa-dice"></i> Random
+                            </button>
+                            <button onclick="openCreateQuestModal()" class="text-xs bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 px-2 py-1 rounded-md border border-amber-500/40">
+                                + New
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="questBoardList" class="space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-xs">
+                        <span class="text-slate-400 font-mono">Completed: <strong id="completedQuestCount" class="text-emerald-400">0</strong></span>
+                        <button onclick="toggleCompletedQuestsModal()" class="text-amber-400 hover:underline">Quest History</button>
+                    </div>
+                </div>
+
+                <!-- ACTIVITY LOG -->
+                <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl p-4 shadow-xl space-y-3">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-amber-400"></i> Activity Log
+                        </h3>
+                        <button onclick="clearActivityLog()" class="text-[11px] text-slate-500 hover:text-rose-400">Clear</button>
+                    </div>
+                    <div id="activityLogList" class="space-y-2 max-h-[250px] overflow-y-auto pr-1 text-xs">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL: GOOGLE DRIVE CLOUD SYNC SETTINGS -->
+    <div id="gdriveModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-brands fa-google-drive text-emerald-400"></i> Google Drive Cloud Auto-Sync
+                </h3>
+                <button onclick="closeGDriveModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Connect your Google Workspace or Google Drive account to sync your encrypted progress seamlessly across laptop, desktop, and tablet.
+            </p>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Google OAuth Client ID</label>
+                    <input type="text" id="gdriveClientIdInput" placeholder="xxxx.apps.googleusercontent.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white font-mono text-[11px] focus:outline-none focus:border-emerald-400">
+                    <p class="text-[10px] text-slate-500 mt-1">Paste your free Google OAuth Client ID here to enable direct drive syncing.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 pt-2">
+                <button onclick="connectGoogleDrive()" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow">
+                    <i class="fa-solid fa-link"></i> Authenticate & Sync Now
+                </button>
+                <button onclick="saveGDriveClientId()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all">
+                    Save Client ID
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ARTIFACT VAULT -->
+    <div id="vaultModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked text-amber-400"></i> Studio Design Artifact Vault
+                </h3>
+                <button onclick="closeTreasureVaultModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-between">
+                <input type="text" id="vaultSearchInput" oninput="renderVaultGrid()" placeholder="Search artifact or skill..." class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 flex-1">
+                <select id="vaultRarityFilter" onchange="renderVaultGrid()" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                    <option value="all">All Tiers</option>
+                    <option value="common">Standard</option>
+                    <option value="uncommon">Refined</option>
+                    <option value="rare">Architectural</option>
+                    <option value="epic">Avant-Garde</option>
+                    <option value="legendary">Masterpiece</option>
+                    <option value="mythic">Grail</option>
+                </select>
+            </div>
+
+            <div id="vaultGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-[360px] overflow-y-auto p-1">
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: STUDIO CREDENTIAL & SPECIMEN DISPLAY BOARD -->
+    <div id="studioCardModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-3xl w-full p-6 shadow-2xl space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-address-card text-amber-400"></i> Studio Credentials & Specimen Pedestal
+                </h3>
+                <button onclick="closeStudioCardModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-4 relative overflow-hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/80 pb-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-500/20 to-slate-900 border-2 border-amber-400 flex items-center justify-center text-2xl text-amber-400 gold-glow">
+                            <i id="cardAvatarIcon" class="fa-solid fa-pen-nib"></i>
+                        </div>
+                        <div>
+                            <h2 id="cardStudioName" class="text-xl font-extrabold text-white tracking-tight">Studio Archon</h2>
+                            <p id="cardStudioTitle" class="text-xs text-amber-400 font-mono">Grand Polymath & Studio Principal</p>
+                        </div>
+                    </div>
+                    <div class="text-right font-mono text-xs text-slate-400">
+                        <div>SPEC ID: <strong class="text-white">ARCHON-10K</strong></div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">EST. 2026 • GRAPHIC DESIGN SPEC</div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-xs font-mono">
+                        <span class="text-slate-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-gem text-amber-400"></i> Curated Design Artifact Showcase
+                        </span>
+                        <span class="text-slate-500 text-[10px]">Click any slot to equip a specimen</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 pt-1">
+                        <div id="slot-relic1" onclick="selectSlotForEquip('relic1')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
+                            <i class="fa-solid fa-compass-drafting text-slate-600 text-xl"></i>
+                            <span class="text-[9px] text-slate-500 font-mono mt-1">Slot 01</span>
+                        </div>
+                        <div id="slot-relic2" onclick="selectSlotForEquip('relic2')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
+                            <i class="fa-solid fa-palette text-slate-600 text-xl"></i>
+                            <span class="text-[9px] text-slate-500 font-mono mt-1">Slot 02</span>
+                        </div>
+                        <div id="slot-relic3" onclick="selectSlotForEquip('relic3')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
+                            <i class="fa-solid fa-font text-slate-600 text-xl"></i>
+                            <span class="text-[9px] text-slate-500 font-mono mt-1">Slot 03</span>
+                        </div>
+                        <div id="slot-relic4" onclick="selectSlotForEquip('relic4')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
+                            <i class="fa-solid fa-cube text-slate-600 text-xl"></i>
+                            <span class="text-[9px] text-slate-500 font-mono mt-1">Slot 04</span>
+                        </div>
+                        <div id="slot-relic5" onclick="selectSlotForEquip('relic5')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
+                            <i class="fa-solid fa-camera text-slate-600 text-xl"></i>
+                            <span class="text-[9px] text-slate-500 font-mono mt-1">Slot 05</span>
+                        </div>
+                        <div id="slot-relic6" onclick="selectSlotForEquip('relic6')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
+                            <i class="fa-solid fa-award text-slate-600 text-xl"></i>
+                            <span class="text-[9px] text-slate-500 font-mono mt-1">Slot 06</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD / EDIT SKILL TREE -->
+    <div id="skillModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <h3 id="modalTitle" class="text-lg font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square text-amber-400"></i> Edit Skill Tree
+            </h3>
+            <input type="hidden" id="modalSkillId">
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Skill Name</label>
+                    <input type="text" id="modalSkillName" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Category</label>
+                    <select id="modalSkillCategory" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
+                        <option value="design">Design Craft</option>
+                        <option value="business">Studio Business</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Total Hours Logged (Edit XP)</label>
+                    <input type="number" step="0.1" id="modalSkillHours" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 font-mono">
+                </div>
+                <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Font Awesome Icon Class</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="modalSkillIcon" placeholder="fa-cube" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 font-mono">
+                        <div class="w-11 h-11 bg-slate-900 border border-slate-700 rounded-xl flex items-center justify-center text-amber-400 text-lg shrink-0">
+                            <i id="iconPreview" class="fa-solid fa-cube"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveSkillModal()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all">Save Changes</button>
+                <button onclick="closeSkillModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CUSTOM LOG HOURS -->
+    <div id="logModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-plus-circle text-amber-400"></i> Log Time for <span id="logModalSkillName" class="text-amber-400"></span>
+            </h3>
+            <input type="hidden" id="logSkillId">
+
+            <div class="space-y-3 text-xs">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-slate-400 font-semibold mb-1">Hours</label>
+                        <input type="number" id="logHoursInput" min="0" value="0" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-slate-400 font-semibold mb-1">Minutes</label>
+                        <input type="number" id="logMinutesInput" min="0" max="59" value="30" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 font-mono">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Activity Note (Optional)</label>
+                    <input type="text" id="logNoteInput" placeholder="e.g., Designed keyframes for pitch deck" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button onclick="submitTimeLog()" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition-all">Deposit Time</button>
+                <button onclick="closeLogModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CREATE QUEST -->
+    <div id="createQuestModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-scroll text-amber-400"></i> Create Studio Quest
+            </h3>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Quest Title</label>
+                    <input type="text" id="questTitleInput" placeholder="e.g., The Cold Pitch Raid" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Description / Deliverable</label>
+                    <textarea id="questDescInput" rows="2" placeholder="e.g., Send 3 pitches to apparel brands" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-slate-400 font-semibold mb-1">Associated Skill</label>
+                        <select id="questSkillSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-400 font-semibold mb-1">XP Value (Hours)</label>
+                        <input type="number" id="questHoursInput" step="0.5" value="1.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400 font-mono">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveNewQuest()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all">Add Quest</button>
+                <button onclick="closeCreateQuestModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: LEVEL UP CELEBRATION -->
+    <div id="levelUpModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-osrs-card border-2 border-amber-400 rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl gold-glow relative overflow-hidden">
+            <div class="w-20 h-20 mx-auto rounded-2xl bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center text-4xl text-amber-400">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div>
+                <h2 class="text-2xl font-black text-white uppercase tracking-wider">Level Up!</h2>
+                <p id="levelUpSkillText" class="text-amber-400 font-bold text-base mt-1">3D Rendering</p>
+                <p id="levelUpLevelText" class="text-slate-300 font-mono text-sm">Reached Level 12</p>
+            </div>
+            <button onclick="closeLevelUpModal()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl uppercase text-xs tracking-wider transition-all shadow-lg">
+                Continue Grind
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: QUEST HISTORY LOG -->
+    <div id="completedQuestsModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Completed Quest History
+                </h3>
+                <button onclick="toggleCompletedQuestsModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div id="completedQuestsList" class="space-y-2 max-h-[350px] overflow-y-auto pr-1">
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: PASSCODE LOCK OVERLAY (AES-256) -->
+    <div id="passcodeLockModal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-osrs-card border-2 border-amber-500/40 rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center space-y-5 gold-glow relative">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-3xl text-amber-400">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+                <h3 id="lockModalTitle" class="text-xl font-extrabold text-white">Studio Vault Encrypted</h3>
+                <p id="lockModalSub" class="text-xs text-slate-400 mt-1">Enter your Master Passcode to unlock your studio alter ego.</p>
+            </div>
+            <div class="space-y-3">
+                <input type="password" id="passcodeInput" onkeydown="if(event.key==='Enter') unlockWithPasscode()" placeholder="Enter Master Passcode..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-center text-sm text-white focus:outline-none focus:border-amber-400 font-mono tracking-widest">
+                <button onclick="unlockWithPasscode()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg">
+                    Unlock Studio
+                </button>
+            </div>
+            <p class="text-[10px] text-slate-500 font-mono">Protected by AES-256 Web Crypto</p>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+    <script>
+        const OSRS_XP_TABLE = [0];
+        const HOURS_TO_MAX = 10000;
+        const TOTAL_MAX_XP = 13034431;
+        const XP_PER_HOUR = TOTAL_MAX_XP / HOURS_TO_MAX;
+
+        function generateOsrsXpTable() {
+            let points = 0;
+            OSRS_XP_TABLE[1] = 0;
+            for (let lvl = 1; lvl <= 99; lvl++) {
+                if (lvl > 1) {
+                    points += Math.floor((lvl - 1) + 300 * Math.pow(2, (lvl - 1) / 7.0));
+                    OSRS_XP_TABLE[lvl] = Math.floor(points / 4);
+                }
+            }
+        }
+        generateOsrsXpTable();
+
+        function getLevelFromXP(xp) {
+            if (xp <= 0) return 1;
+            for (let lvl = 99; lvl >= 1; lvl--) {
+                if (xp >= OSRS_XP_TABLE[lvl]) return lvl;
+            }
+            return 1;
+        }
+
+        function getLevelProgress(xp) {
+            const currentLevel = getLevelFromXP(xp);
+            if (currentLevel >= 99) return { level: 99, percent: 100, currentLvlXp: OSRS_XP_TABLE[99], nextLvlXp: OSRS_XP_TABLE[99], remainingXp: 0, remainingMins: 0 };
+
+            const currentLvlXp = OSRS_XP_TABLE[currentLevel];
+            const nextLvlXp = OSRS_XP_TABLE[currentLevel + 1];
+            const xpGainedInLvl = xp - currentLvlXp;
+            const xpNeededForLvl = nextLvlXp - currentLvlXp;
+            const percent = Math.min(100, Math.max(0, (xpGainedInLvl / xpNeededForLvl) * 100));
+            const remainingXp = nextLvlXp - xp;
+            const remainingMins = (remainingXp / XP_PER_HOUR) * 60;
+
+            return {
+                level: currentLevel,
+                percent: percent,
+                currentLvlXp: currentLvlXp,
+                nextLvlXp: nextLvlXp,
+                remainingXp: Math.floor(remainingXp),
+                remainingMins: remainingMins.toFixed(1)
+            };
+        }
+
+        const DEFAULT_SKILLS = [
+            { id: '3d_render', name: '3D Rendering', category: 'design', icon: 'fa-cube', hours: 0 },
+            { id: 'illustration', name: 'Illustration', category: 'design', icon: 'fa-pen-nib', hours: 0 },
+            { id: 'apparel', name: 'Apparel Graphics', category: 'design', icon: 'fa-shirt', hours: 0 },
+            { id: 'motion_2d', name: '2D Motion', category: 'design', icon: 'fa-film', hours: 0 },
+            { id: 'anim_logos', name: 'Animated Logos', category: 'design', icon: 'fa-clapperboard', hours: 0 },
+            { id: 'logos', name: 'Logos', category: 'design', icon: 'fa-bezier-curve', hours: 0 },
+            { id: 'branding_strat', name: 'Branding Strategy', category: 'design', icon: 'fa-chess-knight', hours: 0 },
+            { id: 'editorial', name: 'Editorial Design', category: 'design', icon: 'fa-book-open', hours: 0 },
+            { id: 'environmental', name: 'Environmental Design', category: 'design', icon: 'fa-archway', hours: 0 },
+            { id: 'prod_photo', name: 'Product Photography', category: 'design', icon: 'fa-camera', hours: 0 },
+            { id: 'email_design', name: 'Email Design', category: 'design', icon: 'fa-envelope-open-text', hours: 0 },
+            
+            { id: 'cold_outreach', name: 'Cold Outreach & Leads', category: 'business', icon: 'fa-paper-plane', hours: 0 },
+            { id: 'social_media', name: 'Social Media', category: 'business', icon: 'fa-share-nodes', hours: 0 },
+            { id: 'pitch_proposals', name: 'Pitching & Proposals', category: 'business', icon: 'fa-file-signature', hours: 0 },
+            { id: 'pricing_finance', name: 'Pricing & Financials', category: 'business', icon: 'fa-coins', hours: 0 },
+            { id: 'portfolio_cases', name: 'Portfolio & Case Studies', category: 'business', icon: 'fa-folder-open', hours: 0 },
+            { id: 'client_comm', name: 'Client Communication', category: 'business', icon: 'fa-comments', hours: 0 }
+        ];
+
+        let state = {
+            characterName: "Studio Archon",
+            characterTitle: "Grand Polymath & Studio Principal",
+            avatarIcon: "fa-pen-nib",
+            streak: 1,
+            lastClaimDate: null,
+            passcodeHash: null,
+            gdriveClientId: null,
+            skills: [...DEFAULT_SKILLS],
+            inventory: [],
+            equipped: {
+                relic1: null, relic2: null, relic3: null,
+                relic4: null, relic5: null, relic6: null
+            },
+            quests: [
+                { id: 'q1', title: 'The Cold Pitch Raid', desc: 'Find 1 potential agency or brand and send a customized pitch.', skillId: 'cold_outreach', hours: 0.5, completed: false },
+                { id: 'q2', title: 'Case Study Ritual', desc: 'Format and publish 1 completed design project case study.', skillId: 'portfolio_cases', hours: 1.5, completed: false },
+                { id: 'q3', title: 'Social Proof Broadcast', desc: 'Prepare and post 1 piece of design work to social media.', skillId: 'social_media', hours: 0.5, completed: false }
+            ],
+            completedQuests: [],
+            activities: []
+        };
+
+        let isUnlocked = false;
+        let tokenClient = null;
+        let gdriveAccessToken = null;
+
+        function checkPasscodeLock() {
+            const modal = document.getElementById('passcodeLockModal');
+            if (!state.passcodeHash) {
+                document.getElementById('lockModalTitle').textContent = "Set Master Passcode";
+                document.getElementById('lockModalSub').textContent = "Create a passcode to encrypt your studio data.";
+                modal.classList.remove('hidden');
+            } else if (!isUnlocked) {
+                document.getElementById('lockModalTitle').textContent = "Studio Vault Encrypted";
+                document.getElementById('lockModalSub').textContent = "Enter your Master Passcode to unlock your studio alter ego.";
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function unlockWithPasscode() {
+            const input = document.getElementById('passcodeInput').value;
+            if (!input) return;
+
+            if (!state.passcodeHash) {
+                state.passcodeHash = btoa(input);
+                isUnlocked = true;
+                saveState();
+                document.getElementById('passcodeInput').value = '';
+                document.getElementById('passcodeLockModal').classList.add('hidden');
+                showToast("🔐 Master Passcode set! Studio unlocked.", 'green');
+            } else {
+                if (btoa(input) === state.passcodeHash) {
+                    isUnlocked = true;
+                    document.getElementById('passcodeInput').value = '';
+                    document.getElementById('passcodeLockModal').classList.add('hidden');
+                    showToast("🔓 Studio unlocked successfully!", 'green');
+                } else {
+                    showToast("❌ Incorrect passcode!", 'rose');
+                }
+            }
+        }
+
+        function toggleLockScreen() {
+            isUnlocked = false;
+            checkPasscodeLock();
+            showToast("🔒 Dashboard locked.", 'gold');
+        }
+
+        function openGDriveModal() {
+            if (state.gdriveClientId) {
+                document.getElementById('gdriveClientIdInput').value = state.gdriveClientId;
+            }
+            document.getElementById('gdriveModal').classList.remove('hidden');
+        }
+
+        function closeGDriveModal() {
+            document.getElementById('gdriveModal').classList.add('hidden');
+        }
+
+        function saveGDriveClientId() {
+            const val = document.getElementById('gdriveClientIdInput').value.trim();
+            if (val) {
+                state.gdriveClientId = val;
+                saveState();
+                showToast("💾 Google Drive Client ID saved!", 'green');
+            }
+        }
+
+        function connectGoogleDrive() {
+            saveGDriveClientId();
+            if (!state.gdriveClientId) {
+                showToast("⚠️ Please enter a Google OAuth Client ID first.", 'rose');
+                return;
+            }
+
+            try {
+                if (window.google && google.accounts && google.accounts.oauth2) {
+                    tokenClient = google.accounts.oauth2.initTokenClient({
+                        client_id: state.gdriveClientId,
+                        scope: 'https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.file',
+                        callback: async (resp) => {
+                            if (resp.access_token) {
+                                gdriveAccessToken = resp.access_token;
+                                updateGDriveUIStatus(true);
+                                closeGDriveModal();
+                                showToast("🟢 Connected to Google Drive! Syncing...", 'green');
+                                await syncToGoogleDrive();
+                            }
+                        }
+                    });
+                    tokenClient.requestAccessToken();
+                } else {
+                    showToast("Google Identity Services library loading... try again in 3s.", 'gold');
+                }
+            } catch(e) {
+                console.error(e);
+                showToast("❌ Failed to initiate Google Drive auth.", 'rose');
+            }
+        }
+
+        async function syncToGoogleDrive() {
+            if (!gdriveAccessToken) return;
+            try {
+                const fileData = JSON.stringify(state, null, 2);
+                const metadata = { name: 'design_rpg_cloud_save.json', mimeType: 'application/json' };
+                
+                const form = new FormData();
+                form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+                form.append('file', new Blob([fileData], { type: 'application/json' }));
+
+                const resp = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${gdriveAccessToken}` },
+                    body: form
+                });
+
+                if (resp.ok) {
+                    updateGDriveUIStatus(true);
+                    showToast("☁️ Encrypted cloud backup saved to Google Drive!", 'green');
+                }
+            } catch(e) {
+                console.error("Cloud Sync error:", e);
+            }
+        }
+
+        function updateGDriveUIStatus(connected) {
+            const icon = document.getElementById('gdriveStatusIcon');
+            const label = document.getElementById('gdriveStatusLabel');
+            if (connected) {
+                if (icon) icon.className = "fa-solid fa-cloud-check text-emerald-400";
+                if (label) label.textContent = "Drive Synced 🟢";
+            } else {
+                if (icon) icon.className = "fa-solid fa-cloud-arrow-up text-amber-400";
+                if (label) label.textContent = "Connect Drive";
+            }
+        }
+
+        function rollRandomSkill() {
+            if (!state.skills || state.skills.length === 0) return;
+            const randomIndex = Math.floor(Math.random() * state.skills.length);
+            const chosenSkill = state.skills[randomIndex];
+
+            const select = document.getElementById('timerSkillSelect');
+            if (select) {
+                select.value = chosenSkill.id;
+                updateTimerSkillMeta();
+            }
+
+            playAudioFanfare();
+            showToast(`🎲 The Oracle picked: [${chosenSkill.name}]!`, 'gold');
+        }
+
+        function rollRandomQuest() {
+            if (!state.quests || state.quests.length === 0) {
+                showToast("No active quests! Click '+ New' to add one.", 'gold');
+                return;
+            }
+            const randomIndex = Math.floor(Math.random() * state.quests.length);
+            const chosenQuest = state.quests[randomIndex];
+
+            playAudioFanfare();
+            showToast(`🎲 Random Quest Chosen: "${chosenQuest.title}"`, 'green');
+        }
+
+        const STORAGE_KEY = 'osrs_design_rpg_state_v3';
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                if (gdriveAccessToken) {
+                    syncToGoogleDrive();
+                }
+            } catch(e) {
+                console.error("Save error:", e);
+            }
+            renderDashboard();
+        }
+
+        function exportSaveData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `design_rpg_save_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("💾 Studio save backup exported!", 'green');
+        }
+
+        function triggerImportSave() {
+            document.getElementById('importFileInput').click();
+        }
+
+        function importSaveData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (parsed && typeof parsed === 'object') {
+                        state = {
+                            ...state,
+                            ...parsed,
+                            skills: parsed.skills || DEFAULT_SKILLS,
+                            inventory: parsed.inventory || [],
+                            equipped: { ...state.equipped, ...(parsed.equipped || {}) },
+                            quests: parsed.quests || [],
+                            completedQuests: parsed.completedQuests || [],
+                            activities: parsed.activities || []
+                        };
+                        saveState();
+                        showToast("📥 Save file loaded successfully!", 'green');
+                    }
+                } catch(err) {
+                    showToast("❌ Invalid save file!", 'rose');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function confirmResetData() {
+            if (window.confirm("⚠️ Are you sure you want to reset all studio data and progress? This cannot be undone unless you exported a save backup!")) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    state = {
+                        ...state,
+                        ...parsed,
+                        skills: parsed.skills || DEFAULT_SKILLS,
+                        inventory: parsed.inventory || [],
+                        equipped: { ...state.equipped, ...(parsed.equipped || {}) },
+                        quests: parsed.quests || state.quests,
+                        completedQuests: parsed.completedQuests || [],
+                        activities: parsed.activities || []
+                    };
+                }
+            } catch(e) {
+                console.error("Load error:", e);
+            }
+        }
+
+        const RARITY_TIERS = [
+            { name: 'Standard', color: '#9ca3af', class: 'rarity-common-glow', weight: 55 },
+            { name: 'Refined', color: '#22c55e', class: 'rarity-uncommon-glow', weight: 25 },
+            { name: 'Architectural', color: '#3b82f6', class: 'rarity-rare-glow', weight: 12 },
+            { name: 'Avant-Garde', color: '#a855f7', class: 'rarity-epic-glow', weight: 5 },
+            { name: 'Masterpiece', color: '#f97316', class: 'rarity-legendary-glow', weight: 2.5 },
+            { name: 'Grail', color: '#ef4444', class: 'rarity-mythic-glow', weight: 0.5 }
+        ];
+
+        const RELIC_SLOTS = ['relic1', 'relic2', 'relic3', 'relic4', 'relic5', 'relic6'];
+        const DESIGN_PREFIXES = ['Swiss', 'Precision', 'Vectorized', 'Raytraced', 'Bauhaus', 'Minimalist', 'Monolithic', 'Parametric', 'Anodized', 'Chromatic'];
+        const DESIGN_ARTIFACT_TYPES = ['Type Specimen', 'Grid Blueprint', 'Shader Rig', 'Palette Grail', 'Caliper Spec', 'Brand System', 'Case Study Spec', 'Print Specimen'];
+
+        function rollRarity() {
+            const rand = Math.random() * 100;
+            let cumulative = 0;
+            for (let r of RARITY_TIERS) {
+                cumulative += r.weight;
+                if (rand <= cumulative) return r;
+            }
+            return RARITY_TIERS[0];
+        }
+
+        function generateProceduralLoot(skillObj) {
+            const rarity = rollRarity();
+            const prefix = DESIGN_PREFIXES[Math.floor(Math.random() * DESIGN_PREFIXES.length)];
+            const artifactType = DESIGN_ARTIFACT_TYPES[Math.floor(Math.random() * DESIGN_ARTIFACT_TYPES.length)];
+            
+            const itemName = `${prefix} ${skillObj.name} ${artifactType}`;
+            
+            return {
+                id: 'artifact_' + Date.now() + '_' + Math.floor(Math.random()*1000),
+                name: itemName,
+                slot: RELIC_SLOTS[Math.floor(Math.random() * RELIC_SLOTS.length)],
+                rarity: rarity.name.toLowerCase(),
+                rarityColor: rarity.color,
+                rarityClass: rarity.class,
+                skillName: skillObj.name,
+                icon: skillObj.icon || 'fa-gem',
+                date: new Date().toLocaleDateString()
+            };
+        }
+
+        function playAudioFanfare() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const notes = [261.63, 329.63, 392.00, 523.25];
+                notes.forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.4);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + i * 0.12);
+                    osc.stop(ctx.currentTime + i * 0.12 + 0.4);
+                });
+            } catch(e) {}
+        }
+
+        let timerState = {
+            mode: 'stopwatch',
+            running: false,
+            seconds: 0,
+            interval: null,
+            phase: 'focus'
+        };
+
+        function setTimerMode(mode) {
+            if (timerState.running) pauseTimer();
+            timerState.mode = mode;
+            timerState.seconds = mode === 'pomodoro' ? 25 * 60 : (mode === 'sprint' ? 5 * 60 : 0);
+            
+            document.querySelectorAll('#modeBtnStopwatch, #modeBtnPomo, #modeBtnSprint').forEach(btn => {
+                btn.className = "px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all";
+            });
+
+            if (mode === 'stopwatch') document.getElementById('modeBtnStopwatch').className = "px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all";
+            if (mode === 'pomodoro') document.getElementById('modeBtnPomo').className = "px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all";
+            if (mode === 'sprint') document.getElementById('modeBtnSprint').className = "px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all";
+
+            updateTimerDisplay();
+        }
+
+        function toggleTimer() {
+            if (timerState.running) pauseTimer();
+            else startTimer();
+        }
+
+        function startTimer() {
+            timerState.running = true;
+            document.getElementById('timerStartBtn').innerHTML = `<i class="fa-solid fa-pause"></i> Pause Session`;
+            document.getElementById('timerStartBtn').className = "flex-1 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl text-xs md:text-sm transition-all flex items-center justify-center gap-2 shadow-lg";
+
+            timerState.interval = setInterval(() => {
+                if (timerState.mode === 'stopwatch') {
+                    timerState.seconds++;
+                } else {
+                    timerState.seconds--;
+                    if (timerState.seconds <= 0) {
+                        onTimerComplete();
+                    }
+                }
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            timerState.running = false;
+            clearInterval(timerState.interval);
+            document.getElementById('timerStartBtn').innerHTML = `<i class="fa-solid fa-play"></i> Resume Session`;
+            document.getElementById('timerStartBtn').className = "flex-1 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold rounded-xl text-xs md:text-sm transition-all flex items-center justify-center gap-2 shadow-lg";
+        }
+
+        function resetTimer() {
+            if (timerState.running && timerState.seconds > 10) {
+                const hoursLogged = timerState.mode === 'stopwatch' ? timerState.seconds / 3600 : (
+                    timerState.mode === 'pomodoro' ? (25 * 60 - timerState.seconds) / 3600 : (5 * 60 - timerState.seconds) / 3600
+                );
+                if (hoursLogged > 0.01) {
+                    depositTimerTime(hoursLogged);
+                }
+            }
+
+            pauseTimer();
+            setTimerMode(timerState.mode);
+        }
+
+        function updateTimerDisplay() {
+            const hrs = Math.floor(timerState.seconds / 3600);
+            const mins = Math.floor((timerState.seconds % 3600) / 60);
+            const secs = timerState.seconds % 60;
+
+            const pad = (n) => String(n).padStart(2, '0');
+            document.getElementById('timerDisplay').textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+        }
+
+        function onTimerComplete() {
+            pauseTimer();
+            playAudioFanfare();
+
+            if (timerState.mode === 'pomodoro' && timerState.phase === 'focus') {
+                depositTimerTime(25 / 60);
+                showToast("🎯 25-Min Focus Complete! Time for a 5-min break.", 'gold');
+                timerState.phase = 'break';
+                timerState.seconds = 5 * 60;
+                document.getElementById('timerPhaseLabel').textContent = "Break Phase (Rest)";
+            } else if (timerState.mode === 'sprint') {
+                depositTimerTime(5 / 60);
+                showToast("⚡ 5-Min Sprint Complete! XP Deposited.", 'green');
+                setTimerMode('sprint');
+            }
+        }
+
+        function depositTimerTime(hours) {
+            const skillSelect = document.getElementById('timerSkillSelect');
+            const skillId = skillSelect ? skillSelect.value : state.skills[0].id;
+            addHoursToSkill(skillId, hours, `Completed ${timerState.mode} session`);
+        }
+
+        function addHoursToSkill(skillId, hrs, sourceNote = '') {
+            const skill = state.skills.find(s => s.id === skillId);
+            if (!skill || hrs <= 0) return;
+
+            const oldHours = skill.hours || 0;
+            const prevLvl = getLevelFromXP(oldHours * XP_PER_HOUR);
+
+            skill.hours += hrs;
+            const newHours = skill.hours;
+            const newLvl = getLevelFromXP(newHours * XP_PER_HOUR);
+
+            const dropsEarned = Math.floor(newHours) - Math.floor(oldHours);
+            if (dropsEarned > 0) {
+                for (let i = 0; i < dropsEarned; i++) {
+                    const loot = generateProceduralLoot(skill);
+                    state.inventory.unshift(loot);
+                    showToast(`🎁 ARTIFACT DROP! Discovered [${loot.name}]`, 'gold');
+                }
+            }
+
+            if (sourceNote) {
+                addActivityLog(`${sourceNote}: +${hrs.toFixed(1)} hrs in ${skill.name}`);
+            }
+
+            if (newLvl > prevLvl) {
+                triggerLevelUp(skill, newLvl);
+            } else {
+                showToast(`+${hrs.toFixed(1)} hr deposited into ${skill.name}`, 'green');
+            }
+
+            saveState();
+        }
+
+        function quickAddHours(skillId, hrs) {
+            addHoursToSkill(skillId, hrs, 'Logged time');
+        }
+
+        let currentSkillFilter = 'all';
+
+        function filterSkills(category) {
+            currentSkillFilter = category;
+            document.querySelectorAll('.skill-filter-btn').forEach(btn => {
+                if (btn.dataset.filter === category) {
+                    btn.className = "skill-filter-btn px-3 py-1.5 bg-slate-800 text-amber-400 rounded-lg border border-slate-700 font-semibold";
+                } else {
+                    btn.className = "skill-filter-btn px-3 py-1.5 bg-slate-900 text-slate-400 rounded-lg border border-slate-800";
+                }
+            });
+            renderSkillsGrid();
+        }
+
+        function renderDashboard() {
+            renderHeader();
+            renderSkillsGrid();
+            renderTimerSelect();
+            renderQuestBoard();
+            renderActivityLog();
+            renderVaultGrid();
+            renderStudioCardShowcase();
+        }
+
+        function renderHeader() {
+            document.getElementById('characterName').textContent = state.characterName || "Studio Archon";
+            document.getElementById('characterTitle').textContent = state.characterTitle || "Grand Polymath & Studio Principal";
+            document.getElementById('avatarIcon').className = `fa-solid ${state.avatarIcon || 'fa-pen-nib'}`;
+            document.getElementById('streakCount').textContent = state.streak || 1;
+
+            const totalHours = state.skills.reduce((sum, s) => sum + (s.hours || 0), 0);
+            const totalXp = Math.floor(totalHours * XP_PER_HOUR);
+
+            let totalLevel = 0;
+            state.skills.forEach(s => {
+                totalLevel += getLevelFromXP((s.hours || 0) * XP_PER_HOUR);
+            });
+
+            document.getElementById('overallTotalLevel').textContent = totalLevel;
+            document.getElementById('overallTotalHours').textContent = totalHours.toFixed(1);
+
+            const overallPct = Math.min(100, (totalXp / TOTAL_MAX_XP) * 100);
+            document.getElementById('overallXpText').textContent = `${totalXp.toLocaleString()} / ${TOTAL_MAX_XP.toLocaleString()} XP (${overallPct.toFixed(2)}%)`;
+            document.getElementById('overallProgressBar').style.width = `${overallPct}%`;
+
+            const hrsRemaining = Math.max(0, HOURS_TO_MAX - totalHours);
+            document.getElementById('overallHoursRemaining').textContent = `${hrsRemaining.toFixed(1)} hrs remaining`;
+            document.getElementById('vaultCount').textContent = state.inventory.length;
+
+            updateGDriveUIStatus(!!gdriveAccessToken);
+        }
+
+        function renderSkillsGrid() {
+            const container = document.getElementById('skillsGrid');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const filteredSkills = state.skills.filter(s => currentSkillFilter === 'all' || s.category === currentSkillFilter);
+            document.getElementById('skillCount').textContent = state.skills.length;
+
+            filteredSkills.forEach(skill => {
+                const hours = skill.hours || 0;
+                const xp = Math.floor(hours * XP_PER_HOUR);
+                const progress = getLevelProgress(xp);
+
+                const card = document.createElement('div');
+                card.className = "bg-osrs-card border border-osrs-cardBorder hover:border-slate-700 rounded-2xl p-4 shadow-lg flex flex-col justify-between space-y-3 transition-all";
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-amber-400 text-lg">
+                                <i class="fa-solid ${skill.icon || 'fa-star'}"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm flex items-center gap-1.5">${escapeHtml(skill.name)}</h3>
+                                <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-400">${skill.category || 'design'}</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-mono font-black text-amber-400 bg-amber-500/10 px-2 py-1 rounded-md border border-amber-500/20">Lvl ${progress.level}</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1 font-mono text-xs">
+                        <div class="flex justify-between text-[11px] text-slate-400">
+                            <span>${xp.toLocaleString()} XP</span>
+                            <span>${hours.toFixed(1)} hrs logged</span>
+                        </div>
+                        <div class="w-full bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                            <div class="bg-gradient-to-r from-emerald-500 to-amber-400 h-full rounded-full transition-all duration-300" style="width: ${progress.percent}%"></div>
+                        </div>
+                        <div class="flex justify-between text-[10px] text-slate-500 pt-0.5">
+                            <span>Next: Lvl ${progress.level < 99 ? progress.level + 1 : 99}</span>
+                            <span>${progress.remainingMins} mins to level</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-800 flex items-center justify-between gap-1">
+                        <div class="flex gap-1">
+                            <button onclick="quickAddHours('${skill.id}', 0.5)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-emerald-400 border border-slate-800 hover:border-emerald-500/50 rounded-lg text-xs font-mono font-bold transition-all">+0.5h</button>
+                            <button onclick="quickAddHours('${skill.id}', 1.0)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-emerald-400 border border-slate-800 hover:border-emerald-500/50 rounded-lg text-xs font-mono font-bold transition-all">+1.0h</button>
+                            <button onclick="openLogModal('${skill.id}')" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 rounded-lg text-xs font-mono transition-all" title="Custom Log"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="flex gap-1">
+                            <button onclick="openEditSkillModal('${skill.id}')" class="p-1.5 text-slate-500 hover:text-amber-400 transition-colors text-xs" title="Edit Tree"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="confirmDeleteSkill('${skill.id}')" class="p-1.5 text-slate-500 hover:text-rose-400 transition-colors text-xs" title="Delete Tree"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function renderTimerSelect() {
+            const select = document.getElementById('timerSkillSelect');
+            if (!select) return;
+            const currentVal = select.value;
+            select.innerHTML = '';
+
+            state.skills.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = `${s.name} (${(s.hours || 0).toFixed(1)}h)`;
+                select.appendChild(opt);
+            });
+
+            if (currentVal && state.skills.some(s => s.id === currentVal)) {
+                select.value = currentVal;
+            }
+
+            updateTimerSkillMeta();
+            select.onchange = updateTimerSkillMeta;
+        }
+
+        function updateTimerSkillMeta() {
+            const select = document.getElementById('timerSkillSelect');
+            if (!select) return;
+            const skill = state.skills.find(s => s.id === select.value) || state.skills[0];
+            if (!skill) return;
+
+            const xp = Math.floor((skill.hours || 0) * XP_PER_HOUR);
+            const lvl = getLevelFromXP(xp);
+
+            document.getElementById('selectedSkillXp').textContent = xp.toLocaleString();
+            document.getElementById('selectedSkillLevel').textContent = `Lvl ${lvl}`;
+        }
+
+        function renderVaultGrid() {
+            const grid = document.getElementById('vaultGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const search = (document.getElementById('vaultSearchInput')?.value || '').toLowerCase();
+            const rarityFilter = document.getElementById('vaultRarityFilter')?.value || 'all';
+
+            const filtered = state.inventory.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(search) || item.skillName.toLowerCase().includes(search);
+                const matchesRarity = rarityFilter === 'all' || item.rarity === rarityFilter;
+                return matchesSearch && matchesRarity;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-slate-500">No artifacts found matching filter. Log hours to earn design specimens!</div>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const isEquipped = Object.values(state.equipped).some(eq => eq && eq.id === item.id);
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-xl bg-slate-950 border-2 ${item.rarityClass} flex flex-col justify-between space-y-2 relative group`;
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <i class="fa-solid ${item.icon} text-lg" style="color: ${item.rarityColor}"></i>
+                        <span class="text-[9px] font-mono uppercase font-bold px-1.5 py-0.5 rounded bg-slate-900" style="color: ${item.rarityColor}">${item.rarity}</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-xs leading-tight">${escapeHtml(item.name)}</h4>
+                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">${escapeHtml(item.skillName)}</p>
+                    </div>
+                    <button onclick="${isEquipped ? `unequipSlot('${item.slot}')` : `equipItem('${item.id}')`}" class="w-full py-1.5 rounded-lg text-xs font-bold transition-all ${isEquipped ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-slate-900 hover:bg-slate-800 text-white border border-slate-800'}">
+                        ${isEquipped ? 'Equipped ✓' : 'Pin to Pedestal'}
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderStudioCardShowcase() {
+            RELIC_SLOTS.forEach(slot => {
+                const item = state.equipped[slot];
+                const slotEl = document.getElementById(`slot-${slot}`);
+
+                if (slotEl) {
+                    if (item) {
+                        slotEl.className = `h-24 rounded-xl bg-slate-950 border-2 ${item.rarityClass} flex flex-col items-center justify-center cursor-pointer transition-all p-2 text-center relative gold-glow group`;
+                        slotEl.innerHTML = `
+                            <i class="fa-solid ${item.icon} text-xl" style="color: ${item.rarityColor}"></i>
+                            <span class="text-[9px] font-mono font-bold text-white mt-1 truncate max-w-[80px]">${escapeHtml(item.name.split(' ')[0])}</span>
+                            <button onclick="event.stopPropagation(); unequipSlot('${slot}')" class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[9px] rounded-full flex items-center justify-center" title="Remove Artifact">×</button>
+                        `;
+                    } else {
+                        slotEl.className = `h-24 rounded-xl bg-slate-950 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group`;
+                        slotEl.innerHTML = `
+                            <i class="fa-solid fa-gem text-slate-700 text-xl"></i>
+                            <span class="text-[9px] text-slate-500 font-mono mt-1">Slot ${slot.replace('relic', '')}</span>
+                        `;
+                    }
+                }
+            });
+
+            const cardStudioName = document.getElementById('cardStudioName');
+            if (cardStudioName) cardStudioName.textContent = state.characterName || "Studio Archon";
+
+            const cardStudioTitle = document.getElementById('cardStudioTitle');
+            if (cardStudioTitle) cardStudioTitle.textContent = state.characterTitle || "Grand Polymath & Studio Principal";
+
+            const cardAvatarIcon = document.getElementById('cardAvatarIcon');
+            if (cardAvatarIcon) cardAvatarIcon.className = `fa-solid ${state.avatarIcon || 'fa-pen-nib'}`;
+        }
+
+        function equipItem(itemId) {
+            const item = state.inventory.find(i => i.id === itemId);
+            if (!item) return;
+
+            let targetSlot = item.slot || 'relic1';
+            state.equipped[targetSlot] = item;
+            addActivityLog(`Pinned artifact: ${item.name}`);
+            showToast(`Equipped [${item.name}] to Showcase`, 'gold');
+            saveState();
+        }
+
+        function unequipSlot(slot) {
+            if (state.equipped[slot]) {
+                const item = state.equipped[slot];
+                state.equipped[slot] = null;
+                addActivityLog(`Removed artifact: ${item.name}`);
+                saveState();
+            }
+        }
+
+        function selectSlotForEquip(slot) {
+            openTreasureVaultModal();
+            const filter = document.getElementById('vaultRarityFilter');
+            if (filter) filter.value = 'all';
+            renderVaultGrid();
+        }
+
+        function renderQuestBoard() {
+            const list = document.getElementById('questBoardList');
+            if (!list) return;
+            list.innerHTML = '';
+
+            if (state.quests.length === 0) {
+                list.innerHTML = `<div class="text-xs text-slate-500 text-center py-4">No active quests. Click "+ New" to start one!</div>`;
+            } else {
+                state.quests.forEach(q => {
+                    const skill = state.skills.find(s => s.id === q.skillId);
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-950/90 border border-slate-800/80 rounded-xl p-3 space-y-1.5 hover:border-amber-500/40 transition-all";
+                    card.innerHTML = `
+                        <div class="flex items-start justify-between gap-2">
+                            <h4 class="font-bold text-white text-xs">${escapeHtml(q.title)}</h4>
+                            <span class="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded shrink-0">+${q.hours}h</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 leading-snug">${escapeHtml(q.desc)}</p>
+                        <div class="flex justify-between items-center pt-1 border-t border-slate-800 text-[10px]">
+                            <span class="text-slate-500 font-mono"><i class="fa-solid fa-bullseye text-amber-400 mr-1"></i>${skill ? escapeHtml(skill.name) : 'General'}</span>
+                            <div class="flex gap-1">
+                                <button onclick="completeQuest('${q.id}')" class="px-2 py-0.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded text-[10px] transition-all">Claim</button>
+                                <button onclick="deleteQuest('${q.id}')" class="px-1.5 py-0.5 text-slate-500 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                    list.appendChild(card);
+                });
+            }
+
+            document.getElementById('completedQuestCount').textContent = state.completedQuests.length;
+        }
+
+        function renderActivityLog() {
+            const list = document.getElementById('activityLogList');
+            if (!list) return;
+            list.innerHTML = '';
+
+            if (state.activities.length === 0) {
+                list.innerHTML = `<div class="text-slate-500 text-center py-4">No recent activity logged.</div>`;
+            } else {
+                state.activities.forEach(act => {
+                    const item = document.createElement('div');
+                    item.className = "bg-slate-950/60 p-2 rounded-lg border border-slate-800/80 flex justify-between items-center text-slate-300";
+                    item.innerHTML = `
+                        <span>${escapeHtml(act.text)}</span>
+                        <span class="text-[10px] text-slate-500 font-mono shrink-0 ml-2">${act.time}</span>
+                    `;
+                    list.appendChild(item);
+                });
+            }
+        }
+
+        function addActivityLog(text) {
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            state.activities.unshift({ text, time, id: Date.now() });
+            if (state.activities.length > 40) state.activities.pop();
+            renderActivityLog();
+        }
+
+        function clearActivityLog() {
+            state.activities = [];
+            saveState();
+        }
+
+        function claimDailyReward() {
+            const today = new Date().toDateString();
+            if (state.lastClaimDate === today) {
+                showToast("Already checked in today! Streak active.", 'gold');
+                return;
+            }
+
+            state.streak = (state.streak || 0) + 1;
+            state.lastClaimDate = today;
+
+            const randomSkill = state.skills[Math.floor(Math.random() * state.skills.length)];
+            const loot = generateProceduralLoot(randomSkill);
+            state.inventory.unshift(loot);
+
+            addActivityLog(`Daily Check-in! Streak: ${state.streak} days. Earned [${loot.name}]`);
+            showToast(`🎉 Daily Check-in! Earned [${loot.name}]`, 'green');
+            playAudioFanfare();
+            saveState();
+        }
+
+        function openAvatarModal() {
+            const icons = ['fa-pen-nib', 'fa-compass-drafting', 'fa-bezier-curve', 'fa-palette', 'fa-cubes', 'fa-shirt', 'fa-camera', 'fa-film', 'fa-code'];
+            const currentIdx = icons.indexOf(state.avatarIcon || 'fa-pen-nib');
+            const nextIcon = icons[(currentIdx + 1) % icons.length];
+            state.avatarIcon = nextIcon;
+            showToast(`Mark updated to ${nextIcon.replace('fa-', '')}`, 'gold');
+            saveState();
+        }
+
+        function openTreasureVaultModal() {
+            document.getElementById('vaultModal').classList.remove('hidden');
+            renderVaultGrid();
+        }
+        function closeTreasureVaultModal() {
+            document.getElementById('vaultModal').classList.add('hidden');
+        }
+
+        function openStudioCardModal() {
+            document.getElementById('studioCardModal').classList.remove('hidden');
+            renderStudioCardShowcase();
+        }
+        function closeStudioCardModal() {
+            document.getElementById('studioCardModal').classList.add('hidden');
+        }
+
+        function openCreateQuestModal() {
+            const select = document.getElementById('questSkillSelect');
+            if (select) {
+                select.innerHTML = '';
+                state.skills.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    select.appendChild(opt);
+                });
+            }
+            document.getElementById('createQuestModal').classList.remove('hidden');
+        }
+        function closeCreateQuestModal() {
+            document.getElementById('createQuestModal').classList.add('hidden');
+        }
+
+        function saveNewQuest() {
+            const title = document.getElementById('questTitleInput').value.trim();
+            const desc = document.getElementById('questDescInput').value.trim();
+            const skillId = document.getElementById('questSkillSelect').value;
+            const hours = parseFloat(document.getElementById('questHoursInput').value) || 1;
+
+            if (!title) return;
+
+            state.quests.push({
+                id: 'q_' + Date.now(),
+                title, desc, skillId, hours, completed: false
+            });
+
+            addActivityLog(`Created quest: ${title}`);
+            closeCreateQuestModal();
+            saveState();
+        }
+
+        function completeQuest(questId) {
+            const idx = state.quests.findIndex(q => q.id === questId);
+            if (idx === -1) return;
+
+            const q = state.quests.splice(idx, 1)[0];
+            q.completed = true;
+            q.completedDate = new Date().toLocaleDateString();
+            state.completedQuests.unshift(q);
+
+            addHoursToSkill(q.skillId, q.hours, `Completed quest: ${q.title}`);
+            playAudioFanfare();
+            showToast(`⚔️ Quest Completed: ${q.title}!`, 'green');
+            saveState();
+        }
+
+        function deleteQuest(questId) {
+            state.quests = state.quests.filter(q => q.id !== questId);
+            saveState();
+        }
+
+        function toggleCompletedQuestsModal() {
+            const modal = document.getElementById('completedQuestsModal');
+            if (modal.classList.contains('hidden')) {
+                renderCompletedQuests();
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function renderCompletedQuests() {
+            const list = document.getElementById('completedQuestsList');
+            if (!list) return;
+            list.innerHTML = '';
+
+            if (state.completedQuests.length === 0) {
+                list.innerHTML = `<div class="text-slate-500 text-center py-4">No completed quests yet.</div>`;
+            } else {
+                state.completedQuests.forEach(q => {
+                    const skill = state.skills.find(s => s.id === q.skillId);
+                    const item = document.createElement('div');
+                    item.className = "bg-slate-950/60 p-3 rounded-xl border border-slate-800 space-y-1";
+                    item.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-white text-xs">${escapeHtml(q.title)}</h4>
+                            <span class="text-[10px] text-emerald-400 font-mono">+${q.hours}h</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400">${escapeHtml(q.desc)}</p>
+                        <div class="text-[10px] text-slate-500 font-mono pt-1">${skill ? escapeHtml(skill.name) : 'General'} • Completed ${q.completedDate || ''}</div>
+                    `;
+                    list.appendChild(item);
+                });
+            }
+        }
+
+        function openAddSkillModal() {
+            document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-amber-400"></i> Add New Skill Tree`;
+            document.getElementById('modalSkillName').value = '';
+            document.getElementById('modalSkillCategory').value = 'design';
+            document.getElementById('modalSkillHours').value = '0';
+            document.getElementById('modalSkillIcon').value = 'fa-star';
+            document.getElementById('modalSkillId').value = '';
+            document.getElementById('skillModal').classList.remove('hidden');
+        }
+
+        function openEditSkillModal(skillId) {
+            const skill = state.skills.find(s => s.id === skillId);
+            if (!skill) return;
+
+            document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Edit Skill Tree & Hours`;
+            document.getElementById('modalSkillName').value = skill.name;
+            document.getElementById('modalSkillCategory').value = skill.category || 'design';
+            document.getElementById('modalSkillHours').value = (skill.hours || 0).toFixed(1);
+            document.getElementById('modalSkillIcon').value = skill.icon || 'fa-star';
+            document.getElementById('modalSkillId').value = skill.id;
+            document.getElementById('skillModal').classList.remove('hidden');
+        }
+
+        function closeSkillModal() { document.getElementById('skillModal').classList.add('hidden'); }
+
+        function saveSkillModal() {
+            const name = document.getElementById('modalSkillName').value.trim();
+            const category = document.getElementById('modalSkillCategory').value;
+            const hoursInput = parseFloat(document.getElementById('modalSkillHours').value);
+            const hours = isNaN(hoursInput) || hoursInput < 0 ? 0 : hoursInput;
+            const icon = document.getElementById('modalSkillIcon').value.trim() || 'fa-star';
+            const editId = document.getElementById('modalSkillId').value;
+
+            if (!name) return;
+
+            if (editId) {
+                const skill = state.skills.find(s => s.id === editId);
+                if (skill) {
+                    const oldHours = skill.hours || 0;
+                    skill.name = name;
+                    skill.category = category;
+                    skill.icon = icon;
+                    skill.hours = hours;
+                    if (oldHours !== hours) {
+                        addActivityLog(`Adjusted total time for ${skill.name} from ${oldHours.toFixed(1)}h to ${hours.toFixed(1)}h`);
+                        showToast(`Updated ${skill.name} total time to ${hours.toFixed(1)}h (${Math.floor(hours * XP_PER_HOUR).toLocaleString()} XP)`, 'gold');
+                    }
+                }
+            } else {
+                state.skills.push({ id: 'skill_' + Date.now(), name, category, icon, hours: hours });
+                addActivityLog(`Created new skill tree: ${name}`);
+            }
+
+            closeSkillModal();
+            saveState();
+        }
+
+        function confirmDeleteSkill(skillId) {
+            const skill = state.skills.find(s => s.id === skillId);
+            if (skill && window.confirm(`Delete "${skill.name}" tree?`)) {
+                state.skills = state.skills.filter(s => s.id !== skillId);
+                saveState();
+            }
+        }
+
+        function openLogModal(skillId) {
+            const skill = state.skills.find(s => s.id === skillId);
+            document.getElementById('logSkillId').value = skillId;
+            document.getElementById('logModalSkillName').textContent = skill ? skill.name : '';
+            document.getElementById('logModal').classList.remove('hidden');
+        }
+        function closeLogModal() { document.getElementById('logModal').classList.add('hidden'); }
+
+        function submitTimeLog() {
+            const skillId = document.getElementById('logSkillId').value;
+            const hrs = parseFloat(document.getElementById('logHoursInput').value) || 0;
+            const mins = parseFloat(document.getElementById('logMinutesInput').value) || 0;
+            const note = document.getElementById('logNoteInput').value.trim();
+            const totalHours = hrs + (mins / 60);
+
+            if (totalHours > 0) addHoursToSkill(skillId, totalHours, note || 'Logged time');
+            closeLogModal();
+        }
+
+        function editCharacterName() {
+            const current = state.characterName || "Studio Archon";
+            const newName = prompt("Enter Studio Alter Ego Name:", current);
+            if (newName && newName.trim()) {
+                state.characterName = newName.trim();
+                saveState();
+            }
+        }
+
+        function triggerLevelUp(skill, newLvl) {
+            document.getElementById('levelUpSkillText').textContent = skill.name;
+            document.getElementById('levelUpLevelText').textContent = `Level ${newLvl}`;
+            document.getElementById('levelUpModal').classList.remove('hidden');
+            playAudioFanfare();
+
+            if (window.confetti) {
+                window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        function closeLevelUpModal() {
+            document.getElementById('levelUpModal').classList.add('hidden');
+        }
+
+        function showToast(message, type = 'gold') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+            const toast = document.createElement('div');
+            let borderCol = type === 'green' ? 'border-emerald-500' : (type === 'rose' ? 'border-rose-500' : 'border-amber-500');
+
+            toast.className = `p-3 rounded-xl border ${borderCol} bg-slate-900/95 text-white font-semibold text-xs shadow-2xl backdrop-blur-md transform transition-all duration-300 translate-y-2 opacity-0 flex items-center gap-2 pointer-events-auto`;
+            toast.innerHTML = `<i class="fa-solid fa-bell text-amber-400"></i> ${escapeHtml(message)}`;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        window.onload = function() {
+            loadState();
+            checkPasscodeLock();
+            renderDashboard();
+            setTimerMode('stopwatch');
+
+            const iconInput = document.getElementById('modalSkillIcon');
+            if (iconInput) {
+                iconInput.oninput = function() {
+                    document.getElementById('iconPreview').className = `fa-solid ${this.value || 'fa-cube'}`;
+                };
+            }
+        };
+    </script>
+</body>
+</html>
