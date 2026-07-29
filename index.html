@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -40,6 +41,7 @@
             }
         }
     </script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
         
@@ -51,18 +53,9 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        body.theme-swiss-clean {
-            background-color: #0f172a;
-            color: #f8fafc;
-        }
-        body.theme-cyberpunk {
-            background-color: #0a0518;
-            color: #e0e7ff;
-        }
-        body.theme-minimal-mono {
-            background-color: #121212;
-            color: #e5e5e5;
-        }
+        body.theme-swiss-clean { background-color: #0f172a; color: #f8fafc; }
+        body.theme-cyberpunk { background-color: #0a0518; color: #e0e7ff; }
+        body.theme-minimal-mono { background-color: #121212; color: #e5e5e5; }
 
         .gold-glow { box-shadow: 0 0 15px rgba(243, 198, 72, 0.2); }
         .xp-bar-glow { box-shadow: 0 0 12px rgba(34, 197, 94, 0.35); }
@@ -95,9 +88,9 @@
 
     <div class="max-w-7xl mx-auto space-y-6">
 
+        <!-- HEADER & OVERALL PROGRESS -->
         <header class="bg-osrs-card border border-osrs-cardBorder rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
             <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#f3c648_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
-
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10 items-center">
                 
                 <div class="lg:col-span-5 flex items-center space-x-4">
@@ -109,7 +102,6 @@
                             Change Mark
                         </button>
                     </div>
-
                     <div class="space-y-1">
                         <div class="flex items-center space-x-2">
                             <h1 id="characterName" class="text-xl md:text-2xl font-extrabold text-white tracking-tight">Studio Archon</h1>
@@ -118,13 +110,12 @@
                             </button>
                         </div>
                         <p id="characterTitle" class="text-amber-400 font-medium text-xs md:text-sm font-mono">Grand Polymath & Studio Principal</p>
-                        
                         <div class="flex flex-wrap items-center gap-2 pt-1 text-xs font-mono text-slate-400">
                             <span class="bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">
                                 <i class="fa-solid fa-layer-group text-amber-400 mr-1"></i>Total Lvl: <strong id="overallTotalLevel" class="text-white">0</strong>
                             </span>
                             <span class="bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">
-                                <i class="fa-solid fa-stopwatch text-amber-400 mr-1"></i>Hours: <strong id="overallTotalHours" class="text-white">0.0</strong> / 10,000
+                                <i class="fa-solid fa-stopwatch text-amber-400 mr-1"></i>Hours: <strong id="overallTotalHours" class="text-white">0.0</strong> / 10k
                             </span>
                             <span id="streakBadge" class="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2.5 py-1 rounded-md flex items-center gap-1 font-bold">
                                 <i class="fa-solid fa-fire text-amber-400"></i> Streak: <span id="streakCount">1</span>
@@ -144,31 +135,31 @@
                         <div id="overallProgressBar" class="bg-gradient-to-r from-amber-600 via-amber-400 to-emerald-400 h-full rounded-full transition-all duration-500 xp-bar-glow" style="width: 0%"></div>
                     </div>
                     <div class="flex justify-between items-center text-[11px] text-slate-500 font-mono">
-                        <span>1 Hr = 1,303.4 XP</span>
+                        <span>1 Hr = 1,303.44 XP</span>
                         <span id="overallHoursRemaining">10,000.0 hrs remaining</span>
                     </div>
                 </div>
 
                 <div class="lg:col-span-3 flex flex-col gap-2">
-                    <button onclick="claimDailyReward()" id="dailyRewardBtn" class="w-full py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
+                    <button onclick="claimDailyReward()" class="w-full py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
                         <i class="fa-solid fa-gift"></i> Daily Check-in
                     </button>
                     <div class="flex gap-2">
-                        <button onclick="openStudioCardModal()" class="flex-1 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold border border-slate-800 flex items-center justify-center gap-1.5" title="Studio Credentials">
+                        <button onclick="openStudioCardModal()" class="flex-1 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold border border-slate-800 flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-address-card text-amber-400"></i> Specs
                         </button>
-                        <button onclick="openTreasureVaultModal()" class="flex-1 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold border border-slate-800 flex items-center justify-center gap-1.5" title="Artifact Vault">
+                        <button onclick="openTreasureVaultModal()" class="flex-1 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold border border-slate-800 flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-boxes-stacked text-amber-400"></i> Vault (<span id="vaultCount">0</span>)
                         </button>
                         <button onclick="cycleTheme()" class="py-1.5 px-2.5 bg-slate-900 hover:bg-slate-800 text-amber-400 rounded-xl text-xs font-semibold border border-slate-800 flex items-center justify-center gap-1" title="Switch Theme">
                             <i class="fa-solid fa-palette"></i>
                         </button>
                     </div>
-
+                    
                     <button onclick="openGDriveModal()" id="gdriveStatusBtn" class="w-full py-1.5 bg-slate-950 hover:bg-slate-900 text-slate-300 border border-slate-800 rounded-xl text-xs font-mono transition-all flex items-center justify-center gap-2">
                         <i id="gdriveStatusIcon" class="fa-cloud-arrow-up text-amber-400"></i> <span id="gdriveStatusLabel">Google Drive Sync</span>
                     </button>
-
+                    
                     <div class="flex gap-1 pt-1 border-t border-slate-800/80">
                         <button onclick="exportSaveData()" class="flex-1 py-1 bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-amber-400 rounded-lg text-[10px] font-mono border border-slate-800 transition-all">
                             <i class="fa-solid fa-download"></i> Export
@@ -182,10 +173,10 @@
                     </div>
                     <input type="file" id="importFileInput" accept=".json" onchange="importSaveData(event)" class="hidden">
                 </div>
-
             </div>
         </header>
 
+        <!-- ADHD GUARDRAIL SECTION -->
         <section class="bg-gradient-to-r from-amber-500/10 via-slate-900 to-slate-950 border-2 border-amber-500/40 rounded-2xl p-4 shadow-xl relative overflow-hidden space-y-3">
             <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
@@ -200,7 +191,6 @@
                         <h3 id="currentFocusTaskDisplay" class="text-base font-extrabold text-white mt-0.5">No active priority pinned. What are you doing right now?</h3>
                     </div>
                 </div>
-
                 <div class="flex flex-wrap gap-2 w-full md:w-auto">
                     <button onclick="triggerEmergencyMicroAction()" class="flex-1 md:flex-none px-3 py-2 bg-rose-500 hover:bg-rose-400 text-slate-950 font-extrabold rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 shadow">
                         <i class="fa-solid fa-kit-medical"></i> 🚨 I'm Overwhelmed
@@ -216,7 +206,6 @@
                     </button>
                 </div>
             </div>
-
             <div id="wipDisplayBanner" class="hidden p-2.5 bg-slate-950/80 border border-amber-500/30 rounded-xl text-xs flex justify-between items-center font-mono">
                 <div class="flex items-center gap-2 truncate">
                     <span class="text-amber-400 font-bold">🅿️ Parked WIP:</span>
@@ -226,6 +215,7 @@
             </div>
         </section>
 
+        <!-- SPRINT TIMER SUITE -->
         <section class="bg-osrs-card border border-osrs-cardBorder rounded-2xl p-4 md:p-6 shadow-xl">
             <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
                 <div>
@@ -234,14 +224,12 @@
                     </h2>
                     <p class="text-xs text-slate-400">Log design time directly or run focus blocks. Time converts straight into XP!</p>
                 </div>
-
                 <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-semibold">
                     <button id="modeBtnStopwatch" onclick="setTimerMode('stopwatch')" class="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all">Stopwatch</button>
                     <button id="modeBtnPomo" onclick="setTimerMode('pomodoro')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all">25m Pomodoro</button>
                     <button id="modeBtnSprint" onclick="setTimerMode('sprint')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all">5m Quick Sprint</button>
                 </div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                 <div class="md:col-span-5 space-y-2">
                     <div class="flex items-center justify-between">
@@ -250,21 +238,18 @@
                             <i class="fa-solid fa-dice text-xs"></i> Roll Random Skill
                         </button>
                     </div>
-                    <select id="timerSkillSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-amber-400 font-semibold">
-                    </select>
+                    <select id="timerSkillSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-amber-400 font-semibold"></select>
                     <div id="timerSkillMeta" class="text-xs font-mono text-slate-400 flex justify-between">
                         <span>Current XP: <strong id="selectedSkillXp">0</strong></span>
                         <span id="selectedSkillLevel">Lvl 1</span>
                     </div>
                 </div>
-
                 <div class="md:col-span-4 text-center bg-slate-950/90 py-4 px-6 rounded-2xl border border-slate-800">
                     <div id="timerDisplay" class="text-4xl font-extrabold font-mono text-amber-400 tracking-wider">00:00:00</div>
                     <div id="timerPhaseLabel" class="text-[11px] font-mono text-slate-400 uppercase mt-1">Ready to start session</div>
                 </div>
-
                 <div class="md:col-span-3 flex md:flex-col gap-2">
-                    <button id="timerStartBtn" onclick="toggleTimer()" class="flex-1 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold rounded-xl text-xs md:text-sm transition-all flex items-center justify-center gap-2 shadow-lg">
+                    <button id="timerStartBtn" onclick="toggleTimer()" class="flex-1 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold rounded-xl text-xs md:text-sm transition-all shadow-lg flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Start Session
                     </button>
                     <button id="timerResetBtn" onclick="resetTimer()" class="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all border border-slate-700">
@@ -274,8 +259,10 @@
             </div>
         </section>
 
+        <!-- MAIN LAYOUT -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
+            
+            <!-- LEFT: SKILL TREES -->
             <div class="lg:col-span-8 space-y-4">
                 <div class="flex items-center justify-between bg-osrs-card px-4 py-3 rounded-xl border border-osrs-cardBorder">
                     <h2 class="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
@@ -285,61 +272,56 @@
                         <button onclick="openManageCategoriesModal()" class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold rounded-lg text-xs transition-all border border-slate-800 flex items-center gap-1.5">
                             <i class="fa-solid fa-folder-plus text-amber-400"></i> Categories
                         </button>
-                        <button onclick="openAddSkillModal()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition-all flex items-center gap-1.5 shadow">
+                        <button onclick="openAddSkillModal()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition-all shadow flex items-center gap-1.5">
                             <i class="fa-solid fa-plus"></i> Add Skill Tree
                         </button>
                     </div>
                 </div>
-
                 <div id="categoryTabsBar" class="flex gap-2 font-mono text-xs overflow-x-auto pb-1"></div>
-
                 <div class="text-[11px] text-slate-500 font-mono flex items-center gap-2 px-1">
                     <i class="fa-solid fa-hand-pointer text-amber-400"></i> Tip: Click and drag any skill card into a category tab or section to re-group it!
                 </div>
-
                 <div id="skillsContainer" class="space-y-6"></div>
             </div>
 
+            <!-- RIGHT: QUESTS & LOGS -->
             <div class="lg:col-span-4 space-y-6">
-
+                <!-- Quests -->
                 <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl p-4 shadow-xl space-y-3">
                     <div class="flex items-center justify-between pb-3 border-b border-slate-800">
                         <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
                             <i class="fa-solid fa-scroll text-amber-400"></i> Studio Quests
                         </h3>
                         <div class="flex gap-1.5">
-                            <button onclick="generateProceduralQuest()" class="text-xs bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 px-2.5 py-1 rounded-md border border-amber-500/40 transition-all flex items-center gap-1 font-bold">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> 🎲 Generate Quest
+                            <button onclick="generateSkillMatchedQuest()" class="text-xs bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 px-2.5 py-1 rounded-md border border-amber-500/40 transition-all font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> 🎲 Generate
                             </button>
                             <button onclick="openCreateQuestModal()" class="text-xs bg-slate-900 text-slate-300 hover:bg-slate-800 px-2 py-1 rounded-md border border-slate-800">
                                 + Custom
                             </button>
                         </div>
                     </div>
-
                     <div class="flex gap-1 font-mono text-[10px]">
                         <button onclick="filterQuestsByEnergy('all')" class="quest-energy-btn px-2 py-1 bg-slate-800 text-amber-400 rounded-md border border-slate-700" data-energy="all">All</button>
-                        <button onclick="filterQuestsByEnergy('low')" class="quest-energy-btn px-2 py-1 bg-slate-950 text-slate-400 rounded-md border border-slate-800" data-energy="low">🟢 Low Friction (5m)</button>
+                        <button onclick="filterQuestsByEnergy('low')" class="quest-energy-btn px-2 py-1 bg-slate-950 text-slate-400 rounded-md border border-slate-800" data-energy="low">🟢 Low (5m)</button>
                         <button onclick="filterQuestsByEnergy('med')" class="quest-energy-btn px-2 py-1 bg-slate-950 text-slate-400 rounded-md border border-slate-800" data-energy="med">🟡 Med Focus</button>
                         <button onclick="filterQuestsByEnergy('high')" class="quest-energy-btn px-2 py-1 bg-slate-950 text-slate-400 rounded-md border border-slate-800" data-energy="high">🔴 Deep Flow</button>
                     </div>
-
                     <div id="questBoardList" class="space-y-2.5 max-h-[320px] overflow-y-auto pr-1"></div>
-
                     <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-xs">
                         <span class="text-slate-400 font-mono">Completed: <strong id="completedQuestCount" class="text-emerald-400">0</strong></span>
                         <button onclick="toggleCompletedQuestsModal()" class="text-amber-400 hover:underline">Quest History</button>
                     </div>
                 </div>
 
+                <!-- Micro-Step Chunker -->
                 <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl p-4 shadow-xl space-y-3">
                     <div class="flex items-center justify-between pb-2 border-b border-slate-800">
                         <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
                             <i class="fa-solid fa-puzzle-piece text-amber-400"></i> Micro-Step Chunking
                         </h3>
-                        <span class="text-[10px] text-slate-500 font-mono">Anti-Paralysis</span>
                     </div>
-                    <p class="text-[11px] text-slate-400 leading-tight">Overwhelmed by a big task? Break it into 3 microscopic 5-minute steps:</p>
+                    <p class="text-[11px] text-slate-400 leading-tight">Overwhelmed? Break it into 3 microscopic 5-minute steps:</p>
                     <div class="space-y-2 text-xs">
                         <input type="text" id="chunkBigTaskInput" placeholder="Big scary project name..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-white focus:outline-none focus:border-amber-400 text-xs">
                         <button onclick="generateMicroSteps()" class="w-full py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold rounded-lg text-xs border border-amber-500/30 transition-all flex items-center justify-center gap-1.5">
@@ -349,6 +331,7 @@
                     </div>
                 </div>
 
+                <!-- Activity Log -->
                 <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl p-4 shadow-xl space-y-3">
                     <div class="flex items-center justify-between pb-3 border-b border-slate-800">
                         <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -358,22 +341,22 @@
                     </div>
                     <div id="activityLogList" class="space-y-2 max-h-[200px] overflow-y-auto pr-1 text-xs"></div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- (Included all modals from previous version exactly as they were: GDrive, Categories, Focus, WIP, Vault, Studio Card, Skill Add/Edit, Time Log, Custom Quest, Level Up, History, Lock Screen) -->
-    
+    <!-- MODALS -->
+
+    <!-- GDrive Modal (Bi-Directional Sync) -->
     <div id="gdriveModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                 <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <i class="fa-brands fa-google-drive text-emerald-400"></i> Google Drive Cloud Auto-Sync
+                    <i class="fa-brands fa-google-drive text-emerald-400"></i> Google Drive Cloud Sync
                 </h3>
                 <button onclick="closeGDriveModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <p class="text-xs text-slate-400 leading-relaxed">Connect your Google account to sync encrypted progress seamlessly across laptop, desktop, and tablet.</p>
+            <p class="text-xs text-slate-400 leading-relaxed">Connect to securely sync progress across your laptop, tablet, and phone.</p>
             <div class="space-y-3 text-xs">
                 <div>
                     <label class="block text-slate-300 font-semibold mb-1">Google OAuth Client ID</label>
@@ -382,69 +365,65 @@
             </div>
             <div class="flex flex-col gap-2 pt-2">
                 <button onclick="connectGoogleDrive()" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow">
-                    <i class="fa-solid fa-link"></i> Authenticate & Sync Now
+                    <i class="fa-solid fa-link"></i> Authenticate & Load Latest Cloud Save
                 </button>
                 <button onclick="saveGDriveClientId()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all">Save Client ID</button>
             </div>
         </div>
     </div>
 
+    <!-- Category Modal -->
     <div id="categoryModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-folder-plus text-amber-400"></i> Manage Skill Categories
-                </h3>
+                <h3 class="text-base font-bold text-white"><i class="fa-solid fa-folder-plus text-amber-400"></i> Manage Categories</h3>
                 <button onclick="closeManageCategoriesModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="space-y-3 text-xs">
                 <div class="flex gap-2">
-                    <input type="text" id="newCategoryNameInput" placeholder="e.g., Spatial & Environmental" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400">
-                    <button onclick="addNewCategory()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all">Add</button>
+                    <input type="text" id="newCategoryNameInput" placeholder="New Category..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <button onclick="addNewCategory()" class="px-4 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">Add</button>
                 </div>
                 <div id="categoryListContainer" class="space-y-2 max-h-[220px] overflow-y-auto pt-2"></div>
             </div>
         </div>
     </div>
 
+    <!-- Focus Anchor Modal -->
     <div id="focusModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-anchor text-amber-400"></i> Pin Working Memory Focus Anchor</h3>
-            <p class="text-xs text-slate-400">What is the single task you are doing right now?</p>
+            <h3 class="text-base font-bold text-white"><i class="fa-solid fa-anchor text-amber-400"></i> Pin Focus Anchor</h3>
             <div class="space-y-3 text-xs">
-                <input type="text" id="focusAnchorInput" placeholder="e.g., Keyframing logo reveal in AE" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
+                <input type="text" id="focusAnchorInput" placeholder="What are you doing right now?" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white">
             </div>
             <div class="flex gap-2 pt-2">
-                <button onclick="saveFocusAnchor()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all">Pin Anchor Task</button>
-                <button onclick="closeSetFocusModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all">Cancel</button>
+                <button onclick="saveFocusAnchor()" class="flex-1 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">Pin Task</button>
+                <button onclick="closeSetFocusModal()" class="px-4 py-2.5 bg-slate-800 text-slate-300 font-bold rounded-xl text-xs">Cancel</button>
             </div>
         </div>
     </div>
 
+    <!-- WIP Parking Modal -->
     <div id="wipModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-square-parking text-amber-400"></i> Park Work-In-Progress</h3>
+            <h3 class="text-base font-bold text-white"><i class="fa-solid fa-square-parking text-amber-400"></i> Park Work-In-Progress</h3>
+            <p class="text-xs text-slate-400">Before closing shop, tell your future self EXACTLY what file to open and what first click to make.</p>
             <div class="space-y-3 text-xs">
-                <div>
-                    <label class="block text-slate-400 font-semibold mb-1">Open File / Project Name</label>
-                    <input type="text" id="wipFileNameInput" placeholder="e.g. Brand_Guidelines_v3.fig" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 font-mono">
-                </div>
-                <div>
-                    <label class="block text-slate-400 font-semibold mb-1">Exact First Step When Returning</label>
-                    <input type="text" id="wipFirstStepInput" placeholder="e.g. Open Frame 4 and change stroke weight to 2pt" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
-                </div>
+                <input type="text" id="wipFileNameInput" placeholder="Project Name / File..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white">
+                <input type="text" id="wipFirstStepInput" placeholder="Exact First Step Tomorrow..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white">
             </div>
             <div class="flex gap-2 pt-2">
-                <button onclick="saveWipPrompt()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all">Park Work & Rest</button>
-                <button onclick="closeWipModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all">Cancel</button>
+                <button onclick="saveWipPrompt()" class="flex-1 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">Park Work</button>
+                <button onclick="closeWipModal()" class="px-4 py-2.5 bg-slate-800 text-slate-300 font-bold rounded-xl text-xs">Cancel</button>
             </div>
         </div>
     </div>
 
+    <!-- Vault Modal -->
     <div id="vaultModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-boxes-stacked text-amber-400"></i> Artifact Vault</h3>
+                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-boxes-stacked text-amber-400"></i> Studio Artifact Vault</h3>
                 <button onclick="closeTreasureVaultModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="flex flex-col sm:flex-row gap-3 justify-between">
@@ -463,159 +442,131 @@
         </div>
     </div>
 
+    <!-- Studio Card Modal -->
     <div id="studioCardModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-3xl w-full p-6 shadow-2xl space-y-5">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-address-card text-amber-400"></i> Studio Showcase</h3>
+                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-address-card text-amber-400"></i> Studio Credentials</h3>
                 <button onclick="closeStudioCardModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-4 relative overflow-hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/80 pb-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-500/20 to-slate-900 border-2 border-amber-400 flex items-center justify-center text-2xl text-amber-400 gold-glow">
-                            <i id="cardAvatarIcon" class="fa-solid fa-pen-nib"></i>
-                        </div>
+                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-500/20 to-slate-900 border-2 border-amber-400 flex items-center justify-center text-2xl text-amber-400 gold-glow"><i id="cardAvatarIcon" class="fa-solid fa-pen-nib"></i></div>
                         <div>
                             <h2 id="cardStudioName" class="text-xl font-extrabold text-white tracking-tight">Studio Archon</h2>
                             <p id="cardStudioTitle" class="text-xs text-amber-400 font-mono">Grand Polymath & Studio Principal</p>
                         </div>
                     </div>
                 </div>
-                <div class="space-y-2">
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 pt-1">
-                        <div id="slot-relic1" onclick="selectSlotForEquip('relic1')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
-                            <i class="fa-solid fa-gem text-slate-600 text-xl"></i><span class="text-[9px] text-slate-500 font-mono mt-1">Slot 01</span>
-                        </div>
-                        <div id="slot-relic2" onclick="selectSlotForEquip('relic2')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
-                            <i class="fa-solid fa-gem text-slate-600 text-xl"></i><span class="text-[9px] text-slate-500 font-mono mt-1">Slot 02</span>
-                        </div>
-                        <div id="slot-relic3" onclick="selectSlotForEquip('relic3')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
-                            <i class="fa-solid fa-gem text-slate-600 text-xl"></i><span class="text-[9px] text-slate-500 font-mono mt-1">Slot 03</span>
-                        </div>
-                        <div id="slot-relic4" onclick="selectSlotForEquip('relic4')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
-                            <i class="fa-solid fa-gem text-slate-600 text-xl"></i><span class="text-[9px] text-slate-500 font-mono mt-1">Slot 04</span>
-                        </div>
-                        <div id="slot-relic5" onclick="selectSlotForEquip('relic5')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
-                            <i class="fa-solid fa-gem text-slate-600 text-xl"></i><span class="text-[9px] text-slate-500 font-mono mt-1">Slot 05</span>
-                        </div>
-                        <div id="slot-relic6" onclick="selectSlotForEquip('relic6')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group">
-                            <i class="fa-solid fa-gem text-slate-600 text-xl"></i><span class="text-[9px] text-slate-500 font-mono mt-1">Slot 06</span>
-                        </div>
-                    </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                    <div id="slot-relic1" onclick="selectSlotForEquip('relic1')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer p-2 relative group"></div>
+                    <div id="slot-relic2" onclick="selectSlotForEquip('relic2')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer p-2 relative group"></div>
+                    <div id="slot-relic3" onclick="selectSlotForEquip('relic3')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer p-2 relative group"></div>
+                    <div id="slot-relic4" onclick="selectSlotForEquip('relic4')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer p-2 relative group"></div>
+                    <div id="slot-relic5" onclick="selectSlotForEquip('relic5')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer p-2 relative group"></div>
+                    <div id="slot-relic6" onclick="selectSlotForEquip('relic6')" class="h-24 rounded-xl bg-slate-900 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer p-2 relative group"></div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Skill Add/Edit Modal -->
     <div id="skillModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <h3 id="modalTitle" class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-amber-400"></i> Edit Skill Tree</h3>
+            <h3 id="modalTitle" class="text-lg font-bold text-white">Edit Skill Tree</h3>
             <input type="hidden" id="modalSkillId">
             <div class="space-y-3 text-xs">
-                <div>
-                    <label class="block text-slate-400 font-semibold mb-1">Skill Name</label>
-                    <input type="text" id="modalSkillName" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
-                </div>
-                <div>
-                    <label class="block text-slate-400 font-semibold mb-1">Category</label>
-                    <select id="modalSkillCategory" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400"></select>
-                </div>
-                <div>
-                    <label class="block text-slate-400 font-semibold mb-1">Total Hours</label>
-                    <input type="number" step="0.1" id="modalSkillHours" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 font-mono">
-                </div>
-                <div>
-                    <label class="block text-slate-400 font-semibold mb-1">Icon Class</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="modalSkillIcon" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 font-mono">
-                        <div class="w-11 h-11 bg-slate-900 border border-slate-700 rounded-xl flex items-center justify-center text-amber-400 text-lg shrink-0"><i id="iconPreview" class="fa-solid fa-cube"></i></div>
-                    </div>
-                </div>
+                <label class="block text-slate-400 font-semibold mb-1">Skill Name</label>
+                <input type="text" id="modalSkillName" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
+                <label class="block text-slate-400 font-semibold mt-2 mb-1">Category</label>
+                <select id="modalSkillCategory" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400"></select>
+                <label class="block text-slate-400 font-semibold mt-2 mb-1">Total Hours Logged</label>
+                <input type="number" step="0.1" id="modalSkillHours" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
+                <label class="block text-slate-400 font-semibold mt-2 mb-1">Icon Class</label>
+                <input type="text" id="modalSkillIcon" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
             </div>
             <div class="flex gap-2 pt-2">
-                <button onclick="saveSkillModal()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all">Save</button>
-                <button onclick="closeSkillModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all">Cancel</button>
+                <button onclick="saveSkillModal()" class="flex-1 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">Save</button>
+                <button onclick="closeSkillModal()" class="px-4 py-2.5 bg-slate-800 text-slate-300 font-bold rounded-xl text-xs">Cancel</button>
             </div>
         </div>
     </div>
 
+    <!-- Manual Time Log Modal -->
     <div id="logModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4">
-            <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-plus-circle text-amber-400"></i> Log Time</h3>
+            <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-plus-circle text-amber-400"></i> Log Time for <span id="logModalSkillName" class="text-amber-400"></span></h3>
             <input type="hidden" id="logSkillId">
             <div class="space-y-3 text-xs">
                 <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-slate-400 font-semibold mb-1">Hours</label>
-                        <input type="number" id="logHoursInput" min="0" value="0" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 font-mono">
-                    </div>
-                    <div>
-                        <label class="block text-slate-400 font-semibold mb-1">Minutes</label>
-                        <input type="number" id="logMinutesInput" min="0" max="59" value="30" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 font-mono">
-                    </div>
+                    <div><label class="block text-slate-400 font-semibold mb-1">Hours</label><input type="number" id="logHoursInput" min="0" value="0" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white"></div>
+                    <div><label class="block text-slate-400 font-semibold mb-1">Minutes</label><input type="number" id="logMinutesInput" min="0" max="59" value="30" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white"></div>
                 </div>
+                <div><label class="block text-slate-400 font-semibold mb-1">Activity Note (Optional)</label><input type="text" id="logNoteInput" placeholder="e.g., Designed pitch deck" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white"></div>
             </div>
             <div class="flex gap-2 pt-2">
-                <button onclick="submitTimeLog()" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition-all">Deposit Time</button>
-                <button onclick="closeLogModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all">Cancel</button>
+                <button onclick="submitTimeLog()" class="flex-1 py-2.5 bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs">Deposit Time</button>
+                <button onclick="closeLogModal()" class="px-4 py-2.5 bg-slate-800 text-slate-300 font-bold rounded-xl text-xs">Cancel</button>
             </div>
         </div>
     </div>
 
+    <!-- Create Custom Quest Modal -->
     <div id="createQuestModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-scroll text-amber-400"></i> Custom Quest</h3>
+            <h3 class="text-base font-bold text-white">Create Custom Quest</h3>
             <div class="space-y-3 text-xs">
-                <input type="text" id="questTitleInput" placeholder="Quest Title..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400">
-                <textarea id="questDescInput" rows="2" placeholder="Deliverable details..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400"></textarea>
+                <input type="text" id="questTitleInput" placeholder="Quest Title..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white">
+                <textarea id="questDescInput" placeholder="Description..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white"></textarea>
                 <div class="grid grid-cols-3 gap-2">
-                    <select id="questSkillSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-white focus:outline-none focus:border-amber-400"></select>
-                    <select id="questEnergySelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-white focus:outline-none focus:border-amber-400">
-                        <option value="low">🟢 Low</option>
-                        <option value="med" selected>🟡 Med</option>
-                        <option value="high">🔴 High</option>
-                    </select>
-                    <input type="number" id="questHoursInput" step="0.5" value="1.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-white focus:outline-none focus:border-amber-400 font-mono">
+                    <div><label class="block text-slate-400 font-semibold mb-1">Skill</label><select id="questSkillSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-white"></select></div>
+                    <div><label class="block text-slate-400 font-semibold mb-1">Energy</label><select id="questEnergySelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-white"><option value="low">Low (5m)</option><option value="med" selected>Medium Focus</option><option value="high">Deep Flow</option></select></div>
+                    <div><label class="block text-slate-400 font-semibold mb-1">Hours</label><input type="number" id="questHoursInput" step="0.5" value="1.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-white"></div>
                 </div>
             </div>
             <div class="flex gap-2 pt-2">
-                <button onclick="saveNewQuest()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all">Add Quest</button>
-                <button onclick="closeCreateQuestModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all">Cancel</button>
+                <button onclick="saveNewQuest()" class="flex-1 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">Add Quest</button>
+                <button onclick="closeCreateQuestModal()" class="px-4 py-2.5 bg-slate-800 text-slate-300 font-bold rounded-xl text-xs">Cancel</button>
             </div>
         </div>
     </div>
 
+    <!-- Level Up Modal -->
     <div id="levelUpModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border-2 border-amber-400 rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl gold-glow relative">
             <div class="w-20 h-20 mx-auto rounded-2xl bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center text-4xl text-amber-400"><i class="fa-solid fa-trophy"></i></div>
-            <h2 class="text-2xl font-black text-white uppercase tracking-wider">Level Up!</h2>
+            <h2 class="text-2xl font-black text-white uppercase">Level Up!</h2>
             <p id="levelUpSkillText" class="text-amber-400 font-bold text-base mt-1"></p>
             <p id="levelUpLevelText" class="text-slate-300 font-mono text-sm"></p>
-            <button onclick="closeLevelUpModal()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl uppercase text-xs tracking-wider transition-all shadow-lg">Continue</button>
+            <button onclick="closeLevelUpModal()" class="w-full py-3 bg-amber-500 text-slate-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg">Continue Grind</button>
         </div>
     </div>
 
+    <!-- Completed Quests History -->
     <div id="completedQuestsModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border border-osrs-cardBorder rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Quest History</h3>
+                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Quest History</h3>
                 <button onclick="toggleCompletedQuestsModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div id="completedQuestsList" class="space-y-2 max-h-[350px] overflow-y-auto pr-1"></div>
         </div>
     </div>
 
+    <!-- Passcode Modal Overlay -->
     <div id="passcodeLockModal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
         <div class="bg-osrs-card border-2 border-amber-500/40 rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center space-y-5 gold-glow relative">
             <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-3xl text-amber-400"><i class="fa-solid fa-lock"></i></div>
             <div>
-                <h3 id="lockModalTitle" class="text-xl font-extrabold text-white">Studio Vault</h3>
-                <p id="lockModalSub" class="text-xs text-slate-400 mt-1">Enter Master Passcode.</p>
+                <h3 id="lockModalTitle" class="text-xl font-extrabold text-white">Studio Vault Encrypted</h3>
+                <p id="lockModalSub" class="text-xs text-slate-400 mt-1">Enter your Master Passcode.</p>
             </div>
             <div class="space-y-3">
                 <input type="password" id="passcodeInput" onkeydown="if(event.key==='Enter') unlockWithPasscode()" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-center text-sm text-white focus:outline-none focus:border-amber-400 font-mono tracking-widest">
                 <button id="lockSubmitBtn" onclick="unlockWithPasscode()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg">Unlock</button>
             </div>
+            <p class="text-[10px] text-slate-500 font-mono">Protected by AES-256 Web Crypto</p>
         </div>
     </div>
 
@@ -626,6 +577,7 @@
         const HOURS_TO_MAX = 10000;
         const TOTAL_MAX_XP = 13034431;
         const XP_PER_HOUR = TOTAL_MAX_XP / HOURS_TO_MAX;
+        const STORAGE_KEY = 'osrs_design_rpg_state_v8'; // Bumped version to ensure clean slate load
 
         function generateOsrsXpTable() {
             let points = 0;
@@ -641,20 +593,16 @@
 
         function getLevelFromXP(xp) {
             if (xp <= 0) return 1;
-            for (let lvl = 99; lvl >= 1; lvl--) {
-                if (xp >= OSRS_XP_TABLE[lvl]) return lvl;
-            }
+            for (let lvl = 99; lvl >= 1; lvl--) { if (xp >= OSRS_XP_TABLE[lvl]) return lvl; }
             return 1;
         }
 
         function getLevelProgress(xp) {
-            const currentLevel = getLevelFromXP(xp);
-            if (currentLevel >= 99) return { level: 99, percent: 100, currentLvlXp: OSRS_XP_TABLE[99], nextLvlXp: OSRS_XP_TABLE[99], remainingXp: 0, remainingMins: 0 };
-            const currentLvlXp = OSRS_XP_TABLE[currentLevel];
-            const nextLvlXp = OSRS_XP_TABLE[currentLevel + 1];
-            const percent = Math.min(100, Math.max(0, ((xp - currentLvlXp) / (nextLvlXp - currentLvlXp)) * 100));
-            const remainingMins = ((nextLvlXp - xp) / XP_PER_HOUR) * 60;
-            return { level: currentLevel, percent: percent, currentLvlXp: currentLvlXp, nextLvlXp: nextLvlXp, remainingXp: Math.floor(nextLvlXp - xp), remainingMins: remainingMins.toFixed(1) };
+            const lvl = getLevelFromXP(xp);
+            if (lvl >= 99) return { level: 99, percent: 100, currentLvlXp: OSRS_XP_TABLE[99], nextLvlXp: OSRS_XP_TABLE[99], remainingXp: 0, remainingMins: 0 };
+            const cXp = OSRS_XP_TABLE[lvl], nXp = OSRS_XP_TABLE[lvl + 1];
+            const pct = Math.min(100, Math.max(0, ((xp - cXp) / (nXp - cXp)) * 100));
+            return { level: lvl, percent: pct, currentLvlXp: cXp, nextLvlXp: nXp, remainingXp: Math.floor(nXp - xp), remainingMins: (((nXp - xp) / XP_PER_HOUR) * 60).toFixed(1) };
         }
 
         const DEFAULT_CATEGORIES = [
@@ -666,34 +614,34 @@
         ];
 
         const DEFAULT_SKILLS = [
-            // Brand & Strategy
-            { id: 'creative_direction', name: 'Creative Direction', category: 'brand_strategy', icon: 'fa-chess-king', hours: 0 },
+            // 1. Brand & Strategy (6)
+            { id: 'creative_direction', name: 'Creative Direction', category: 'brand_strategy', icon: 'fa-crown', hours: 0 },
             { id: 'art_direction', name: 'Art Direction', category: 'brand_strategy', icon: 'fa-eye', hours: 0 },
             { id: 'branding_strat', name: 'Branding Strategy', category: 'brand_strategy', icon: 'fa-chess-knight', hours: 0 },
             { id: 'logos', name: 'Logos & Marks', category: 'brand_strategy', icon: 'fa-bezier-curve', hours: 0 },
             { id: 'typography', name: 'Typography', category: 'brand_strategy', icon: 'fa-font', hours: 0 },
-
-            // Digital, Web & UI
+            { id: 'illustration', name: 'Illustration & Iconography', category: 'brand_strategy', icon: 'fa-pen-nib', hours: 0 },
+            
+            // 2. Digital, Web & UI (3)
             { id: 'ui_ux_design', name: 'UI / UX Design', category: 'digital_web', icon: 'fa-laptop-code', hours: 0 },
             { id: 'nocode_dev', name: 'No-Code (Webflow/Framer)', category: 'digital_web', icon: 'fa-code', hours: 0 },
             { id: 'email_design', name: 'Email & CRM Design', category: 'digital_web', icon: 'fa-envelope-open-text', hours: 0 },
-            { id: 'info_design', name: 'Information Design & Data', category: 'digital_web', icon: 'fa-chart-pie', hours: 0 },
-
-            // Motion, 3D & Emerging
+            
+            // 3. Motion, 3D & Emerging (5)
             { id: 'motion_2d', name: '2D Motion Graphics', category: 'motion_emerging', icon: 'fa-film', hours: 0 },
-            { id: '3d_render', name: '3D Rendering & Modeling', category: 'motion_emerging', icon: 'fa-cube', hours: 0 },
+            { id: '3d_render', name: '3D Rendering', category: 'motion_emerging', icon: 'fa-cube', hours: 0 },
             { id: 'anim_logos', name: 'Animated Logos', category: 'motion_emerging', icon: 'fa-clapperboard', hours: 0 },
             { id: 'ai_prompting', name: 'AI Gen & Prompt Craft', category: 'motion_emerging', icon: 'fa-robot', hours: 0 },
             { id: 'sound_design', name: 'Sound Design & Audio', category: 'motion_emerging', icon: 'fa-headphones', hours: 0 },
-
-            // Physical, Print & Lens
+            
+            // 4. Physical, Print & Lens (5)
             { id: 'photography', name: 'Photography & Retouching', category: 'physical_lens', icon: 'fa-camera', hours: 0 },
             { id: 'packaging', name: 'Packaging & Structural', category: 'physical_lens', icon: 'fa-box', hours: 0 },
             { id: 'editorial', name: 'Editorial Design', category: 'physical_lens', icon: 'fa-book-open', hours: 0 },
             { id: 'apparel', name: 'Apparel Graphics', category: 'physical_lens', icon: 'fa-shirt', hours: 0 },
             { id: 'environmental', name: 'Environmental Design', category: 'physical_lens', icon: 'fa-archway', hours: 0 },
-
-            // Studio Operations
+            
+            // 5. Studio Operations (6)
             { id: 'portfolio_cases', name: 'Portfolio & Case Studies', category: 'studio_ops', icon: 'fa-folder-open', hours: 0 },
             { id: 'pitch_proposals', name: 'Pitching & Proposals', category: 'studio_ops', icon: 'fa-file-signature', hours: 0 },
             { id: 'pricing_finance', name: 'Pricing & Financials', category: 'studio_ops', icon: 'fa-coins', hours: 0 },
@@ -702,378 +650,173 @@
             { id: 'social_media', name: 'Social Media Strategy', category: 'studio_ops', icon: 'fa-share-nodes', hours: 0 }
         ];
 
-        
-        // Vast dictionaries for combinatorial generation (Over 50,000+ unique permutations)
-        const QUEST_GRAMMAR = {
-            clients: [
-                "a luxury fragrance house", "a high-performance athleisure startup", "a decentralized finance protocol", 
-                "a boutique third-wave coffee roaster", "a brutalist streetwear label", "a B2B enterprise SaaS company", 
-                "a Michelin-star restaurant group", "a sustainable eco-packaging brand", "an independent art gallery", 
-                "a generative AI software suite", "a boutique analog synth manufacturer", "a global logistics firm"
+        const CURATED_SKILL_QUESTS = {
+            'creative_direction': [
+                { title: "Omnichannel Campaign Narrative Blueprint", desc: "Develop a core campaign idea and map its rollout across billboard, digital social, and physical pop-ups.", energy: 'high', hours: 2.5 },
+                { title: "Brand Positioning Quadrant Matrix", desc: "Plot 8 competing brands on a 2-axis strategic matrix. Identify the whitespace opportunity.", energy: 'med', hours: 1.5 },
+                { title: "3-Direction Concept Exploration Sprint", desc: "Take a single brief and generate 3 radically distinct creative directions to present.", energy: 'high', hours: 2.0 }
             ],
-            strategy_goals: [
-                "maximize conversion rates", "establish a high-end luxury aesthetic", "ensure WCAG AA accessibility compliance",
-                "disrupt traditional market visual tropes", "build absolute brand trust and authority", "drive high social media engagement",
-                "create a frictionless user experience", "emphasize sustainable and organic values"
+            'art_direction': [
+                { title: "Film Still Lighting & Color Palette Deconstruction", desc: "Select 3 iconic cinema stills. Extract exact hex palettes, analyze light ratios, and document font pairings.", energy: 'med', hours: 1.0 },
+                { title: "10-Slide Brand Aesthetic & Moodboard Deck", desc: "Build a high-end moodboard deck establishing lighting, texture, physical space, and graphic tone.", energy: 'high', hours: 2.0 }
             ],
-            skill_actions: {
-                // BRAND & STRATEGY
-                'creative_direction': [
-                    { task: "Draft a 10-page overarching campaign narrative and creative brief", constraint: "aligning entirely with the client's new market pivot", time: 2.0 },
-                    { task: "Facilitate a strategic brand workshop (or mock one)", constraint: "focusing on extracting core brand archetypes and tone", time: 1.5 },
-                    { task: "Map a 360-degree Omnichannel Launch Strategy", constraint: "outlining specific touchpoints across digital, physical, and OOH", time: 2.0 }
-                ],
-                'art_direction': [
-                    { task: "Build a 15-image hyper-specific moodboard", constraint: "dictating lighting ratios, styling, and color grading exactly", time: 1.0 },
-                    { task: "Write an Art Direction Treatment PDF", constraint: "defending visual metaphor choices and typographic pairings", time: 1.5 },
-                    { task: "Audit an existing campaign's visual consistency", constraint: "noting off-brand elements and proposing strict style guardrails", time: 1.0 }
-                ],
-                'branding_strat': [
-                    { task: "Plot a Competitor Differentiation Matrix", constraint: "identifying visual whitespace in a crowded industry sector", time: 1.0 },
-                    { task: "Draft a Brand Manifesto and 'We Are/We Are Not' guide", constraint: "locking in the verbal identity and brand voice", time: 1.5 }
-                ],
-                'logos': [
-                    { task: "Design a responsive 4-tier logo system (Primary, Stacked, Submark, Favicon)", constraint: "ensuring optical balance at 16px scale", time: 2.0 },
-                    { task: "Draft a Golden Ratio geometric logo grid", constraint: "using perfectly intersecting circles and alignment paths", time: 1.5 }
-                ],
-                'typography': [
-                    { task: "Build a complete web/print type scale style sheet", constraint: "defining exact rem sizes, leading ratios, and kerning pairs", time: 1.0 },
-                    { task: "Manually optical-kern a massive 10-word display headline", constraint: "achieving flawless visual balance over mathematical spacing", time: 0.5 }
-                ],
-                
-                // DIGITAL, WEB & UI
-                'ui_ux_design': [
-                    { task: "Construct a responsive Figma Auto-Layout component library", constraint: "utilizing nested frames, hover states, and dynamic properties", time: 2.0 },
-                    { task: "Wireframe a high-converting landing page user flow", constraint: "focusing strictly on CTA placement and information architecture", time: 1.5 }
-                ],
-                'nocode_dev': [
-                    { task: "Build and publish a 3-section responsive Framer/Webflow prototype", constraint: "integrating scroll-triggered animations and native CMS", time: 2.5 },
-                    { task: "Debug and refactor messy CSS grid/flexbox layouts", constraint: "ensuring flawless rendering on ultra-wide and mobile breakpoints", time: 1.5 }
-                ],
-                'email_design': [
-                    { task: "Design a modular HTML-ready email newsletter template", constraint: "utilizing system-safe fallback fonts and dark-mode optimization", time: 1.5 },
-                    { task: "Create an animated GIF hero asset for an email blast", constraint: "compressing the final file under 1MB while retaining crispness", time: 1.0 }
-                ],
-                'info_design': [
-                    { task: "Translate a complex 10-page financial report into a 1-page infographic", constraint: "using strict visual hierarchy to guide the eye to key metrics", time: 2.0 }
-                ],
-
-                // MOTION, 3D & EMERGING
-                'motion_2d': [
-                    { task: "Animate a seamless loop sequence with vector morphs", constraint: "customizing Bezier speed curves in the Graph Editor for buttery easing", time: 2.0 },
-                    { task: "Design a broadcast-ready Lower Thirds graphics package", constraint: "incorporating alpha channel exports and dynamic text rigging", time: 1.5 }
-                ],
-                '3d_render': [
-                    { task: "Build a procedural shader node network (Glass/Chrome/Plastic)", constraint: "focusing on index-of-refraction, caustics, and surface imperfections", time: 2.0 },
-                    { task: "Set up a photorealistic Three-Point Studio Lighting rig", constraint: "balancing key, fill, and rim lights with calibrated softboxes", time: 1.5 }
-                ],
-                'anim_logos': [
-                    { task: "Execute a 3-second kinetic vector logo reveal", constraint: "utilizing path trimming, scale overshoots, and secondary motion blur", time: 2.0 }
-                ],
-                'ai_prompting': [
-                    { task: "Iterate 50+ prompt variations in Midjourney/Stable Diffusion", constraint: "curating a hyper-consistent 9-image aesthetic grid for a pitch deck", time: 1.0 },
-                    { task: "Train a custom LoRA or heavily utilize ControlNet", constraint: "to lock in exact brand colors and structural compositions", time: 2.0 }
-                ],
-                'sound_design': [
-                    { task: "Foley and sync an audio bed for a 15-second motion piece", constraint: "layering sub-bass impacts, risers, and subtle cloth rustles", time: 1.5 }
-                ],
-
-                // PHYSICAL, PRINT & LENS
-                'photography': [
-                    { task: "Shoot (or comp) a high-end product macro shot", constraint: "focusing on extreme depth of field and foil/texture highlights", time: 1.5 },
-                    { task: "Execute a Capture One / Lightroom color grading sprint", constraint: "matching 10 diverse photos to a single cinematic split-tone profile", time: 1.0 },
-                    { task: "Construct a 6-item flat-lay composition", constraint: "ensuring strict grid symmetry and controlled bounce lighting", time: 1.5 }
-                ],
-                'packaging': [
-                    { task: "Design and fold a custom structural packaging dieline", constraint: "accounting for paper thickness tolerances and glue flaps", time: 2.0 },
-                    { task: "Mock up a high-poly 3D packaging render", constraint: "applying UV-mapped displacement for realistic paper grain and embossing", time: 1.5 }
-                ],
-                'editorial': [
-                    { task: "Design a 4-page editorial magazine spread", constraint: "enforcing a rigid 12-column Swiss grid and baseline typography alignment", time: 2.0 }
-                ],
-                'apparel': [
-                    { task: "Build a factory-ready Heavyweight Tee Tech Pack", constraint: "detailing exact screenprint dimensions, Pantone TCX codes, and margins", time: 1.5 },
-                    { task: "Layout a complex high-density vintage apparel graphic", constraint: "layering halftones, distressed textures, and CMYK color separations", time: 2.0 }
-                ],
-                'environmental': [
-                    { task: "Design a 1:10 scale exhibition booth wall graphic", constraint: "ensuring typography remains legible from 20 feet away", time: 2.0 },
-                    { task: "Map an architectural wayfinding signage system", constraint: "superimposing vector layouts onto physical space mockups", time: 1.5 }
-                ],
-
-                // STUDIO OPERATIONS
-                'portfolio_cases': [
-                    { task: "Write a comprehensive Case Study narrative breakdown", constraint: "detailing the Problem, Strategic Solution, and measurable Business ROI", time: 2.0 },
-                    { task: "Design a continuous long-scroll Behance presentation", constraint: "incorporating custom lifestyle mockups and zoomed-in detail callouts", time: 2.0 }
-                ],
-                'pitch_proposals': [
-                    { task: "Draft a massive Scope of Work (SOW) and Proposal Deck", constraint: "structuring 3-tier value-based pricing options to anchor high budgets", time: 1.5 }
-                ],
-                'pricing_finance': [
-                    { task: "Audit past projects to calculate true effective hourly rate", constraint: "identifying low-margin tasks and adjusting the Studio Day Rate minimums", time: 1.0 },
-                    { task: "Build a comprehensive Studio Overhead spreadsheet", constraint: "mapping software, taxes, gear depreciation, and net income targets", time: 1.0 }
-                ],
-                'client_comm': [
-                    { task: "Draft an ironclad Scope Creep Pushback email template", constraint: "gracefully declining free work while offering a change-order quote", time: 0.5 },
-                    { task: "Design a 4-page PDF Client Welcome & Onboarding Guide", constraint: "setting strict boundaries on review times, office hours, and feedback", time: 1.5 }
-                ],
-                'cold_outreach': [
-                    { task: "Record a 3-minute personalized Loom video audit", constraint: "highlighting immediate visual/UX improvements for a target brand lead", time: 1.0 },
-                    { task: "Write a 3-touch sequence cold email cadence", constraint: "focusing entirely on providing upfront value rather than hard selling", time: 1.0 }
-                ],
-                'social_media': [
-                    { task: "Design a high-engagement 5-slide educational carousel", constraint: "breaking down a complex design concept into snackable visual bites", time: 1.5 },
-                    { task: "Edit a fast-paced 15-second behind-the-scenes process reel", constraint: "syncing kinetic text and fast cuts to trending audio", time: 1.0 }
-                ],
-                
-                // FALLBACK FOR ANY CUSTOM SKILLS ADDED BY USER
-                'generic_design': [
-                    { task: "Execute a 3-concept visual exploration sprint", constraint: "pushing boundaries of current aesthetic trends", time: 1.5 },
-                    { task: "Audit and refine existing project files", constraint: "optimizing layer organization, nomenclature, and export readiness", time: 1.0 },
-                    { task: "Build a modular template system", constraint: "ensuring rapid scalability for future campaign rollouts", time: 2.0 }
-                ],
-                'generic_business': [
-                    { task: "Draft standard operating procedure (SOP) documentation", constraint: "to eliminate friction in future client or workflow scenarios", time: 1.0 },
-                    { task: "Perform a strategic audit of current methodologies", constraint: "identifying gaps in positioning, efficiency, or market leverage", time: 1.5 }
-                ]
-            }
+            'branding_strat': [
+                { title: "Tone of Voice & Archetype Guide", desc: "Write a comprehensive brand voice guideline detailing tone pillars and 'We Are / We Are Not' rules.", energy: 'med', hours: 1.5 },
+                { title: "Brand Tagline Brainstorming Framework", desc: "Generate 20 tagline variations across 4 archetypes (Action, Emotional, Descriptive, Provocative).", energy: 'low', hours: 0.5 }
+            ],
+            'logos': [
+                { title: "Golden Ratio Geometric Logo Construction", desc: "Draft a logo symbol built strictly using intersecting geometric circles and grid lines.", energy: 'med', hours: 1.5 },
+                { title: "Responsive Logo System Breakdown", desc: "Expand a master mark into a responsive system: Primary, Stacked, Submark, Monogram, and Favicon.", energy: 'high', hours: 2.0 }
+            ],
+            'typography': [
+                { title: "Custom Logotype Ligature Customization", desc: "Take a standard serif font and heavily customize two overlapping letters into a unique brand ligature.", energy: 'med', hours: 1.0 },
+                { title: "Type Scale & Hierarchy Modular Grid", desc: "Construct a CSS-ready typographic scale (H1-H6, Body, Caption) using golden ratio multiplication.", energy: 'low', hours: 0.5 }
+            ],
+            'illustration': [
+                { title: "Vector Pen Tool Precision Drill", desc: "Trace a complex organic curves image using minimal Bezier handles perfectly aligned.", energy: 'med', hours: 1.0 },
+                { title: "Custom 8-Glyph Iconography System", desc: "Design 8 matching, pixel-grid aligned vector icons with consistent stroke weights.", energy: 'med', hours: 1.5 }
+            ],
+            'ui_ux_design': [
+                { title: "Wireframe to High-Fidelity App Checkout Flow", desc: "Design a 4-screen e-commerce checkout flow prioritizing clear UX error states and CTA hierarchy.", energy: 'high', hours: 2.0 },
+                { title: "Design System Component Library Setup", desc: "Build a Figma library featuring auto-layout buttons, input fields, and hover state variants.", energy: 'high', hours: 2.5 }
+            ],
+            'nocode_dev': [
+                { title: "Webflow CMS Collection Structure Build", desc: "Build a dynamic CMS structure for a blog or portfolio with custom referenced fields.", energy: 'med', hours: 1.5 },
+                { title: "Framer Scroll-Triggered Animation Rig", desc: "Set up scroll-variant animations for a hero section causing elements to fade/slide in on scroll.", energy: 'med', hours: 1.0 }
+            ],
+            'email_design': [
+                { title: "Modular Newsletter Layout CTA Hierarchy", desc: "Design a mobile-first email newsletter template utilizing clear visual breaks and bold buttons.", energy: 'med', hours: 1.0 },
+                { title: "Dark-Mode Optimized Email Layout Test", desc: "Audit an email layout ensuring images, logos, and typography render cleanly in both modes.", energy: 'low', hours: 0.5 }
+            ],
+            'motion_2d': [
+                { title: "Keyframe Speed Curve Calibration Test", desc: "Animate 3 basic shape transitions using custom graph editor easing curves. Avoid linear keyframes.", energy: 'low', hours: 0.5 },
+                { title: "Match-Cut Motion Graphics Transition", desc: "Execute 3 seamless match-cut transitions using continuous color continuity and scale wipes.", energy: 'med', hours: 1.5 }
+            ],
+            '3d_render': [
+                { title: "Procedural Glass & Chrome Caustics Shader", desc: "Build a node-based material featuring dispersion, rough refraction, and subtle fingerprint smudges.", energy: 'high', hours: 2.0 },
+                { title: "Three-Point Studio Product Lighting", desc: "Set up a dark studio environment with key, fill, and rim lights. Calibrate softboxes.", energy: 'med', hours: 1.5 }
+            ],
+            'anim_logos': [
+                { title: "3-Second Vector Logo Reveal Sequence", desc: "Animate a vector mark using trim paths, scale overshoots, and glowing particle accents.", energy: 'high', hours: 2.0 },
+                { title: "Sound-Reactive Logo Stinger Syncing", desc: "Sync logo animation keyframes precisely to audio transients, bass hits, and subtle high-hat stems.", energy: 'med', hours: 1.0 }
+            ],
+            'ai_prompting': [
+                { title: "Consistent Character Prompt Engine Matrix", desc: "Develop syntax to render the exact same subject in 4 distinct environments.", energy: 'high', hours: 2.0 },
+                { title: "Texture & Material Generation for 3D", desc: "Prompt 5 distinct seamless tileable textures using macro-lens descriptors.", energy: 'med', hours: 1.0 }
+            ],
+            'sound_design': [
+                { title: "Swoosh & Impact Stems Layering", desc: "Take a raw logo reveal and layer low-end sub bass, mid-frequency risers, and high-frequency swooshes.", energy: 'med', hours: 1.0 },
+                { title: "Dialogue EQ & Compression Polish", desc: "Apply dynamic compression and EQ sweeps to a voiceover track to give it broadcast-level presence.", energy: 'med', hours: 1.0 }
+            ],
+            'photography': [
+                { title: "E-Commerce Hero Product Softbox Lighting", desc: "Execute a clean studio product photograph using softbox lighting and reflective surfaces.", energy: 'med', hours: 1.5 },
+                { title: "Capture One Batch Color Grading Profile", desc: "Develop a custom color grade profile and apply it across 20 distinct images.", energy: 'med', hours: 1.0 }
+            ],
+            'packaging': [
+                { title: "Structural Dieline Folding Test", desc: "Draft and print a flat vector dieline for a custom tuck-box. Cut, fold, and verify structural integrity.", energy: 'med', hours: 1.0 },
+                { title: "Foil & Spot UV Print File Preparation", desc: "Set up a print-ready packaging file with distinct layers and Pantone spots for foil stamping.", energy: 'med', hours: 1.0 }
+            ],
+            'editorial': [
+                { title: "Swiss 12-Column Grid Magazine Spread", desc: "Design a 2-page spread using a strict 12-column Swiss grid. Prioritize white space.", energy: 'high', hours: 2.0 },
+                { title: "Typographic Hierarchy Style Sheet Setup", desc: "Set up paragraph styles in InDesign for headers, subheads, pull quotes, and drop caps.", energy: 'low', hours: 0.5 }
+            ],
+            'apparel': [
+                { title: "Heavyweight Tee Tech Pack & Pantone Specs", desc: "Build a clothing tech pack detailing measurements, screenprint dimensions, and Pantone codes.", energy: 'med', hours: 1.5 },
+                { title: "Vintage Bootleg Graphic Composition", desc: "Layout a high-density vintage apparel graphic combining halftones and distressed typography.", energy: 'high', hours: 2.0 }
+            ],
+            'environmental': [
+                { title: "Wayfinding Iconography System", desc: "Create a 6-part architectural wayfinding icon system and layout directional signage panels.", energy: 'med', hours: 1.5 },
+                { title: "Architectural Wall Mural Vector Mockup", desc: "Design an abstract vector wall mural and composite it realistically into an interior photo.", energy: 'med', hours: 1.0 }
+            ],
+            'portfolio_cases': [
+                { title: "Hero Case Study Narrative Breakdown", desc: "Write a case study covering Client Background, Design Challenge, Strategy, and Results.", energy: 'high', hours: 2.0 },
+                { title: "Behance Long-Scroll Presentation Layout", desc: "Design a continuous long-scroll case study image asset optimized with custom mockups.", energy: 'high', hours: 2.5 }
+            ],
+            'pitch_proposals': [
+                { title: "Scope of Work & Proposal Deck", desc: "Draft a proposal document breaking down project phases, deliverables, timeline, and terms.", energy: 'high', hours: 2.0 },
+                { title: "3-Tier Value-Based Pricing Framework Options", desc: "Structure a proposal with Essential, Growth, and Full Transformation pricing tiers.", energy: 'med', hours: 1.0 }
+            ],
+            'pricing_finance': [
+                { title: "Studio Day Rate vs Profitability Audit", desc: "Calculate effective hourly earned rates across last 3 projects to identify high-margin work.", energy: 'med', hours: 1.0 },
+                { title: "Invoice Template & Late Payment Terms", desc: "Design a branded invoice template incorporating clear payment terms and late fee clauses.", energy: 'low', hours: 0.5 }
+            ],
+            'client_comm': [
+                { title: "Scope Creep Pushback Template", desc: "Draft a polite email template addressing out-of-scope client requests and offering a change-order cost.", energy: 'low', hours: 0.5 },
+                { title: "Client Discovery Intake Questionnaire", desc: "Create a 10-question brand discovery form designed to draw out client vision and metrics.", energy: 'med', hours: 1.0 }
+            ],
+            'cold_outreach': [
+                { title: "Target Client Lead Research (5 Brands)", desc: "Identify 5 ideal-fit potential client brands. Locate decision-maker contacts and document gaps.", energy: 'low', hours: 0.5 },
+                { title: "Value-First Teaser Pitch & Video Audit", desc: "Record a 3-minute Loom video audit highlighting immediate brand improvements for a lead.", energy: 'med', hours: 1.5 }
+            ],
+            'social_media': [
+                { title: "5-Slide Educational Carousel Design", desc: "Design a high-engagement, swipeable carousel breaking down a design technique or case study.", energy: 'med', hours: 1.5 },
+                { title: "15-Second Process Timelapse Reel Setup", desc: "Edit a fast-paced design process video featuring screen capture footage and sound sync.", energy: 'med', hours: 1.0 }
+            ]
         };
 
-        function generateProceduralQuest() {
-            if (!state.skills || state.skills.length === 0) return;
+        const DYNAMIC_QUEST_TEMPLATE_BANKS = {
+            design: [
+                { verb: "Audit & Deconstruct", deliverable: "visual hierarchy and structural constraints", energy: "med", hours: 1.0 },
+                { verb: "Architect Precision", deliverable: "a modular asset system with strict alignment rules", energy: "high", hours: 2.0 },
+                { verb: "Execute 45-Min Sprint on", deliverable: "3 high-contrast concept variations", energy: "low", hours: 0.5 }
+            ],
+            business: [
+                { verb: "Draft Professional", deliverable: "documentation detailing strategy and operational flows", energy: "med", hours: 1.0 },
+                { verb: "Perform Strategic Audit on", deliverable: "current workflows identifying friction points", energy: "low", hours: 0.5 },
+                { verb: "Synthesize & Present", deliverable: "a core narrative deck mapping out value propositions", energy: "high", hours: 2.0 }
+            ]
+        };
 
-            // 1. Pick a truly random skill from the user's active skill list
-            const targetSkill = state.skills[Math.floor(Math.random() * state.skills.length)];
-
-            // 2. Fetch the specific action pool for this skill, or use the dynamic fallback
-            let actionPool = QUEST_GRAMMAR.skill_actions[targetSkill.id];
-            
-            if (!actionPool) {
-                actionPool = targetSkill.category === 'studio_ops' ? 
-                    QUEST_GRAMMAR.skill_actions['generic_business'] : 
-                    QUEST_GRAMMAR.skill_actions['generic_design'];
-            }
-
-            let newQuest = null;
-            let isDuplicate = true;
-            let attempts = 0;
-
-            // 3. The Generation Loop (Prevents Duplicates up to 20 tries)
-            while (isDuplicate && attempts < 20) {
-                const actionObj = actionPool[Math.floor(Math.random() * actionPool.length)];
-                const client = QUEST_GRAMMAR.clients[Math.floor(Math.random() * QUEST_GRAMMAR.clients.length)];
-                const goal = QUEST_GRAMMAR.strategy_goals[Math.floor(Math.random() * QUEST_GRAMMAR.strategy_goals.length)];
-
-                // Construct Agency Brief
-                const title = `Agency Brief: ${targetSkill.name} Sprint`;
-                const desc = `For ${client}: ${actionObj.task}, ${actionObj.constraint} in order to ${goal}.`;
-                
-                // Determine Energy based on time
-                let energy = 'med';
-                if (actionObj.time <= 0.5) energy = 'low';
-                if (actionObj.time >= 2.0) energy = 'high';
-
-                newQuest = {
-                    id: 'q_' + Date.now() + '_' + Math.floor(Math.random() * 10000),
-                    title: title,
-                    desc: desc,
-                    skillId: targetSkill.id,
-                    energy: energy,
-                    hours: actionObj.time,
-                    completed: false
+        function createDeepQuestForSkill(skillObj) {
+            let questData;
+            if (CURATED_SKILL_QUESTS[skillObj.id] && CURATED_SKILL_QUESTS[skillObj.id].length > 0) {
+                const pool = CURATED_SKILL_QUESTS[skillObj.id];
+                questData = pool[Math.floor(Math.random() * pool.length)];
+            } else {
+                const categoryType = ['studio_ops', 'brand_strategy'].includes(skillObj.category) ? 'business' : 'design';
+                const templates = DYNAMIC_QUEST_TEMPLATE_BANKS[categoryType];
+                const template = templates[Math.floor(Math.random() * templates.length)];
+                questData = {
+                    title: `${template.verb} ${skillObj.name}`,
+                    desc: `Develop mastery in ${skillObj.name}. Focus on ${template.deliverable}.`,
+                    energy: template.energy,
+                    hours: template.hours
                 };
-
-                // Check if this exact description already exists on the board
-                isDuplicate = state.quests.some(q => q.desc === newQuest.desc);
-                attempts++;
             }
-
-            state.quests.push(newQuest);
-            saveState();
-            playAudioFanfare();
-            showToast(`⚡ Generated Agency Brief for [${targetSkill.name}]!`, 'green');
+            return {
+                id: 'q_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+                title: questData.title, desc: questData.desc, skillId: skillObj.id,
+                energy: questData.energy || 'med', hours: questData.hours || 1.0, completed: false
+            };
         }
 
         let state = {
-            characterName: "Studio Archon",
-            characterTitle: "Grand Polymath & Studio Principal",
-            avatarIcon: "fa-pen-nib",
-            streak: 1,
-            lastClaimDate: null,
-            passcodeHash: null,
-            gdriveClientId: null,
-            categories: [...DEFAULT_CATEGORIES],
-            skills: [...DEFAULT_SKILLS],
-            activeFocusTask: "",
-            wipParked: null,
-            inventory: [],
-            equipped: {
-                relic1: null, relic2: null, relic3: null,
-                relic4: null, relic5: null, relic6: null
-            },
-            quests: [],
-            completedQuests: [],
-            activities: []
+            characterName: "Studio Archon", characterTitle: "Grand Polymath & Studio Principal",
+            avatarIcon: "fa-pen-nib", streak: 1, lastClaimDate: null, passcodeHash: null,
+            gdriveClientId: null, categories: [...DEFAULT_CATEGORIES], skills: [...DEFAULT_SKILLS],
+            activeFocusTask: "", wipParked: null, inventory: [],
+            equipped: { relic1: null, relic2: null, relic3: null, relic4: null, relic5: null, relic6: null },
+            quests: [], completedQuests: [], activities: []
         };
 
-        let isUnlocked = false;
-        let tokenClient = null;
-        let gdriveAccessToken = null;
-        let currentCategoryFilter = 'all';
-        let currentEnergyFilter = 'all';
-        let draggedSkillId = null;
-
-        const THEMES = ['dark-osrs', 'swiss-clean', 'cyberpunk', 'minimal-mono'];
-        let currentThemeIdx = 0;
-
-        function checkPasscodeLock() {
-            const modal = document.getElementById('passcodeLockModal');
-            const lockTitle = document.getElementById('lockModalTitle');
-            const lockSub = document.getElementById('lockModalSub');
-            const lockBtn = document.getElementById('lockSubmitBtn');
-
-            if (!state.passcodeHash) {
-                lockTitle.textContent = "Create Master Passcode";
-                lockSub.textContent = "Set a secret passcode to encrypt your studio data.";
-                lockBtn.textContent = "Create Passcode & Lock";
-                modal.classList.remove('hidden');
-            } else if (!isUnlocked) {
-                lockTitle.textContent = "Studio Vault Encrypted";
-                lockSub.textContent = "Enter your Master Passcode to unlock your studio alter ego.";
-                lockBtn.textContent = "Unlock Studio";
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
-        }
-
-        function unlockWithPasscode() {
-            const input = document.getElementById('passcodeInput').value;
-            if (!input) return;
-
-            if (!state.passcodeHash) {
-                state.passcodeHash = btoa(input);
-                isUnlocked = true;
-                saveState();
-                document.getElementById('passcodeInput').value = '';
-                document.getElementById('passcodeLockModal').classList.add('hidden');
-                showToast("🔐 Master Passcode set! Studio unlocked.", 'green');
-            } else {
-                if (btoa(input) === state.passcodeHash) {
-                    isUnlocked = true;
-                    document.getElementById('passcodeInput').value = '';
-                    document.getElementById('passcodeLockModal').classList.add('hidden');
-                    showToast("🔓 Studio unlocked successfully!", 'green');
-                } else {
-                    showToast("❌ Incorrect passcode!", 'rose');
-                }
-            }
-        }
-
-        function toggleLockScreen() {
-            isUnlocked = false;
-            checkPasscodeLock();
-            showToast("🔒 Dashboard locked.", 'gold');
-        }
-
-        function cycleTheme() {
-            currentThemeIdx = (currentThemeIdx + 1) % THEMES.length;
-            const theme = THEMES[currentThemeIdx];
-            document.body.className = `p-3 md:p-6 text-slate-200 antialiased selection:bg-amber-500 selection:text-black theme-${theme}`;
-            showToast(`🎨 Theme switched to: ${theme.toUpperCase()}`, 'gold');
-        }
-
-        function triggerEmergencyMicroAction() {
-            const microActions = [
-                "Open your main design app and draw 1 random vector shape.",
-                "Delete 3 unused items from your Downloads folder.",
-                "Pick 1 typography font family you've never used before.",
-                "Open a blank file and save it with today's date.",
-                "Find 1 graphic design piece on Pinterest/Behance that inspires you."
-            ];
-            const action = microActions[Math.floor(Math.random() * microActions.length)];
-            state.activeFocusTask = `🚨 Emergency Task: ${action}`;
-            saveState();
-            playAudioFanfare();
-            showToast(`⚡ Emergency Action Activated: Do this 2-min task!`, 'green');
-        }
-
-        function openWipModal() { document.getElementById('wipModal').classList.remove('hidden'); }
-        function closeWipModal() { document.getElementById('wipModal').classList.add('hidden'); }
-
-        function saveWipPrompt() {
-            const file = document.getElementById('wipFileNameInput').value.trim();
-            const step = document.getElementById('wipFirstStepInput').value.trim();
-            if (file || step) {
-                state.wipParked = { file, step, date: new Date().toLocaleDateString() };
-                renderWipBanner();
-                closeWipModal();
-                saveState();
-                showToast("🅿️ Work parked! Safe to close your laptop.", 'green');
-            }
-        }
-
-        function clearWipPrompt() {
-            state.wipParked = null;
-            renderWipBanner();
-            saveState();
-        }
-
-        function renderWipBanner() {
-            const banner = document.getElementById('wipDisplayBanner');
-            const text = document.getElementById('wipPromptText');
-            if (!banner || !text) return;
-            if (state.wipParked) {
-                text.textContent = `${state.wipParked.file ? `[${state.wipParked.file}] ` : ''}${state.wipParked.step || ''}`;
-                banner.classList.remove('hidden');
-            } else {
-                banner.classList.add('hidden');
-            }
-        }
-
-        function checkZeroGuiltWelcomeBack() {
-            if (!state.lastClaimDate) return;
-            const last = new Date(state.lastClaimDate);
-            const now = new Date();
-            const diffDays = Math.floor((now - last) / (1000 * 60 * 60 * 24));
-            if (diffDays >= 3) {
-                const resilienceRelic = {
-                    id: 'artifact_' + Date.now(),
-                    name: 'Resilience Phoenix Specimen',
-                    slot: 'relic1',
-                    rarity: 'legendary',
-                    rarityColor: '#f97316',
-                    rarityClass: 'rarity-legendary-glow',
-                    skillName: 'Studio Resilience',
-                    icon: 'fa-fire-shield',
-                    date: now.toLocaleDateString()
-                };
-                state.inventory.unshift(resilienceRelic);
-                showToast(`🔥 Welcome Back! Awarded [Resilience Phoenix Specimen] for returning!`, 'gold');
-                playAudioFanfare();
-            }
-        }
+        let isUnlocked = false, tokenClient = null, gdriveAccessToken = null, gdriveFileId = null;
+        let currentCategoryFilter = 'all', currentEnergyFilter = 'all', draggedSkillId = null;
+        let currentThemeIdx = 0; const THEMES = ['dark-osrs', 'swiss-clean', 'cyberpunk', 'minimal-mono'];
 
         function openGDriveModal() {
             if (state.gdriveClientId) document.getElementById('gdriveClientIdInput').value = state.gdriveClientId;
             document.getElementById('gdriveModal').classList.remove('hidden');
         }
         function closeGDriveModal() { document.getElementById('gdriveModal').classList.add('hidden'); }
-
         function saveGDriveClientId() {
             const val = document.getElementById('gdriveClientIdInput').value.trim();
-            if (val) {
-                state.gdriveClientId = val;
-                saveState();
-                showToast("💾 Google Drive Client ID saved!", 'green');
-            }
+            if (val) { state.gdriveClientId = val; saveState(); showToast("💾 Google Drive Client ID saved!", 'green'); }
         }
 
-        function connectGoogleDrive() {
+        async function connectGoogleDrive() {
             saveGDriveClientId();
-            if (!state.gdriveClientId) {
-                showToast("⚠️ Please enter a Google OAuth Client ID first.", 'rose');
-                return;
-            }
+            if (!state.gdriveClientId) return showToast("⚠️ Please enter a Google OAuth Client ID first.", 'rose');
+            
             try {
                 if (window.google && google.accounts && google.accounts.oauth2) {
                     tokenClient = google.accounts.oauth2.initTokenClient({
@@ -1084,16 +827,45 @@
                                 gdriveAccessToken = resp.access_token;
                                 updateGDriveUIStatus(true);
                                 closeGDriveModal();
-                                showToast("🟢 Connected to Google Drive! Syncing...", 'green');
-                                await syncToGoogleDrive();
+                                showToast("🟢 Connected to Google Drive! Checking cloud save...", 'gold');
+                                await loadFromGoogleDrive();
                             }
                         }
                     });
                     tokenClient.requestAccessToken();
+                } else showToast("Google libraries loading... try again in 3s.", 'gold');
+            } catch(e) { showToast("❌ Failed to initiate auth.", 'rose'); }
+        }
+
+        async function loadFromGoogleDrive() {
+            if (!gdriveAccessToken) return;
+            try {
+                const searchResp = await fetch("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='design_rpg_cloud_save.json'", {
+                    headers: { 'Authorization': `Bearer ${gdriveAccessToken}` }
+                });
+                const searchData = await searchResp.json();
+                
+                if (searchData.files && searchData.files.length > 0) {
+                    gdriveFileId = searchData.files[0].id;
+                    const fileResp = await fetch(`https://www.googleapis.com/drive/v3/files/${gdriveFileId}?alt=media`, {
+                        headers: { 'Authorization': `Bearer ${gdriveAccessToken}` }
+                    });
+                    
+                    const cloudState = await fileResp.json();
+                    if (cloudState && typeof cloudState === 'object') {
+                        state = { ...state, ...cloudState }; 
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); 
+                        renderDashboard();
+                        showToast("☁️ Cloud save loaded! Synced across devices.", 'green');
+                    }
                 } else {
-                    showToast("Google Identity Services library loading... try again in 3s.", 'gold');
+                    showToast("No cloud save found yet. Creating new backup...", 'gold');
+                    await syncToGoogleDrive(); 
                 }
-            } catch(e) { showToast("❌ Failed to initiate Google Drive auth.", 'rose'); }
+            } catch (e) {
+                console.error("Cloud Load error:", e);
+                showToast("❌ Error loading from cloud.", 'rose');
+            }
         }
 
         async function syncToGoogleDrive() {
@@ -1101,1007 +873,273 @@
             try {
                 const fileData = JSON.stringify(state, null, 2);
                 const metadata = { name: 'design_rpg_cloud_save.json', mimeType: 'application/json' };
+                
+                let url = 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
+                let method = 'POST';
+                if (gdriveFileId) {
+                    url = `https://www.googleapis.com/upload/drive/v3/files/${gdriveFileId}?uploadType=multipart`;
+                    method = 'PATCH';
+                } else metadata.parents = ['appDataFolder'];
+
                 const form = new FormData();
                 form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
                 form.append('file', new Blob([fileData], { type: 'application/json' }));
-                const resp = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${gdriveAccessToken}` },
-                    body: form
-                });
+
+                const resp = await fetch(url, { method: method, headers: { 'Authorization': `Bearer ${gdriveAccessToken}` }, body: form });
+                const data = await resp.json();
                 if (resp.ok) {
+                    if (!gdriveFileId && data.id) gdriveFileId = data.id;
                     updateGDriveUIStatus(true);
-                    showToast("☁️ Encrypted cloud backup saved to Google Drive!", 'green');
                 }
             } catch(e) { console.error("Cloud Sync error:", e); }
         }
 
         function updateGDriveUIStatus(connected) {
-            const icon = document.getElementById('gdriveStatusIcon');
-            const label = document.getElementById('gdriveStatusLabel');
-            if (connected) {
-                if (icon) icon.className = "fa-solid fa-cloud-check text-emerald-400";
-                if (label) label.textContent = "Drive Synced 🟢";
+            const icon = document.getElementById('gdriveStatusIcon'), label = document.getElementById('gdriveStatusLabel');
+            if (connected) { if (icon) icon.className = "fa-solid fa-cloud-check text-emerald-400"; if (label) label.textContent = "Drive Synced 🟢"; }
+            else { if (icon) icon.className = "fa-solid fa-cloud-arrow-up text-amber-400"; if (label) label.textContent = "Connect Drive"; }
+        }
+
+        function checkPasscodeLock() {
+            const modal = document.getElementById('passcodeLockModal');
+            if (!state.passcodeHash) {
+                document.getElementById('lockModalTitle').textContent = "Create Master Passcode";
+                document.getElementById('lockSubmitBtn').textContent = "Create Passcode & Lock";
+                modal.classList.remove('hidden');
+            } else if (!isUnlocked) {
+                document.getElementById('lockModalTitle').textContent = "Studio Vault Encrypted";
+                document.getElementById('lockSubmitBtn').textContent = "Unlock Studio";
+                modal.classList.remove('hidden');
+            } else { modal.classList.add('hidden'); }
+        }
+        function unlockWithPasscode() {
+            const input = document.getElementById('passcodeInput').value;
+            if (!input) return;
+            if (!state.passcodeHash) {
+                state.passcodeHash = btoa(input); isUnlocked = true; saveState();
+                document.getElementById('passcodeInput').value = ''; document.getElementById('passcodeLockModal').classList.add('hidden');
+                showToast("🔐 Master Passcode set! Studio unlocked.", 'green');
             } else {
-                if (icon) icon.className = "fa-solid fa-cloud-arrow-up text-amber-400";
-                if (label) label.textContent = "Connect Drive";
+                if (btoa(input) === state.passcodeHash) {
+                    isUnlocked = true; document.getElementById('passcodeInput').value = ''; document.getElementById('passcodeLockModal').classList.add('hidden');
+                    showToast("🔓 Studio unlocked successfully!", 'green');
+                } else showToast("❌ Incorrect passcode!", 'rose');
             }
         }
-
-        function handleDragStart(e, skillId) {
-            draggedSkillId = skillId;
-            e.dataTransfer.setData('text/plain', skillId);
-            e.dataTransfer.effectAllowed = 'move';
-        }
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            e.currentTarget.classList.add('drag-over');
-        }
-        function handleDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
-        function handleDrop(e, targetCategoryId) {
-            e.preventDefault();
-            e.currentTarget.classList.remove('drag-over');
-            if (!draggedSkillId) return;
-            const skill = state.skills.find(s => s.id === draggedSkillId);
-            if (skill && skill.category !== targetCategoryId) {
-                skill.category = targetCategoryId;
-                const catObj = state.categories.find(c => c.id === targetCategoryId);
-                showToast(`Moved [${skill.name}] to ${catObj ? catObj.name : targetCategoryId}`, 'gold');
-                saveState();
-            }
-            draggedSkillId = null;
-        }
-
-        function openManageCategoriesModal() {
-            renderCategoryList();
-            document.getElementById('categoryModal').classList.remove('hidden');
-        }
-        function closeManageCategoriesModal() { document.getElementById('categoryModal').classList.add('hidden'); }
-
-        function renderCategoryList() {
-            const container = document.getElementById('categoryListContainer');
-            if (!container) return;
-            container.innerHTML = '';
-            state.categories.forEach(cat => {
-                const item = document.createElement('div');
-                item.className = "flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800 text-white";
-                item.innerHTML = `
-                    <span class="font-bold text-xs">${escapeHtml(cat.name)}</span>
-                    <button onclick="deleteCategory('${cat.id}')" class="text-xs text-slate-500 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        function addNewCategory() {
-            const name = document.getElementById('newCategoryNameInput').value.trim();
-            if (!name) return;
-            const newId = 'cat_' + Date.now();
-            state.categories.push({ id: newId, name });
-            document.getElementById('newCategoryNameInput').value = '';
-            renderCategoryList();
-            saveState();
-            showToast(`Added category [${name}]`, 'green');
-        }
-
-        function deleteCategory(catId) {
-            if (state.categories.length <= 1) {
-                showToast("Must have at least 1 active category!", 'rose');
-                return;
-            }
-            const cat = state.categories.find(c => c.id === catId);
-            if (cat && window.confirm(`Delete category "${cat.name}"? Skills inside will move to the first category.`)) {
-                state.categories = state.categories.filter(c => c.id !== catId);
-                const fallbackCat = state.categories[0].id;
-                state.skills.forEach(s => { if (s.category === catId) s.category = fallbackCat; });
-                renderCategoryList();
-                saveState();
-            }
-        }
-
-        function openSetFocusModal() {
-            document.getElementById('focusAnchorInput').value = state.activeFocusTask || '';
-            document.getElementById('focusModal').classList.remove('hidden');
-        }
-        function closeSetFocusModal() { document.getElementById('focusModal').classList.add('hidden'); }
-
-        function saveFocusAnchor() {
-            const val = document.getElementById('focusAnchorInput').value.trim();
-            state.activeFocusTask = val;
-            closeSetFocusModal();
-            saveState();
-            showToast(val ? "📍 Focus Anchor Pinned!" : "Anchor cleared", 'gold');
-        }
-
-        function clearFocusAnchor() {
-            state.activeFocusTask = "";
-            saveState();
-            showToast("Focus Anchor cleared", 'gold');
-        }
-
-        function generateMicroSteps() {
-            const input = document.getElementById('chunkBigTaskInput').value.trim();
-            if (!input) {
-                showToast("Enter a task to chunk first!", 'gold');
-                return;
-            }
-            const resultsContainer = document.getElementById('microStepResults');
-            resultsContainer.innerHTML = `
-                <div class="p-2 bg-slate-950 border border-slate-800 rounded-lg space-y-1">
-                    <div class="text-[10px] font-bold text-amber-400">Step 1 (5 mins): Setup & Brain Dump</div>
-                    <p class="text-[10px] text-slate-300">Open project file for "${escapeHtml(input)}" and write down 3 bullet points.</p>
-                </div>
-                <div class="p-2 bg-slate-950 border border-slate-800 rounded-lg space-y-1">
-                    <div class="text-[10px] font-bold text-emerald-400">Step 2 (5 mins): Rough Draft</div>
-                    <p class="text-[10px] text-slate-300">Create a quick rough draft without polishing. Get the base down.</p>
-                </div>
-                <div class="p-2 bg-slate-950 border border-slate-800 rounded-lg space-y-1">
-                    <div class="text-[10px] font-bold text-blue-400">Step 3 (5 mins): First Review</div>
-                    <p class="text-[10px] text-slate-300">Review the rough draft, make 1 improvement, and decide to keep going or stop.</p>
-                </div>
-            `;
-            resultsContainer.classList.remove('hidden');
-            showToast("⚡ Micro-steps generated! Start with Step 1.", 'green');
-        }
-
-        function rollRandomSkill() {
-            if (!state.skills || state.skills.length === 0) return;
-            const randomIndex = Math.floor(Math.random() * state.skills.length);
-            const chosenSkill = state.skills[randomIndex];
-            const select = document.getElementById('timerSkillSelect');
-            if (select) {
-                select.value = chosenSkill.id;
-                updateTimerSkillMeta();
-            }
-            playAudioFanfare();
-            showToast(`🎲 The Oracle picked: [${chosenSkill.name}]!`, 'gold');
-        }
-
-        const STORAGE_KEY = 'osrs_design_rpg_state_v7';
+        function toggleLockScreen() { isUnlocked = false; checkPasscodeLock(); showToast("🔒 Dashboard locked.", 'gold'); }
 
         function saveState() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-                if (gdriveAccessToken) syncToGoogleDrive();
-            } catch(e) { console.error("Save error:", e); }
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); if (gdriveAccessToken) syncToGoogleDrive(); } catch(e) {}
             renderDashboard();
         }
-
-        function exportSaveData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `design_rpg_save_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            showToast("💾 Studio save backup exported!", 'green');
-        }
-
-        function triggerImportSave() { document.getElementById('importFileInput').click(); }
-
-        function importSaveData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const parsed = JSON.parse(e.target.result);
-                    if (parsed && typeof parsed === 'object') {
-                        state = {
-                            ...state,
-                            ...parsed,
-                            categories: parsed.categories || DEFAULT_CATEGORIES,
-                            skills: parsed.skills || DEFAULT_SKILLS,
-                            inventory: parsed.inventory || [],
-                            equipped: { ...state.equipped, ...(parsed.equipped || {}) },
-                            quests: parsed.quests || [],
-                            completedQuests: parsed.completedQuests || [],
-                            activities: parsed.activities || []
-                        };
-                        saveState();
-                        showToast("📥 Save file loaded successfully!", 'green');
-                    }
-                } catch(err) { showToast("❌ Invalid save file!", 'rose'); }
-            };
-            reader.readAsText(file);
-        }
-
         function loadState() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEY);
                 if (saved) {
-                    const parsed = JSON.parse(saved);
-                    state = {
-                        ...state,
-                        ...parsed,
-                        categories: parsed.categories || DEFAULT_CATEGORIES,
-                        skills: parsed.skills || DEFAULT_SKILLS,
-                        inventory: parsed.inventory || [],
-                        equipped: { ...state.equipped, ...(parsed.equipped || {}) },
-                        quests: parsed.quests || [],
-                        completedQuests: parsed.completedQuests || [],
-                        activities: parsed.activities || []
-                    };
+                    const p = JSON.parse(saved);
+                    state = { ...state, ...p, categories: p.categories || DEFAULT_CATEGORIES, skills: p.skills || DEFAULT_SKILLS, inventory: p.inventory || [], equipped: { ...state.equipped, ...(p.equipped || {}) }, quests: p.quests || [], completedQuests: p.completedQuests || [], activities: p.activities || [] };
                 }
-            } catch(e) { console.error("Load error:", e); }
-        }
-
-        const RARITY_TIERS = [
-            { name: 'Standard', color: '#9ca3af', class: 'rarity-common-glow', weight: 55 },
-            { name: 'Refined', color: '#22c55e', class: 'rarity-uncommon-glow', weight: 25 },
-            { name: 'Architectural', color: '#3b82f6', class: 'rarity-rare-glow', weight: 12 },
-            { name: 'Avant-Garde', color: '#a855f7', class: 'rarity-epic-glow', weight: 5 },
-            { name: 'Masterpiece', color: '#f97316', class: 'rarity-legendary-glow', weight: 2.5 },
-            { name: 'Grail', color: '#ef4444', class: 'rarity-mythic-glow', weight: 0.5 }
-        ];
-
-        const RELIC_SLOTS = ['relic1', 'relic2', 'relic3', 'relic4', 'relic5', 'relic6'];
-        const DESIGN_PREFIXES = ['Swiss', 'Precision', 'Vectorized', 'Raytraced', 'Bauhaus', 'Minimalist', 'Monolithic', 'Parametric', 'Anodized', 'Chromatic'];
-        const DESIGN_ARTIFACT_TYPES = ['Type Specimen', 'Grid Blueprint', 'Shader Rig', 'Palette Grail', 'Caliper Spec', 'Brand System', 'Case Study Spec', 'Print Specimen'];
-
-        function rollRarity() {
-            const rand = Math.random() * 100;
-            let cumulative = 0;
-            for (let r of RARITY_TIERS) {
-                cumulative += r.weight;
-                if (rand <= cumulative) return r;
-            }
-            return RARITY_TIERS[0];
-        }
-
-        function generateProceduralLoot(skillObj) {
-            const rarity = rollRarity();
-            const prefix = DESIGN_PREFIXES[Math.floor(Math.random() * DESIGN_PREFIXES.length)];
-            const artifactType = DESIGN_ARTIFACT_TYPES[Math.floor(Math.random() * DESIGN_ARTIFACT_TYPES.length)];
-            const itemName = `${prefix} ${skillObj.name} ${artifactType}`;
-            return {
-                id: 'artifact_' + Date.now() + '_' + Math.floor(Math.random()*1000),
-                name: itemName,
-                slot: RELIC_SLOTS[Math.floor(Math.random() * RELIC_SLOTS.length)],
-                rarity: rarity.name.toLowerCase(),
-                rarityColor: rarity.color,
-                rarityClass: rarity.class,
-                skillName: skillObj.name,
-                icon: skillObj.icon || 'fa-gem',
-                date: new Date().toLocaleDateString()
-            };
-        }
-
-        function playAudioFanfare() {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const notes = [261.63, 329.63, 392.00, 523.25];
-                notes.forEach((freq, i) => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.value = freq;
-                    gain.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.12);
-                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.4);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(ctx.currentTime + i * 0.12);
-                    osc.stop(ctx.currentTime + i * 0.12 + 0.4);
-                });
             } catch(e) {}
         }
-
-        let timerState = { mode: 'stopwatch', running: false, seconds: 0, interval: null, phase: 'focus' };
-
-        function setTimerMode(mode) {
-            if (timerState.running) pauseTimer();
-            timerState.mode = mode;
-            timerState.seconds = mode === 'pomodoro' ? 25 * 60 : (mode === 'sprint' ? 5 * 60 : 0);
-            document.querySelectorAll('#modeBtnStopwatch, #modeBtnPomo, #modeBtnSprint').forEach(btn => {
-                btn.className = "px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all";
-            });
-            if (mode === 'stopwatch') document.getElementById('modeBtnStopwatch').className = "px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all";
-            if (mode === 'pomodoro') document.getElementById('modeBtnPomo').className = "px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all";
-            if (mode === 'sprint') document.getElementById('modeBtnSprint').className = "px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all";
-            updateTimerDisplay();
+        function exportSaveData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+            const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", `design_rpg_save_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(dl); dl.click(); dl.remove(); showToast("💾 Save backed up!", 'green');
         }
-
-        function toggleTimer() {
-            if (timerState.running) pauseTimer();
-            else startTimer();
-        }
-
-        function startTimer() {
-            timerState.running = true;
-            document.getElementById('timerStartBtn').innerHTML = `<i class="fa-solid fa-pause"></i> Pause Session`;
-            document.getElementById('timerStartBtn').className = "flex-1 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl text-xs md:text-sm transition-all flex items-center justify-center gap-2 shadow-lg";
-            timerState.interval = setInterval(() => {
-                if (timerState.mode === 'stopwatch') timerState.seconds++;
-                else {
-                    timerState.seconds--;
-                    if (timerState.seconds <= 0) onTimerComplete();
-                }
-                updateTimerDisplay();
-            }, 1000);
-        }
-
-        function pauseTimer() {
-            timerState.running = false;
-            clearInterval(timerState.interval);
-            document.getElementById('timerStartBtn').innerHTML = `<i class="fa-solid fa-play"></i> Resume Session`;
-            document.getElementById('timerStartBtn').className = "flex-1 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold rounded-xl text-xs md:text-sm transition-all flex items-center justify-center gap-2 shadow-lg";
-        }
-
-        function resetTimer() {
-            if (timerState.running && timerState.seconds > 10) {
-                const hoursLogged = timerState.mode === 'stopwatch' ? timerState.seconds / 3600 : (
-                    timerState.mode === 'pomodoro' ? (25 * 60 - timerState.seconds) / 3600 : (5 * 60 - timerState.seconds) / 3600
-                );
-                if (hoursLogged > 0.01) depositTimerTime(hoursLogged);
-            }
-            pauseTimer();
-            setTimerMode(timerState.mode);
-        }
-
-        function updateTimerDisplay() {
-            const hrs = Math.floor(timerState.seconds / 3600);
-            const mins = Math.floor((timerState.seconds % 3600) / 60);
-            const secs = timerState.seconds % 60;
-            const pad = (n) => String(n).padStart(2, '0');
-            document.getElementById('timerDisplay').textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
-        }
-
-        function onTimerComplete() {
-            pauseTimer();
-            playAudioFanfare();
-            if (timerState.mode === 'pomodoro' && timerState.phase === 'focus') {
-                depositTimerTime(25 / 60);
-                showToast("🎯 25-Min Focus Complete! Time for a 5-min break.", 'gold');
-                timerState.phase = 'break';
-                timerState.seconds = 5 * 60;
-                document.getElementById('timerPhaseLabel').textContent = "Break Phase (Rest)";
-            } else if (timerState.mode === 'sprint') {
-                depositTimerTime(5 / 60);
-                showToast("⚡ 5-Min Sprint Complete! XP Deposited.", 'green');
-                setTimerMode('sprint');
-            }
-        }
-
-        function depositTimerTime(hours) {
-            const skillSelect = document.getElementById('timerSkillSelect');
-            const skillId = skillSelect ? skillSelect.value : state.skills[0].id;
-            addHoursToSkill(skillId, hours, `Completed ${timerState.mode} session`);
-        }
-
-        function addHoursToSkill(skillId, hrs, sourceNote = '') {
-            const skill = state.skills.find(s => s.id === skillId);
-            if (!skill || hrs <= 0) return;
-            const oldHours = skill.hours || 0;
-            const prevLvl = getLevelFromXP(oldHours * XP_PER_HOUR);
-            skill.hours += hrs;
-            const newHours = skill.hours;
-            const newLvl = getLevelFromXP(newHours * XP_PER_HOUR);
-            const dropsEarned = Math.floor(newHours) - Math.floor(oldHours);
-            if (dropsEarned > 0) {
-                for (let i = 0; i < dropsEarned; i++) {
-                    const loot = generateProceduralLoot(skill);
-                    state.inventory.unshift(loot);
-                    showToast(`🎁 ARTIFACT DROP! Discovered [${loot.name}]`, 'gold');
-                }
-            }
-            if (sourceNote) addActivityLog(`${sourceNote}: +${hrs.toFixed(1)} hrs in ${skill.name}`);
-            if (newLvl > prevLvl) triggerLevelUp(skill, newLvl);
-            else showToast(`+${hrs.toFixed(1)} hr deposited into ${skill.name}`, 'green');
-            saveState();
-        }
-
-        function quickAddHours(skillId, hrs) { addHoursToSkill(skillId, hrs, 'Logged time'); }
-
-        function filterCategoryTab(catId) {
-            currentCategoryFilter = catId;
-            renderSkillsGrid();
+        function triggerImportSave() { document.getElementById('importFileInput').click(); }
+        function importSaveData(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (parsed && typeof parsed === 'object') { state = { ...state, ...parsed }; saveState(); showToast("📥 Save loaded!", 'green'); }
+                } catch(err) { showToast("❌ Invalid save file!", 'rose'); }
+            }; reader.readAsText(file);
         }
 
         function renderDashboard() {
-            renderHeader();
-            renderCategoryTabs();
-            renderSkillsGrid();
-            renderTimerSelect();
-            renderQuestBoard();
-            renderActivityLog();
-            renderVaultGrid();
-            renderStudioCardShowcase();
-        }
-
-        function renderHeader() {
+            const th = state.skills.reduce((s, sk) => s + (sk.hours||0), 0), tx = Math.floor(th * XP_PER_HOUR);
+            let tl = 0; state.skills.forEach(s => tl += getLevelFromXP((s.hours||0)*XP_PER_HOUR));
+            
             document.getElementById('characterName').textContent = state.characterName || "Studio Archon";
             document.getElementById('characterTitle').textContent = state.characterTitle || "Grand Polymath & Studio Principal";
             document.getElementById('avatarIcon').className = `fa-solid ${state.avatarIcon || 'fa-pen-nib'}`;
             document.getElementById('streakCount').textContent = state.streak || 1;
-
-            const totalHours = state.skills.reduce((sum, s) => sum + (s.hours || 0), 0);
-            const totalXp = Math.floor(totalHours * XP_PER_HOUR);
-            let totalLevel = 0;
-            state.skills.forEach(s => { totalLevel += getLevelFromXP((s.hours || 0) * XP_PER_HOUR); });
-
-            document.getElementById('overallTotalLevel').textContent = totalLevel;
-            document.getElementById('overallTotalHours').textContent = totalHours.toFixed(1);
-            const overallPct = Math.min(100, (totalXp / TOTAL_MAX_XP) * 100);
-            document.getElementById('overallXpText').textContent = `${totalXp.toLocaleString()} / ${TOTAL_MAX_XP.toLocaleString()} XP`;
-            document.getElementById('overallProgressBar').style.width = `${overallPct}%`;
-            document.getElementById('overallHoursRemaining').textContent = `${Math.max(0, HOURS_TO_MAX - totalHours).toFixed(1)} hrs remaining`;
+            document.getElementById('overallTotalLevel').textContent = tl; document.getElementById('overallTotalHours').textContent = th.toFixed(1);
+            
+            const pct = Math.min(100, (tx/TOTAL_MAX_XP)*100);
+            document.getElementById('overallXpText').textContent = `${tx.toLocaleString()} / ${TOTAL_MAX_XP.toLocaleString()} XP (${pct.toFixed(2)}%)`;
+            document.getElementById('overallProgressBar').style.width = `${pct}%`;
+            document.getElementById('overallHoursRemaining').textContent = `${Math.max(0, HOURS_TO_MAX - th).toFixed(1)} hrs remaining`;
             document.getElementById('vaultCount').textContent = state.inventory.length;
-
-            const focusDisplay = document.getElementById('currentFocusTaskDisplay');
-            if (focusDisplay) focusDisplay.textContent = state.activeFocusTask || "No active priority pinned. What are you doing right now?";
+            
+            const focus = document.getElementById('currentFocusTaskDisplay');
+            if (focus) focus.textContent = state.activeFocusTask || "No active priority pinned. What are you doing right now?";
             updateGDriveUIStatus(!!gdriveAccessToken);
+
+            renderCategoryTabs(); renderSkillsGrid(); renderTimerSelect(); renderQuestBoard(); renderActivityLog(); renderVaultGrid(); renderStudioCardShowcase();
         }
 
         function renderCategoryTabs() {
-            const bar = document.getElementById('categoryTabsBar');
-            if (!bar) return;
-            bar.innerHTML = '';
-            const allBtn = document.createElement('button');
-            allBtn.onclick = () => filterCategoryTab('all');
-            allBtn.className = currentCategoryFilter === 'all' ? "px-3 py-1.5 bg-slate-800 text-amber-400 rounded-lg border border-slate-700 font-semibold shrink-0" : "px-3 py-1.5 bg-slate-900 text-slate-400 rounded-lg border border-slate-800 shrink-0";
-            allBtn.textContent = "All Categories";
-            bar.appendChild(allBtn);
-
+            const bar = document.getElementById('categoryTabsBar'); if (!bar) return; bar.innerHTML = '';
+            const allBtn = document.createElement('button'); allBtn.onclick = () => { currentCategoryFilter = 'all'; renderSkillsGrid(); renderCategoryTabs(); }; allBtn.className = currentCategoryFilter === 'all' ? "px-3 py-1.5 bg-slate-800 text-amber-400 rounded-lg font-semibold shrink-0" : "px-3 py-1.5 bg-slate-900 text-slate-400 rounded-lg shrink-0"; allBtn.textContent = "All Categories"; bar.appendChild(allBtn);
             state.categories.forEach(cat => {
-                const btn = document.createElement('button');
-                btn.onclick = () => filterCategoryTab(cat.id);
-                btn.ondragover = handleDragOver;
-                btn.ondragleave = handleDragLeave;
-                btn.ondrop = (e) => handleDrop(e, cat.id);
-                btn.className = currentCategoryFilter === cat.id ? "px-3 py-1.5 bg-slate-800 text-amber-400 rounded-lg border border-slate-700 font-semibold shrink-0 transition-all" : "px-3 py-1.5 bg-slate-900 text-slate-400 rounded-lg border border-slate-800 shrink-0 transition-all";
-                btn.textContent = cat.name;
-                bar.appendChild(btn);
+                const btn = document.createElement('button'); btn.onclick = () => { currentCategoryFilter = cat.id; renderSkillsGrid(); renderCategoryTabs(); }; btn.ondragover = handleDragOver; btn.ondragleave = handleDragLeave; btn.ondrop = (e) => handleDrop(e, cat.id); btn.className = currentCategoryFilter === cat.id ? "px-3 py-1.5 bg-slate-800 text-amber-400 rounded-lg font-semibold shrink-0 transition-all" : "px-3 py-1.5 bg-slate-900 text-slate-400 rounded-lg shrink-0 transition-all"; btn.textContent = cat.name; bar.appendChild(btn);
             });
         }
 
         function renderSkillsGrid() {
-            const container = document.getElementById('skillsContainer');
-            if (!container) return;
-            container.innerHTML = '';
+            const container = document.getElementById('skillsContainer'); if (!container) return; container.innerHTML = '';
             document.getElementById('skillCount').textContent = state.skills.length;
-
-            const visibleCategories = currentCategoryFilter === 'all' ? state.categories : state.categories.filter(c => c.id === currentCategoryFilter);
-
-            visibleCategories.forEach(cat => {
-                const catSkills = state.skills.filter(s => s.category === cat.id);
-                const section = document.createElement('div');
-                section.className = "space-y-3 bg-slate-950/40 p-4 rounded-2xl border border-slate-800/80 transition-all";
-                section.ondragover = handleDragOver;
-                section.ondragleave = handleDragLeave;
-                section.ondrop = (e) => handleDrop(e, cat.id);
-                section.innerHTML = `
-                    <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
-                        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider font-mono flex items-center gap-2">
-                            <i class="fa-solid fa-folder-open text-xs"></i> ${escapeHtml(cat.name)} (${catSkills.length})
-                        </h3>
-                        <span class="text-[10px] text-slate-500 font-mono">Drop skills here to categorize</span>
-                    </div>
-                    <div id="catGrid_${cat.id}" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                `;
-                container.appendChild(section);
-
-                const grid = document.getElementById(`catGrid_${cat.id}`);
-                if (catSkills.length === 0) {
-                    grid.innerHTML = `<div class="col-span-full text-center py-4 text-xs text-slate-600 font-mono">No skills here yet.</div>`;
-                } else {
-                    catSkills.forEach(skill => {
-                        const hours = skill.hours || 0;
-                        const xp = Math.floor(hours * XP_PER_HOUR);
-                        const progress = getLevelProgress(xp);
-                        const card = document.createElement('div');
-                        card.draggable = true;
-                        card.ondragstart = (e) => handleDragStart(e, skill.id);
-                        card.className = "bg-osrs-card border border-osrs-cardBorder hover:border-slate-700 rounded-2xl p-4 shadow-lg flex flex-col justify-between space-y-3 transition-all cursor-grab active:cursor-grabbing";
-                        card.innerHTML = `
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-amber-400 text-lg shrink-0"><i class="fa-solid ${skill.icon || 'fa-star'}"></i></div>
-                                    <div>
-                                        <h3 class="font-bold text-white text-sm flex items-center gap-1.5">${escapeHtml(skill.name)}</h3>
-                                        <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-400">${escapeHtml(cat.name)}</span>
-                                    </div>
-                                </div>
-                                <div class="text-right"><span class="text-xs font-mono font-black text-amber-400 bg-amber-500/10 px-2 py-1 rounded-md border border-amber-500/20">Lvl ${progress.level}</span></div>
-                            </div>
-                            <div class="space-y-1 font-mono text-xs">
-                                <div class="flex justify-between text-[11px] text-slate-400"><span>${xp.toLocaleString()} XP</span><span>${hours.toFixed(1)} hrs</span></div>
-                                <div class="w-full bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800">
-                                    <div class="bg-gradient-to-r from-emerald-500 to-amber-400 h-full rounded-full transition-all duration-300" style="width: ${progress.percent}%"></div>
-                                </div>
-                                <div class="flex justify-between text-[10px] text-slate-500 pt-0.5"><span>Next: Lvl ${progress.level < 99 ? progress.level + 1 : 99}</span><span>${progress.remainingMins} mins</span></div>
-                            </div>
-                            <div class="pt-2 border-t border-slate-800 flex items-center justify-between gap-1">
-                                <div class="flex gap-1">
-                                    <button onclick="quickAddHours('${skill.id}', 0.5)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-emerald-400 border border-slate-800 hover:border-emerald-500/50 rounded-lg text-xs font-mono font-bold transition-all">+0.5h</button>
-                                    <button onclick="quickAddHours('${skill.id}', 1.0)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-emerald-400 border border-slate-800 hover:border-emerald-500/50 rounded-lg text-xs font-mono font-bold transition-all">+1.0h</button>
-                                    <button onclick="openLogModal('${skill.id}')" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 rounded-lg text-xs font-mono transition-all"><i class="fa-solid fa-plus"></i></button>
-                                </div>
-                                <div class="flex gap-1">
-                                    <button onclick="openEditSkillModal('${skill.id}')" class="p-1.5 text-slate-500 hover:text-amber-400 transition-colors text-xs"><i class="fa-solid fa-pen"></i></button>
-                                    <button onclick="confirmDeleteSkill('${skill.id}')" class="p-1.5 text-slate-500 hover:text-rose-400 transition-colors text-xs"><i class="fa-solid fa-trash-can"></i></button>
-                                </div>
-                            </div>
-                        `;
-                        grid.appendChild(card);
-                    });
-                }
-            });
-        }
-
-        function filterQuestsByEnergy(energyLevel) {
-            currentEnergyFilter = energyLevel;
-            document.querySelectorAll('.quest-energy-btn').forEach(btn => {
-                btn.className = btn.dataset.energy === energyLevel ? "quest-energy-btn px-2 py-1 bg-slate-800 text-amber-400 rounded-md border border-slate-700 font-semibold" : "quest-energy-btn px-2 py-1 bg-slate-950 text-slate-400 rounded-md border border-slate-800";
-            });
-            renderQuestBoard();
-        }
-
-        function renderQuestBoard() {
-            const list = document.getElementById('questBoardList');
-            if (!list) return;
-            list.innerHTML = '';
-            const filteredQuests = state.quests.filter(q => currentEnergyFilter === 'all' || (q.energy || 'med') === currentEnergyFilter);
-
-            if (filteredQuests.length === 0) {
-                list.innerHTML = `<div class="text-xs text-slate-500 text-center py-4">No active quests. Click "🎲 Generate Quest" to craft one!</div>`;
-            } else {
-                filteredQuests.forEach(q => {
-                    const skill = state.skills.find(s => s.id === q.skillId);
-                    const energyBadge = q.energy === 'low' ? `<span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/30">🟢 Low</span>` : (q.energy === 'high' ? `<span class="text-[9px] bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded border border-rose-500/30">🔴 Deep</span>` : `<span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">🟡 Med</span>`);
-                    const card = document.createElement('div');
-                    card.className = "bg-slate-950/90 border border-slate-800/80 rounded-xl p-3 space-y-1.5 hover:border-amber-500/40 transition-all";
-                    card.innerHTML = `
-                        <div class="flex items-start justify-between gap-2">
-                            <h4 class="font-bold text-white text-xs">${escapeHtml(q.title)}</h4>
-                            <span class="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded shrink-0">+${q.hours}h</span>
-                        </div>
-                        <p class="text-[11px] text-slate-400 leading-snug">${escapeHtml(q.desc)}</p>
-                        <div class="flex justify-between items-center pt-1 border-t border-slate-800 text-[10px]">
-                            <div class="flex items-center gap-1.5"><span class="text-slate-500 font-mono"><i class="fa-solid fa-bullseye text-amber-400 mr-1"></i>${skill ? escapeHtml(skill.name) : 'General'}</span>${energyBadge}</div>
-                            <div class="flex gap-1">
-                                <button onclick="completeQuest('${q.id}')" class="px-2 py-0.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded text-[10px] transition-all">Claim</button>
-                                <button onclick="deleteQuest('${q.id}')" class="px-1.5 py-0.5 text-slate-500 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                        </div>
-                    `;
-                    list.appendChild(card);
+            const cats = currentCategoryFilter === 'all' ? state.categories : state.categories.filter(c => c.id === currentCategoryFilter);
+            cats.forEach(cat => {
+                const sk = state.skills.filter(s => s.category === cat.id);
+                const section = document.createElement('div'); section.className = "space-y-3 bg-slate-950/40 p-4 rounded-2xl border border-slate-800/80 transition-all"; section.ondragover = handleDragOver; section.ondragleave = handleDragLeave; section.ondrop = (e) => handleDrop(e, cat.id);
+                section.innerHTML = `<div class="flex items-center justify-between border-b border-slate-800/80 pb-2"><h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider font-mono flex items-center gap-2"><i class="fa-solid fa-folder-open text-xs"></i> ${escapeHtml(cat.name)} (${sk.length})</h3></div><div id="catGrid_${cat.id}" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>`;
+                container.appendChild(section); const grid = document.getElementById(`catGrid_${cat.id}`);
+                if (!sk.length) grid.innerHTML = `<div class="col-span-full text-center py-4 text-xs text-slate-600 font-mono">Drag a skill here!</div>`;
+                else sk.forEach(s => {
+                    const prog = getLevelProgress((s.hours||0)*XP_PER_HOUR);
+                    const c = document.createElement('div'); c.draggable = true; c.ondragstart = (e) => { draggedSkillId = s.id; e.dataTransfer.setData('text/plain', s.id); }; c.className = "bg-osrs-card border border-osrs-cardBorder hover:border-slate-700 rounded-2xl p-4 shadow-lg flex flex-col justify-between space-y-3 cursor-grab";
+                    c.innerHTML = `<div class="flex justify-between items-center"><div class="flex space-x-3"><div class="w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-amber-400 text-lg shrink-0"><i class="fa-solid ${s.icon||'fa-star'}"></i></div><div><h3 class="font-bold text-white text-sm">${escapeHtml(s.name)}</h3><span class="text-[9px] font-mono uppercase bg-slate-950 text-slate-500 px-1 py-0.5 rounded border border-slate-800">${escapeHtml(cat.name)}</span></div></div><span class="text-xs font-mono font-black text-amber-400 bg-amber-500/10 px-2 py-1 rounded-md">Lvl ${prog.level}</span></div><div class="space-y-1 font-mono text-xs"><div class="flex justify-between text-[11px] text-slate-400"><span>${(s.hours||0).toFixed(1)}h logged</span><span>${prog.remainingMins}m to next</span></div><div class="w-full bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800"><div class="bg-gradient-to-r from-emerald-500 to-amber-400 h-full rounded-full" style="width: ${prog.percent}%"></div></div></div><div class="pt-2 border-t border-slate-800 flex items-center justify-between"><div class="flex gap-1"><button onclick="quickAddHours('${s.id}', 0.5)" class="px-2 py-1 bg-slate-950 text-emerald-400 border border-slate-800 hover:border-emerald-500/50 rounded-lg text-xs font-mono font-bold">+0.5h</button><button onclick="quickAddHours('${s.id}', 1.0)" class="px-2 py-1 bg-slate-950 text-emerald-400 border border-slate-800 hover:border-emerald-500/50 rounded-lg text-xs font-mono font-bold">+1.0h</button><button onclick="openLogModal('${s.id}')" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 rounded-lg text-xs font-mono"><i class="fa-solid fa-plus"></i></button></div><div class="flex gap-1"><button onclick="openEditSkillModal('${s.id}')" class="p-1.5 text-slate-500 hover:text-amber-400"><i class="fa-solid fa-pen"></i></button><button onclick="confirmDeleteSkill('${s.id}')" class="p-1.5 text-slate-500 hover:text-rose-400"><i class="fa-solid fa-trash-can"></i></button></div></div>`;
+                    grid.appendChild(c);
                 });
-            }
-            document.getElementById('completedQuestCount').textContent = state.completedQuests.length;
-        }
-
-        function renderTimerSelect() {
-            const select = document.getElementById('timerSkillSelect');
-            if (!select) return;
-            const currentVal = select.value;
-            select.innerHTML = '';
-            state.skills.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.id;
-                opt.textContent = `${s.name} (${(s.hours || 0).toFixed(1)}h)`;
-                select.appendChild(opt);
-            });
-            if (currentVal && state.skills.some(s => s.id === currentVal)) select.value = currentVal;
-            updateTimerSkillMeta();
-            select.onchange = updateTimerSkillMeta;
-        }
-
-        function updateTimerSkillMeta() {
-            const select = document.getElementById('timerSkillSelect');
-            if (!select) return;
-            const skill = state.skills.find(s => s.id === select.value) || state.skills[0];
-            if (!skill) return;
-            const xp = Math.floor((skill.hours || 0) * XP_PER_HOUR);
-            const lvl = getLevelFromXP(xp);
-            document.getElementById('selectedSkillXp').textContent = xp.toLocaleString();
-            document.getElementById('selectedSkillLevel').textContent = `Lvl ${lvl}`;
-        }
-
-        function renderVaultGrid() {
-            const grid = document.getElementById('vaultGrid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            const search = (document.getElementById('vaultSearchInput')?.value || '').toLowerCase();
-            const rarityFilter = document.getElementById('vaultRarityFilter')?.value || 'all';
-
-            const filtered = state.inventory.filter(item => {
-                const matchesSearch = item.name.toLowerCase().includes(search) || item.skillName.toLowerCase().includes(search);
-                const matchesRarity = rarityFilter === 'all' || item.rarity === rarityFilter;
-                return matchesSearch && matchesRarity;
-            });
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-slate-500">No artifacts found matching filter. Log hours to earn design specimens!</div>`;
-                return;
-            }
-
-            filtered.forEach(item => {
-                const isEquipped = Object.values(state.equipped).some(eq => eq && eq.id === item.id);
-                const card = document.createElement('div');
-                card.className = `p-3 rounded-xl bg-slate-950 border-2 ${item.rarityClass} flex flex-col justify-between space-y-2 relative group`;
-                card.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <i class="fa-solid ${item.icon} text-lg" style="color: ${item.rarityColor}"></i>
-                        <span class="text-[9px] font-mono uppercase font-bold px-1.5 py-0.5 rounded bg-slate-900" style="color: ${item.rarityColor}">${item.rarity}</span>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-white text-xs leading-tight">${escapeHtml(item.name)}</h4>
-                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">${escapeHtml(item.skillName)}</p>
-                    </div>
-                    <button onclick="${isEquipped ? `unequipSlot('${item.slot}')` : `equipItem('${item.id}')`}" class="w-full py-1.5 rounded-lg text-xs font-bold transition-all ${isEquipped ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-slate-900 hover:bg-slate-800 text-white border border-slate-800'}">
-                        ${isEquipped ? 'Equipped ✓' : 'Pin to Pedestal'}
-                    </button>
-                `;
-                grid.appendChild(card);
             });
         }
+        function handleDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+        function handleDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+        function handleDrop(e, targetCat) { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); if (draggedSkillId) { const s = state.skills.find(x => x.id === draggedSkillId); if (s) { s.category = targetCat; saveState(); showToast(`Moved ${s.name}`, 'gold'); } draggedSkillId = null; } }
+        function quickAddHours(id, h) { addHoursToSkill(id, h, 'Quick logged'); }
 
-        function renderStudioCardShowcase() {
-            RELIC_SLOTS.forEach(slot => {
-                const item = state.equipped[slot];
-                const slotEl = document.getElementById(`slot-${slot}`);
-                if (slotEl) {
-                    if (item) {
-                        slotEl.className = `h-24 rounded-xl bg-slate-950 border-2 ${item.rarityClass} flex flex-col items-center justify-center cursor-pointer transition-all p-2 text-center relative gold-glow group`;
-                        slotEl.innerHTML = `
-                            <i class="fa-solid ${item.icon} text-xl" style="color: ${item.rarityColor}"></i>
-                            <span class="text-[9px] font-mono font-bold text-white mt-1 truncate max-w-[80px]">${escapeHtml(item.name.split(' ')[0])}</span>
-                            <button onclick="event.stopPropagation(); unequipSlot('${slot}')" class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[9px] rounded-full flex items-center justify-center" title="Remove Artifact">×</button>
-                        `;
-                    } else {
-                        slotEl.className = `h-24 rounded-xl bg-slate-950 border-2 border-slate-800 flex flex-col items-center justify-center cursor-pointer hover:border-amber-400 transition-all p-2 text-center relative group`;
-                        slotEl.innerHTML = `<i class="fa-solid fa-gem text-slate-700 text-xl"></i><span class="text-[9px] text-slate-500 font-mono mt-1">Slot ${slot.replace('relic', '')}</span>`;
-                    }
-                }
-            });
-            if (document.getElementById('cardStudioName')) document.getElementById('cardStudioName').textContent = state.characterName || "Studio Archon";
-            if (document.getElementById('cardStudioTitle')) document.getElementById('cardStudioTitle').textContent = state.characterTitle || "Grand Polymath & Studio Principal";
-            if (document.getElementById('cardAvatarIcon')) document.getElementById('cardAvatarIcon').className = `fa-solid ${state.avatarIcon || 'fa-pen-nib'}`;
-        }
-
-        function equipItem(itemId) {
-            const item = state.inventory.find(i => i.id === itemId);
-            if (!item) return;
-            state.equipped[item.slot || 'relic1'] = item;
-            addActivityLog(`Pinned artifact: ${item.name}`);
-            showToast(`Equipped [${item.name}] to Showcase`, 'gold');
-            saveState();
-        }
-
-        function unequipSlot(slot) {
-            if (state.equipped[slot]) {
-                const item = state.equipped[slot];
-                state.equipped[slot] = null;
-                addActivityLog(`Removed artifact: ${item.name}`);
-                saveState();
-            }
-        }
-
-        function selectSlotForEquip(slot) {
-            openTreasureVaultModal();
-            const filter = document.getElementById('vaultRarityFilter');
-            if (filter) filter.value = 'all';
-            renderVaultGrid();
-        }
-
-        function renderActivityLog() {
-            const list = document.getElementById('activityLogList');
-            if (!list) return;
-            list.innerHTML = '';
-            if (state.activities.length === 0) {
-                list.innerHTML = `<div class="text-slate-500 text-center py-4">No recent activity logged.</div>`;
-            } else {
-                state.activities.forEach(act => {
-                    const item = document.createElement('div');
-                    item.className = "bg-slate-950/60 p-2 rounded-lg border border-slate-800/80 flex justify-between items-center text-slate-300";
-                    item.innerHTML = `<span>${escapeHtml(act.text)}</span><span class="text-[10px] text-slate-500 font-mono shrink-0 ml-2">${act.time}</span>`;
-                    list.appendChild(item);
-                });
-            }
-        }
-
-        function addActivityLog(text) {
-            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            state.activities.unshift({ text, time, id: Date.now() });
-            if (state.activities.length > 40) state.activities.pop();
-            renderActivityLog();
-        }
-
-        function clearActivityLog() {
-            state.activities = [];
-            saveState();
-        }
-
-        function claimDailyReward() {
-            const today = new Date().toDateString();
-            if (state.lastClaimDate === today) {
-                showToast("Already checked in today! Streak active.", 'gold');
-                return;
-            }
-            state.streak = (state.streak || 0) + 1;
-            state.lastClaimDate = today;
-
-            const randomSkill = state.skills[Math.floor(Math.random() * state.skills.length)];
-            const loot = generateProceduralLoot(randomSkill);
-            state.inventory.unshift(loot);
-
-            addActivityLog(`Daily Check-in! Streak: ${state.streak} days. Earned [${loot.name}]`);
-            showToast(`🎉 Daily Check-in! Earned [${loot.name}]`, 'green');
-            playAudioFanfare();
-            saveState();
-        }
-
-        function openAvatarModal() {
-            const icons = ['fa-pen-nib', 'fa-compass-drafting', 'fa-bezier-curve', 'fa-palette', 'fa-cubes', 'fa-shirt', 'fa-camera', 'fa-film', 'fa-code', 'fa-eye', 'fa-crown', 'fa-robot', 'fa-waveform', 'fa-box', 'fa-archway'];
-            const currentIdx = icons.indexOf(state.avatarIcon || 'fa-pen-nib');
-            const nextIcon = icons[(currentIdx + 1) % icons.length];
-            state.avatarIcon = nextIcon;
-            showToast(`Mark updated to ${nextIcon.replace('fa-', '')}`, 'gold');
-            saveState();
-        }
-
-        function openCreateQuestModal() {
-            const select = document.getElementById('questSkillSelect');
-            if (select) {
-                select.innerHTML = '';
-                state.skills.forEach(s => {
-                    const opt = document.createElement('option');
-                    opt.value = s.id;
-                    opt.textContent = s.name;
-                    select.appendChild(opt);
-                });
-            }
-            document.getElementById('createQuestModal').classList.remove('hidden');
-        }
-
-        function closeCreateQuestModal() {
-            document.getElementById('createQuestModal').classList.add('hidden');
-        }
-
-        function saveNewQuest() {
-            const title = document.getElementById('questTitleInput').value.trim();
-            const desc = document.getElementById('questDescInput').value.trim();
-            const skillId = document.getElementById('questSkillSelect').value;
-            const energy = document.getElementById('questEnergySelect').value;
-            const hours = parseFloat(document.getElementById('questHoursInput').value) || 1;
-
-            if (!title) return;
-
-            state.quests.push({
-                id: 'q_' + Date.now(),
-                title, desc, skillId, energy, hours, completed: false
-            });
-
-            addActivityLog(`Created custom quest: ${title}`);
-            closeCreateQuestModal();
-            saveState();
-        }
-
-        function completeQuest(questId) {
-            const idx = state.quests.findIndex(q => q.id === questId);
-            if (idx === -1) return;
-
-            const q = state.quests.splice(idx, 1)[0];
-            q.completed = true;
-            q.completedDate = new Date().toLocaleDateString();
-            state.completedQuests.unshift(q);
-
-            addHoursToSkill(q.skillId, q.hours, `Completed quest: ${q.title}`);
-            playAudioFanfare();
-            showToast(`⚔️ Quest Completed: ${q.title}!`, 'green');
-            saveState();
-        }
-
-        function deleteQuest(questId) {
-            state.quests = state.quests.filter(q => q.id !== questId);
-            saveState();
-        }
-
-        function toggleCompletedQuestsModal() {
-            const modal = document.getElementById('completedQuestsModal');
-            if (modal.classList.contains('hidden')) {
-                renderCompletedQuests();
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
-        }
-
-        function renderCompletedQuests() {
-            const list = document.getElementById('completedQuestsList');
-            if (!list) return;
-            list.innerHTML = '';
-            if (state.completedQuests.length === 0) {
-                list.innerHTML = `<div class="text-slate-500 text-center py-4">No completed quests yet.</div>`;
-            } else {
-                state.completedQuests.forEach(q => {
-                    const skill = state.skills.find(s => s.id === q.skillId);
-                    const item = document.createElement('div');
-                    item.className = "bg-slate-950/60 p-3 rounded-xl border border-slate-800 space-y-1";
-                    item.innerHTML = `
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-bold text-white text-xs">${escapeHtml(q.title)}</h4>
-                            <span class="text-[10px] text-emerald-400 font-mono">+${q.hours}h</span>
-                        </div>
-                        <p class="text-[11px] text-slate-400">${escapeHtml(q.desc)}</p>
-                        <div class="text-[10px] text-slate-500 font-mono pt-1">${skill ? escapeHtml(skill.name) : 'General'} • Completed ${q.completedDate || ''}</div>
-                    `;
-                    list.appendChild(item);
-                });
-            }
-        }
-
-        function openAddSkillModal() {
-            document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-amber-400"></i> Add New Skill Tree`;
-            document.getElementById('modalSkillName').value = '';
-            
-            const catSelect = document.getElementById('modalSkillCategory');
-            catSelect.innerHTML = '';
-            state.categories.forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c.id;
-                opt.textContent = c.name;
-                catSelect.appendChild(opt);
-            });
-
-            document.getElementById('modalSkillHours').value = '0';
-            document.getElementById('modalSkillIcon').value = 'fa-star';
-            document.getElementById('modalSkillId').value = '';
-            document.getElementById('skillModal').classList.remove('hidden');
-        }
-
-        function openEditSkillModal(skillId) {
-            const skill = state.skills.find(s => s.id === skillId);
-            if (!skill) return;
-
-            document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Edit Skill Tree & Hours`;
-            document.getElementById('modalSkillName').value = skill.name;
-
-            const catSelect = document.getElementById('modalSkillCategory');
-            catSelect.innerHTML = '';
-            state.categories.forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c.id;
-                opt.textContent = c.name;
-                if (c.id === skill.category) opt.selected = true;
-                catSelect.appendChild(opt);
-            });
-
-            document.getElementById('modalSkillHours').value = (skill.hours || 0).toFixed(1);
-            document.getElementById('modalSkillIcon').value = skill.icon || 'fa-star';
-            document.getElementById('modalSkillId').value = skill.id;
-            document.getElementById('skillModal').classList.remove('hidden');
-        }
-
-        function closeSkillModal() { 
-            document.getElementById('skillModal').classList.add('hidden'); 
-        }
-
-        function saveSkillModal() {
-            const name = document.getElementById('modalSkillName').value.trim();
-            const category = document.getElementById('modalSkillCategory').value;
-            const hoursInput = parseFloat(document.getElementById('modalSkillHours').value);
-            const hours = isNaN(hoursInput) || hoursInput < 0 ? 0 : hoursInput;
-            const icon = document.getElementById('modalSkillIcon').value.trim() || 'fa-star';
-            const editId = document.getElementById('modalSkillId').value;
-
-            if (!name) return;
-
-            if (editId) {
-                const skill = state.skills.find(s => s.id === editId);
-                if (skill) {
-                    const oldHours = skill.hours || 0;
-                    skill.name = name;
-                    skill.category = category;
-                    skill.icon = icon;
-                    skill.hours = hours;
-                    if (oldHours !== hours) {
-                        addActivityLog(`Adjusted total time for ${skill.name} from ${oldHours.toFixed(1)}h to ${hours.toFixed(1)}h`);
-                        showToast(`Updated ${skill.name} total time to ${hours.toFixed(1)}h`, 'gold');
-                    }
-                }
-            } else {
-                const newSkillId = 'skill_' + Date.now();
-                const newSkill = { id: newSkillId, name, category, icon, hours: hours };
-                state.skills.push(newSkill);
-                addActivityLog(`Created new skill tree: ${name}`);
-            }
-
-            closeSkillModal();
-            saveState();
-        }
-
-        function confirmDeleteSkill(skillId) {
-            const skill = state.skills.find(s => s.id === skillId);
-            if (skill && window.confirm(`Delete "${skill.name}" tree?`)) {
-                state.skills = state.skills.filter(s => s.id !== skillId);
-                saveState();
-            }
-        }
-
-        function openLogModal(skillId) {
-            const skill = state.skills.find(s => s.id === skillId);
-            document.getElementById('logSkillId').value = skillId;
-            document.getElementById('logModal').classList.remove('hidden');
-        }
+        function filterQuestsByEnergy(e) { currentEnergyFilter = e; document.querySelectorAll('.quest-energy-btn').forEach(b => { b.className = b.dataset.energy === e ? "quest-energy-btn px-2 py-1 bg-slate-800 text-amber-400 rounded-md border border-slate-700 font-bold" : "quest-energy-btn px-2 py-1 bg-slate-950 text-slate-400 rounded-md border border-slate-800"; }); renderQuestBoard(); }
+        function renderQuestBoard() { const l = document.getElementById('questBoardList'); if(!l) return; l.innerHTML=''; const f = state.quests.filter(q => currentEnergyFilter === 'all' || q.energy === currentEnergyFilter); if(!f.length) { l.innerHTML = `<div class="text-xs text-slate-500 text-center py-4">No active quests!</div>`; } else { f.forEach(q => { const s = state.skills.find(x=>x.id===q.skillId); const eb = q.energy === 'low' ? `<span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1 rounded">🟢 Low</span>` : (q.energy === 'high' ? `<span class="text-[9px] bg-rose-500/20 text-rose-300 px-1 rounded">🔴 Deep Flow</span>` : `<span class="text-[9px] bg-amber-500/20 text-amber-300 px-1 rounded">🟡 Med Focus</span>`); const d = document.createElement('div'); d.className = "bg-slate-950/90 border border-slate-800 rounded-xl p-3 space-y-1.5 hover:border-amber-500/40"; d.innerHTML = `<div class="flex justify-between"><h4 class="font-bold text-white text-xs">${escapeHtml(q.title)}</h4><span class="text-[10px] text-amber-400 bg-amber-500/10 px-1.5 rounded">+${q.hours}h</span></div><p class="text-[11px] text-slate-400">${escapeHtml(q.desc)}</p><div class="flex justify-between pt-1 border-t border-slate-800 text-[10px]"><span class="text-slate-500 font-mono">${s?s.name:'General'} ${eb}</span><div class="flex gap-1"><button onclick="completeQuest('${q.id}')" class="px-2 bg-emerald-500 text-slate-950 font-bold rounded">Claim</button><button onclick="deleteQuest('${q.id}')" class="px-1 text-slate-500 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button></div></div>`; l.appendChild(d); }); } document.getElementById('completedQuestCount').textContent = state.completedQuests.length; }
+        function completeQuest(id) { const i = state.quests.findIndex(q=>q.id===id); if(i===-1) return; const q = state.quests.splice(i,1)[0]; q.completed=true; q.completedDate = new Date().toLocaleDateString(); state.completedQuests.unshift(q); addHoursToSkill(q.skillId, q.hours, `Completed quest: ${q.title}`); playAudioFanfare(); showToast(`⚔️ Quest Completed!`, 'green'); saveState(); }
+        function deleteQuest(id) { state.quests = state.quests.filter(q=>q.id!==id); saveState(); }
         
-        function closeLogModal() { 
-            document.getElementById('logModal').classList.add('hidden'); 
+        function generateSkillMatchedQuest(targetSkillId = null) {
+            if (!state.skills.length) return;
+            let targetSkill = targetSkillId ? state.skills.find(s => s.id === targetSkillId) : state.skills[Math.floor(Math.random() * state.skills.length)];
+            let newQuest = createDeepQuestForSkill(targetSkill || state.skills[0]);
+            if (state.quests.some(q => q.title === newQuest.title)) newQuest.title += " (Variant)";
+            state.quests.push(newQuest); saveState(); playAudioFanfare(); showToast(`⚡ Generated: "${newQuest.title}"`, 'green');
         }
 
-        function submitTimeLog() {
-            const skillId = document.getElementById('logSkillId').value;
-            const hrs = parseFloat(document.getElementById('logHoursInput').value) || 0;
-            const mins = parseFloat(document.getElementById('logMinutesInput').value) || 0;
-            const totalHours = hrs + (mins / 60);
+        const RARITY_TIERS = [{ name: 'Standard', color: '#9ca3af', class: 'rarity-common-glow', weight: 55 }, { name: 'Refined', color: '#22c55e', class: 'rarity-uncommon-glow', weight: 25 }, { name: 'Architectural', color: '#3b82f6', class: 'rarity-rare-glow', weight: 12 }, { name: 'Avant-Garde', color: '#a855f7', class: 'rarity-epic-glow', weight: 5 }, { name: 'Masterpiece', color: '#f97316', class: 'rarity-legendary-glow', weight: 2.5 }, { name: 'Grail', color: '#ef4444', class: 'rarity-mythic-glow', weight: 0.5 }];
+        const RELIC_SLOTS = ['relic1', 'relic2', 'relic3', 'relic4', 'relic5', 'relic6'];
 
-            if (totalHours > 0) {
-                addHoursToSkill(skillId, totalHours, 'Logged manual time');
-            }
-            closeLogModal();
+        function generateProceduralLoot(skillObj) {
+            const rand = Math.random() * 100; let rarity = RARITY_TIERS[0], cumulative = 0;
+            for (let r of RARITY_TIERS) { cumulative += r.weight; if (rand <= cumulative) { rarity = r; break; } }
+            const pfx = ['Swiss', 'Precision', 'Vectorized', 'Raytraced', 'Bauhaus', 'Minimalist', 'Monolithic', 'Parametric', 'Anodized', 'Chromatic'][Math.floor(Math.random() * 10)];
+            const artifactType = ['Type Specimen', 'Grid Blueprint', 'Shader Rig', 'Palette Grail', 'Caliper Spec', 'Brand System', 'Case Study Spec', 'Print Specimen'][Math.floor(Math.random() * 8)];
+            return { id: 'artifact_' + Date.now() + '_' + Math.floor(Math.random()*1000), name: `${pfx} ${skillObj.name} ${artifactType}`, slot: RELIC_SLOTS[Math.floor(Math.random() * RELIC_SLOTS.length)], rarity: rarity.name.toLowerCase(), rarityColor: rarity.color, rarityClass: rarity.class, skillName: skillObj.name, icon: skillObj.icon || 'fa-gem', date: new Date().toLocaleDateString() };
         }
 
-        function editCharacterName() {
-            const current = state.characterName || "Studio Archon";
-            const newName = prompt("Enter Studio Alter Ego Name:", current);
-            if (newName && newName.trim()) {
-                state.characterName = newName.trim();
-                saveState();
-            }
+        let timerState = { mode: 'stopwatch', running: false, seconds: 0, interval: null, phase: 'focus' };
+        function setTimerMode(mode) {
+            if (timerState.running) pauseTimer();
+            timerState.mode = mode; timerState.seconds = mode === 'pomodoro' ? 25*60 : (mode === 'sprint' ? 5*60 : 0);
+            ['modeBtnStopwatch', 'modeBtnPomo', 'modeBtnSprint'].forEach(id => document.getElementById(id).className = "px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all");
+            document.getElementById(mode === 'stopwatch' ? 'modeBtnStopwatch' : (mode === 'pomodoro' ? 'modeBtnPomo' : 'modeBtnSprint')).className = "px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all";
+            updateTimerDisplay();
+        }
+        function toggleTimer() { timerState.running ? pauseTimer() : startTimer(); }
+        function startTimer() {
+            timerState.running = true;
+            document.getElementById('timerStartBtn').innerHTML = `<i class="fa-solid fa-pause"></i> Pause Session`;
+            timerState.interval = setInterval(() => { timerState.mode === 'stopwatch' ? timerState.seconds++ : (timerState.seconds--, timerState.seconds <= 0 && onTimerComplete()); updateTimerDisplay(); }, 1000);
+        }
+        function pauseTimer() { timerState.running = false; clearInterval(timerState.interval); document.getElementById('timerStartBtn').innerHTML = `<i class="fa-solid fa-play"></i> Resume Session`; }
+        function resetTimer() { if (timerState.running && timerState.seconds > 10) { const hrs = timerState.mode === 'stopwatch' ? timerState.seconds/3600 : (timerState.mode === 'pomodoro' ? (25*60-timerState.seconds)/3600 : (5*60-timerState.seconds)/3600); if (hrs > 0.01) depositTimerTime(hrs); } pauseTimer(); setTimerMode(timerState.mode); }
+        function updateTimerDisplay() { document.getElementById('timerDisplay').textContent = `${String(Math.floor(timerState.seconds/3600)).padStart(2,'0')}:${String(Math.floor((timerState.seconds%3600)/60)).padStart(2,'0')}:${String(timerState.seconds%60).padStart(2,'0')}`; }
+        function onTimerComplete() {
+            pauseTimer(); playAudioFanfare();
+            if (timerState.mode === 'pomodoro' && timerState.phase === 'focus') { depositTimerTime(25/60); showToast("🎯 25-Min Complete! Break.", 'gold'); timerState.phase = 'break'; timerState.seconds = 5*60; }
+            else if (timerState.mode === 'sprint') { depositTimerTime(5/60); showToast("⚡ 5-Min Sprint Complete!", 'green'); setTimerMode('sprint'); }
+        }
+        function depositTimerTime(hours) { addHoursToSkill(document.getElementById('timerSkillSelect')?.value || state.skills[0].id, hours, `Completed ${timerState.mode} session`); }
+
+        function addHoursToSkill(skillId, hrs, note = '') {
+            const skill = state.skills.find(s => s.id === skillId); if (!skill || hrs <= 0) return;
+            const oldHrs = skill.hours || 0, prevLvl = getLevelFromXP(oldHrs * XP_PER_HOUR);
+            skill.hours += hrs; const newHrs = skill.hours, newLvl = getLevelFromXP(newHrs * XP_PER_HOUR);
+            const drops = Math.floor(newHrs) - Math.floor(oldHrs);
+            for (let i = 0; i < drops; i++) { const loot = generateProceduralLoot(skill); state.inventory.unshift(loot); showToast(`🎁 DROPPED: [${loot.name}]`, 'gold'); }
+            if (note) addActivityLog(`${note}: +${hrs.toFixed(1)} hrs in ${skill.name}`);
+            newLvl > prevLvl ? triggerLevelUp(skill, newLvl) : showToast(`+${hrs.toFixed(1)} hr deposited into ${skill.name}`, 'green');
+            saveState();
         }
 
-        function triggerLevelUp(skill, newLvl) {
-            document.getElementById('levelUpSkillText').textContent = skill.name;
-            document.getElementById('levelUpLevelText').textContent = `Level ${newLvl}`;
-            document.getElementById('levelUpModal').classList.remove('hidden');
-            playAudioFanfare();
+        function renderTimerSelect() { const s = document.getElementById('timerSkillSelect'); if(!s) return; const cur = s.value; s.innerHTML=''; state.skills.forEach(x => { const o = document.createElement('option'); o.value = x.id; o.textContent = x.name; s.appendChild(o); }); if(cur && state.skills.find(x=>x.id===cur)) s.value = cur; updateTimerSkillMeta(); s.onchange = updateTimerSkillMeta; }
+        function updateTimerSkillMeta() { const s = document.getElementById('timerSkillSelect'); if(!s) return; const sk = state.skills.find(x=>x.id===s.value) || state.skills[0]; if(!sk) return; document.getElementById('selectedSkillXp').textContent = Math.floor((sk.hours||0)*XP_PER_HOUR).toLocaleString(); document.getElementById('selectedSkillLevel').textContent = `Lvl ${getLevelFromXP((sk.hours||0)*XP_PER_HOUR)}`; }
+        function rollRandomSkill() { if(!state.skills.length) return; const s = state.skills[Math.floor(Math.random()*state.skills.length)]; document.getElementById('timerSkillSelect').value = s.id; updateTimerSkillMeta(); playAudioFanfare(); showToast(`🎲 Rolled: [${s.name}]`, 'gold'); }
 
-            if (window.confetti) {
-                window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-            }
-        }
+        function openManageCategoriesModal() { document.getElementById('categoryModal').classList.remove('hidden'); renderCategoryList(); }
+        function closeManageCategoriesModal() { document.getElementById('categoryModal').classList.add('hidden'); }
+        function renderCategoryList() { const c = document.getElementById('categoryListContainer'); if(!c) return; c.innerHTML=''; state.categories.forEach(cat => { const d = document.createElement('div'); d.className="flex justify-between p-2 bg-slate-950 border border-slate-800 rounded text-white text-xs"; d.innerHTML=`<span>${escapeHtml(cat.name)}</span><button onclick="deleteCategory('${cat.id}')" class="text-slate-500 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button>`; c.appendChild(d); }); }
+        function addNewCategory() { const n = document.getElementById('newCategoryNameInput').value.trim(); if(n) { state.categories.push({id: 'cat_'+Date.now(), name: n}); document.getElementById('newCategoryNameInput').value=''; renderCategoryList(); saveState(); } }
+        function deleteCategory(id) { if(state.categories.length<=1) return showToast("Keep at least 1 category!", 'rose'); if(confirm("Delete category? Skills will move to first available category.")) { state.categories = state.categories.filter(c=>c.id!==id); const f = state.categories[0].id; state.skills.forEach(s => { if(s.category===id) s.category=f; }); renderCategoryList(); saveState(); } }
 
-        function closeLevelUpModal() {
-            document.getElementById('levelUpModal').classList.add('hidden');
-        }
+        function openAddSkillModal() { document.getElementById('skillModal').classList.remove('hidden'); document.getElementById('modalSkillId').value = ''; const s = document.getElementById('modalSkillCategory'); s.innerHTML=''; state.categories.forEach(c=>{const o = document.createElement('option'); o.value=c.id; o.textContent=c.name; s.appendChild(o);}); }
+        function openEditSkillModal(id) { const s = state.skills.find(x=>x.id===id); if(!s) return; document.getElementById('modalSkillName').value=s.name; document.getElementById('modalSkillHours').value=(s.hours||0).toFixed(1); document.getElementById('modalSkillIcon').value=s.icon||'fa-star'; document.getElementById('modalSkillId').value=s.id; const cs = document.getElementById('modalSkillCategory'); cs.innerHTML=''; state.categories.forEach(c=>{const o = document.createElement('option'); o.value=c.id; o.textContent=c.name; if(c.id===s.category) o.selected=true; cs.appendChild(o);}); document.getElementById('skillModal').classList.remove('hidden'); }
+        function closeSkillModal() { document.getElementById('skillModal').classList.add('hidden'); }
+        function saveSkillModal() { const n = document.getElementById('modalSkillName').value, h = parseFloat(document.getElementById('modalSkillHours').value)||0, id = document.getElementById('modalSkillId').value, i = document.getElementById('modalSkillIcon').value||'fa-star', c = document.getElementById('modalSkillCategory').value||state.categories[0].id; if(!n) return; if(id) { const s = state.skills.find(x=>x.id===id); if(s) { s.name = n; s.hours = h; s.icon = i; s.category = c; } } else { state.skills.push({id: 'skill_'+Date.now(), name: n, hours: h, icon: i, category: c}); } closeSkillModal(); saveState(); }
+        function confirmDeleteSkill(id) { if(confirm("Delete skill?")) { state.skills = state.skills.filter(s=>s.id!==id); saveState(); } }
 
-        function showToast(message, type = 'gold') {
-            const container = document.getElementById('toastContainer');
-            if (!container) return;
-            const toast = document.createElement('div');
-            let borderCol = type === 'green' ? 'border-emerald-500' : (type === 'rose' ? 'border-rose-500' : 'border-amber-500');
+        function triggerLevelUp(skill, lvl) { document.getElementById('levelUpSkillText').textContent = skill.name; document.getElementById('levelUpLevelText').textContent = `Level ${lvl}`; document.getElementById('levelUpModal').classList.remove('hidden'); if(window.confetti) confetti(); }
+        function closeLevelUpModal() { document.getElementById('levelUpModal').classList.add('hidden'); }
 
-            toast.className = `p-3 rounded-xl border ${borderCol} bg-slate-900/95 text-white font-semibold text-xs shadow-2xl backdrop-blur-md transform transition-all duration-300 translate-y-2 opacity-0 flex items-center gap-2 pointer-events-auto`;
-            toast.innerHTML = `<i class="fa-solid fa-bell text-amber-400"></i> ${escapeHtml(message)}`;
-            container.appendChild(toast);
+        function openTreasureVaultModal() { document.getElementById('vaultModal').classList.remove('hidden'); renderVaultGrid(); }
+        function closeTreasureVaultModal() { document.getElementById('vaultModal').classList.add('hidden'); }
+        function renderVaultGrid() { const g = document.getElementById('vaultGrid'); if(!g) return; g.innerHTML=''; state.inventory.forEach(i => { const eq = Object.values(state.equipped).some(e=>e&&e.id===i.id); const d = document.createElement('div'); d.className = `p-3 rounded-xl bg-slate-950 border-2 ${i.rarityClass}`; d.innerHTML = `<i class="fa-solid ${i.icon}" style="color:${i.rarityColor}"></i><h4 class="text-white text-xs mt-1 font-bold">${escapeHtml(i.name)}</h4><button onclick="${eq?`unequipSlot('${i.slot}')`:`equipItem('${i.id}')`}" class="w-full mt-2 py-1 rounded text-[10px] ${eq?'bg-amber-500/20 text-amber-300':'bg-slate-800 text-white'}">${eq?'Equipped ✓':'Equip'}</button>`; g.appendChild(d); }); }
+        function equipItem(id) { const i = state.inventory.find(x=>x.id===id); if(i) { state.equipped[i.slot||'relic1'] = i; saveState(); showToast(`Equipped ${i.name}`, 'gold'); } }
+        function unequipSlot(slot) { if(state.equipped[slot]) { state.equipped[slot]=null; saveState(); } }
+        function openStudioCardModal() { document.getElementById('studioCardModal').classList.remove('hidden'); renderStudioCardShowcase(); }
+        function closeStudioCardModal() { document.getElementById('studioCardModal').classList.add('hidden'); }
+        function renderStudioCardShowcase() { RELIC_SLOTS.forEach(s => { const eq = state.equipped[s], e = document.getElementById(`slot-${s}`); if(e) { if(eq) e.innerHTML = `<i class="fa-solid ${eq.icon} text-xl" style="color:${eq.rarityColor}"></i><span class="text-[9px] text-white mt-1 truncate max-w-[80px]">${escapeHtml(eq.name)}</span><button onclick="event.stopPropagation(); unequipSlot('${s}')" class="absolute -top-1 -right-1 bg-rose-500 rounded-full w-4 h-4 text-white text-[9px] opacity-0 group-hover:opacity-100">×</button>`; else e.innerHTML = `<i class="fa-solid fa-gem text-slate-700 text-xl"></i>`; } }); }
+        
+        function openLogModal(id) { document.getElementById('logSkillId').value=id; const s = state.skills.find(x=>x.id===id); document.getElementById('logModalSkillName').textContent=s?s.name:''; document.getElementById('logModal').classList.remove('hidden'); }
+        function closeLogModal() { document.getElementById('logModal').classList.add('hidden'); }
+        function submitTimeLog() { const id=document.getElementById('logSkillId').value, h=parseFloat(document.getElementById('logHoursInput').value)||0, m=parseFloat(document.getElementById('logMinutesInput').value)||0, n=document.getElementById('logNoteInput').value; if(h+(m/60) > 0) addHoursToSkill(id, h+(m/60), n||'Logged time'); closeLogModal(); }
+        
+        function cycleTheme() { currentThemeIdx = (currentThemeIdx+1)%THEMES.length; document.body.className = `p-3 md:p-6 text-slate-200 antialiased selection:bg-amber-500 selection:text-black theme-${THEMES[currentThemeIdx]}`; }
+        function toggleCompletedQuestsModal() { const m = document.getElementById('completedQuestsModal'); if(m.classList.contains('hidden')){ const l=document.getElementById('completedQuestsList'); l.innerHTML=''; state.completedQuests.forEach(q=>{ const s=state.skills.find(x=>x.id===q.skillId); const d=document.createElement('div'); d.className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs"; d.innerHTML=`<div class="flex justify-between text-white font-bold"><span>${escapeHtml(q.title)}</span><span class="text-emerald-400">+${q.hours}h</span></div><div class="text-[10px] text-slate-500">${s?s.name:'General'} • ${q.completedDate||''}</div>`; l.appendChild(d); }); m.classList.remove('hidden'); } else m.classList.add('hidden'); }
+        
+        function editCharacterName() { const n = prompt("Studio Alter Ego Name:", state.characterName); if(n) { state.characterName = n.trim(); saveState(); } }
+        function openAvatarModal() { const i=['fa-pen-nib','fa-compass-drafting','fa-bezier-curve','fa-palette','fa-cubes','fa-shirt','fa-camera','fa-film','fa-code','fa-eye','fa-crown']; state.avatarIcon=i[(i.indexOf(state.avatarIcon||'fa-pen-nib')+1)%i.length]; saveState(); }
 
-            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
-        }
+        function openSetFocusModal() { document.getElementById('focusAnchorInput').value = state.activeFocusTask || ''; document.getElementById('focusModal').classList.remove('hidden'); }
+        function closeSetFocusModal() { document.getElementById('focusModal').classList.add('hidden'); }
+        function saveFocusAnchor() { state.activeFocusTask = document.getElementById('focusAnchorInput').value.trim(); closeSetFocusModal(); saveState(); showToast("📍 Anchor Pinned!", 'gold'); }
+        function clearFocusAnchor() { state.activeFocusTask = ""; saveState(); }
+        
+        function triggerEmergencyMicroAction() { const a = ["Open your design app and draw 1 shape.", "Delete 3 items from Downloads.", "Open a blank file and save it.", "Find 1 piece of inspiration."]; state.activeFocusTask = `🚨 Emergency Task: ${a[Math.floor(Math.random()*a.length)]}`; saveState(); playAudioFanfare(); showToast(`⚡ Do this 2-min task!`, 'green'); }
+        
+        function generateMicroSteps() { const i = document.getElementById('chunkBigTaskInput').value.trim(); if(!i) return showToast("Enter a task first!", 'gold'); const r = document.getElementById('microStepResults'); r.innerHTML = `<div class="p-2 bg-slate-950 border border-slate-800 rounded text-xs space-y-1"><div class="text-amber-400 font-bold">Step 1: Setup</div><p class="text-[10px] text-slate-400">Open file for "${escapeHtml(i)}" and write 3 bullet points.</p></div><div class="p-2 bg-slate-950 border border-slate-800 rounded text-xs space-y-1"><div class="text-emerald-400 font-bold">Step 2: Draft</div><p class="text-[10px] text-slate-400">Create a quick rough draft without polishing.</p></div><div class="p-2 bg-slate-950 border border-slate-800 rounded text-xs space-y-1"><div class="text-blue-400 font-bold">Step 3: Review</div><p class="text-[10px] text-slate-400">Review draft, make 1 improvement.</p></div>`; r.classList.remove('hidden'); showToast("⚡ Micro-steps generated!", 'green'); }
+        
+        function openWipModal() { document.getElementById('wipModal').classList.remove('hidden'); }
+        function closeWipModal() { document.getElementById('wipModal').classList.add('hidden'); }
+        function saveWipPrompt() { const f = document.getElementById('wipFileNameInput').value.trim(), s = document.getElementById('wipFirstStepInput').value.trim(); if(f||s) { state.wipParked = {file:f, step:s}; renderWipBanner(); closeWipModal(); saveState(); showToast("🅿️ Work parked!", 'green'); } }
+        function clearWipPrompt() { state.wipParked = null; renderWipBanner(); saveState(); }
+        function renderWipBanner() { const b = document.getElementById('wipDisplayBanner'), t = document.getElementById('wipPromptText'); if(!b||!t) return; if(state.wipParked) { t.textContent = `${state.wipParked.file?`[${state.wipParked.file}] `:''}${state.wipParked.step}`; b.classList.remove('hidden'); } else b.classList.add('hidden'); }
+        function checkZeroGuiltWelcomeBack() { if(!state.lastClaimDate) return; const d = Math.floor((new Date() - new Date(state.lastClaimDate))/(1000*60*60*24)); if(d>=3) { state.inventory.unshift({id:'artifact_'+Date.now(), name:'Resilience Phoenix', slot:'relic1', rarity:'legendary', rarityColor:'#f97316', rarityClass:'rarity-legendary-glow', skillName:'Resilience', icon:'fa-fire-shield', date:new Date().toLocaleDateString()}); showToast(`🔥 Welcome Back! Awarded Phoenix Specimen!`, 'gold'); playAudioFanfare(); } }
 
-        function escapeHtml(str) {
-            return String(str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
+        function claimDailyReward() { const t = new Date().toDateString(); if(state.lastClaimDate===t) return showToast("Already checked in!", 'gold'); state.streak=(state.streak||0)+1; state.lastClaimDate=t; const s=state.skills[Math.floor(Math.random()*state.skills.length)]; const l=generateProceduralLoot(s); state.inventory.unshift(l); addActivityLog(`Daily Check-in! Earned [${l.name}]`); showToast(`🎉 Earned [${l.name}]`, 'green'); playAudioFanfare(); saveState(); }
+        function addActivityLog(t) { state.activities.unshift({text: t, time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}), id: Date.now()}); if(state.activities.length>40) state.activities.pop(); renderActivityLog(); }
+        function clearActivityLog() { state.activities = []; saveState(); }
+        function renderActivityLog() { const l = document.getElementById('activityLogList'); if(!l) return; l.innerHTML = ''; state.activities.forEach(a => { const i = document.createElement('div'); i.className = "bg-slate-950/60 p-2 rounded-lg border border-slate-800 flex justify-between text-slate-300 text-xs"; i.innerHTML = `<span>${escapeHtml(a.text)}</span><span class="text-[10px] text-slate-500 font-mono ml-2 shrink-0">${a.time}</span>`; l.appendChild(i); }); }
+        
+        function escapeHtml(str) { return String(str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+        function showToast(msg, type='gold') { const c = document.getElementById('toastContainer'); if(!c) return; const t = document.createElement('div'); t.className = `p-3 rounded-xl border ${type==='green'?'border-emerald-500':(type==='rose'?'border-rose-500':'border-amber-500')} bg-slate-900/95 text-white font-semibold text-xs shadow-2xl backdrop-blur-md transition-all duration-300`; t.innerHTML = `<i class="fa-solid fa-bell text-amber-400"></i> ${escapeHtml(msg)}`; c.appendChild(t); setTimeout(()=>t.remove(), 3500); }
 
-        const originalOnload = window.onload;
         window.onload = function() {
-            if (originalOnload) originalOnload();
             loadState();
             checkPasscodeLock();
             checkZeroGuiltWelcomeBack();
             renderWipBanner();
             renderDashboard();
             setTimerMode('stopwatch');
-
-            const iconInput = document.getElementById('modalSkillIcon');
-            if (iconInput) {
-                iconInput.oninput = function() { document.getElementById('iconPreview').className = `fa-solid ${this.value || 'fa-cube'}`; };
-            }
         };
     </script>
 </body>
